@@ -1,2 +1,5 @@
 # wog
-Web interface for viewing logs.
+> :books: Web interface for viewing logs.
+
+## License
+[MIT](LICENSE)
