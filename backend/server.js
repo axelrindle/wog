@@ -73,5 +73,14 @@ app.post('/:index', (req, res) => {
   });
 });
 
+// about page
+app.get('/about', (req, res) => {
+  res.render('about', {
+    url: url,
+    title: `${title} | about`,
+    version: pkg.version
+  });
+});
+
 // Start server
 app.listen(port, () => logger.info(`Listening on port ${port}.`));
