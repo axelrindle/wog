@@ -14,7 +14,7 @@ let level = 3;
  */
 const log = (n, lvl, message) => {
   if (n <= level) {
-    const timestamp = moment().format('DD.MM.YYYY H:mm:ss');
+    const timestamp = moment().format('DD.MM.YYYY HH:mm:ss');
     const str = `[${timestamp}] (${lvl.toUpperCase()})  >>>  ${message}`;
     console.log(str);
   }
