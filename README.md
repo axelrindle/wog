@@ -36,6 +36,11 @@ If you are using **Apache 2**, you can follow [this tutorial](https://www.digita
 - [ ] No online resources to load.
 - [ ] Make the UI more responsive.
 - [ ] Display errors in a nice way to the user.
+- [ ] Display line numbers.
+- [ ] Add a **Go to line** action.
+- [ ] Watch files for changes and auto-reload on change.
+
+Progress: **7**/**17** (**41,18**%)
 
 ## License
 [MIT](LICENSE)
