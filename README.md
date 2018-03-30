@@ -14,6 +14,13 @@
 - Configurable :pencil:
 - Watches the file for changes and auto-reloads on change :bell:
 
+## Disclaimer
+*wog* **does NOT** provide any form of authentication. You have to enable authentication by yourself if you wish to access your *wog* instance from outside your home network.
+
+If you are using **Apache 2**, you can follow [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-apache-on-ubuntu-14-04) on how to password-protect a certain directory.
+
+*Note*: You may replace the **Directory** directive used in the tutorial above with the **Location** directive to protect just a certain path of the URL, which may be a reverse proxy. [Look here](https://stackoverflow.com/questions/23565693/how-can-i-password-protect-applications-behind-mod-proxy-in-apache) for more information.
+
 ## ToDo List
 - [x] Load log files based on a [glob](https://github.com/isaacs/node-glob) pattern.
 - [x] Have the basic UI set up.
@@ -28,7 +35,7 @@
 - [ ] Add action buttons (refresh, download, clear).
 - [ ] No online resources to load.
 - [ ] Make the UI more responsive.
-
+- [ ] Display errors in a nice way to the user.
 
 ## License
 [MIT](LICENSE)
