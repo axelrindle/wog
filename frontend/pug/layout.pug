@@ -114,8 +114,10 @@ html(lang="en")
                     li Size: {{ files[selected].size }}
         
         // actual log content
-        pre
+        pre(v-if="error === ''")
           code {{ grepped }}
+        pre.error(v-else)
+          code {{ error }}
 
     // JS files
     script(src="vendor/vue.min.js")

@@ -8,7 +8,8 @@ const app = new Vue({
     filter: '',
     selected: -1,
     log: 'Select a file on the left.',
-    grep: ''
+    grep: '',
+    error: ''
   },
   computed: {
     filteredFiles() {
@@ -30,22 +31,30 @@ const app = new Vue({
       this.filter = '';
       this.grep = '';
       this.files = [];
+      this.error = '';
     },
     refresh: function () {
       this.reset();
       axios.post('/all').then(response => {
         this.files = response.data;
         console.log(response);
+      }).catch(err => {
+        this.error = err.message;
       });
     },
     select: function (index) {
       this.log = '';
       this.grep = '';
       this.selected = index;
+      this.error = '';
       axios.post(`/${index}`).then(response => {
         const data = response.data.trim();
-        if (data === '') this.log = `The file ${this.files[index].path} is empty!`;
-        else this.log = data;
+        if (data === '') {
+          this.data = '';
+          this.error = `The file ${this.files[index].path} is empty!`;
+        } else this.log = data;
+      }).catch(err => {
+        this.error = err.message;
       });
     }
   }
