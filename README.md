@@ -15,7 +15,7 @@
 - Watches the file for changes and auto-reloads on change :bell:
 
 ## Disclaimer
-*wog* **does NOT** provide any form of authentication. You have to enable authentication by yourself if you wish to access your *wog* instance from outside your home network.
+*wog* **does NOT** provide any form of authentication. You have to enable authentication by yourself if you wish to access your *wog* instance from outside your home network. I am not responsible for any damage taken to you or your company by not properly securing access to your logs.
 
 If you are using **Apache 2**, you can follow [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-apache-on-ubuntu-14-04) on how to password-protect a certain directory.
 
