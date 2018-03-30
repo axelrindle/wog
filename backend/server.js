@@ -50,7 +50,7 @@ logger.info(`Loaded ${files.length} log files.`)
 
 // Setup routes
 app.get('/', (req, res) => {
-  res.render('layout', {
+  res.render('overview', {
     url: url,
     title: `${pkg.name} v${pkg.version}`
   });
