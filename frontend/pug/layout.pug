@@ -1,0 +1,125 @@
+doctype html
+html(lang="en")
+  head
+    // Meta Tags for more compability.
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0")
+    meta(name="theme-color", content="#37385F")
+    meta(name="description" content="wog. A web interface for viewing logs. See https://github.com/axelrindle/wog")
+      
+    // Favicon
+    link(rel="icon" href="img/favicon.png")
+
+    // Site title
+    title #{title}
+
+    // CSS files
+    link(rel="stylesheet" href="css/style.min.css")
+    //link(rel="stylesheet" href="vendor/jquery.mCustomScrollbar.min.css")
+
+  body
+    
+    // overlay
+    div#fader
+    
+    // container
+    div#app
+    
+      //sidebar
+      div#sidebar
+      
+        // filter
+        section.section
+          .container
+            p.title Search
+            p.subtitle Find a logfile
+            .field.has-addons
+              .control
+                input.input(type='text', placeholder='boot.log' v-model="filter")
+              .control
+                a(v-on:click="filter = ''").button.is-danger
+                  span.icon
+                    i.fa-delete
+        hr
+        
+        // file tree
+        section.section
+          .container
+            p.title Logfiles
+              a(v-on:click="refresh").button.is-primary.is-rounded.is-pulled-right
+                span.icon
+                  i.fa-refresh
+
+            p(v-if="filteredFiles.length === files.length").subtitle Loaded {{ files.length }} files
+            p(v-else).subtitle Showing {{ filteredFiles.length }} / {{ files.length }} files
+            hr
+            ul#filelist
+              li(v-for="file in filteredFiles")
+                a(v-on:click="select(file.id)").button.is-link {{ file.path }}
+      
+      // content
+      div#content
+      
+        // options card
+        .card
+          header.card-header
+            p.card-header-title
+              span(v-if="selected !== -1").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;
+              | Options
+          .card-content
+            .content
+              .columns
+                
+                // head & tail
+                //.column
+                  p.title.is-6 Head / Tail
+                  .field.has-addons
+                    .control
+                      span.select
+                        select
+                          option Head
+                          option Tail
+                    .control
+                      input.input(type="number" min="0" value="10")
+                    .control
+                      label.checkbox
+                        input(type="checkbox")
+                        |  Apply
+                  
+                // grep
+                .column
+                  p.title.is-6 Grep
+                  .field.has-addons
+                    .control
+                      input.input(type="text", placeholder="Find matches in the log" v-model="grep")
+                    .control
+                      a(v-on:click="grep = ''").button.is-danger
+                        span.icon
+                          i.fa-delete
+                            
+                // actions
+                //.column
+                  p.title.is-6 Actions
+                  a.button.is-primary Download
+                  a.button.is-info Refresh
+                  a.button.is-danger Delete
+                  
+                // info
+                .column
+                  p.title.is-6 Info
+                  ul(v-if="selected !== -1")
+                    li(v-if="grep === ''") Lines: {{ lines.length }}
+                    li(v-else) Lines: {{ grepped.split('\n').length }} / {{ lines.length }}
+                    li Size: {{ files[selected].size }}
+        
+        // actual log content
+        pre
+          code {{ grepped }}
+
+    // JS files
+    script(src="vendor/vue.min.js")
+    script(src="vendor/axios.min.js")
+    script(src="vendor/jquery-3.3.1.min.js")
+    //script(src="vendor/jquery.mCustomScrollbar.concat.min.js")
+    script(src="js/logic.js")

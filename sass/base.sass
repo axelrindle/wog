@@ -1,0 +1,89 @@
+// 1. Import the dependencies
+@import "https://fonts.googleapis.com/css?family=Montserrat:400,600|Space+Mono"
+@import "../node_modules/bulma/sass/utilities/_all"
+
+// 2. Import modules we need
+@import "../node_modules/bulma/sass/base/_all"
+@import "../node_modules/bulma/sass/grid/columns"
+@import "../node_modules/bulma/sass/layout/footer"
+@import "../node_modules/bulma/sass/layout/section"
+@import "../node_modules/bulma/sass/elements/button"
+@import "../node_modules/bulma/sass/elements/form"
+@import "../node_modules/bulma/sass/elements/title"
+@import "../node_modules/bulma/sass/components/card"
+@import "../node_modules/bulma/sass/components/menu"
+
+// 3. Variables
+$sidebar_background: darken(white, 2%)
+$sidebar_width: 20%
+
+$content_width: 100% - $sidebar_width
+$content_background: lighten(black, 10%)
+$content_border_width: 25px
+$content_border_spread: 5px
+$content_padding_vertical: $content_border_width + $content_border_spread + 20px
+$content_padding_horizontal: $content_padding_vertical * 2
+
+// 4. Customize
+html, body, #app
+  height: 100%
+  width: 100%
+  overflow: hidden
+  font-family: 'Montserrat', sans-serif
+
+pre, pre code
+  font-family: 'Space Mono', monospace
+  font-size: 13px
+
+#fader
+  position: absolute
+  left: 0
+  right: 0
+  top: 0
+  bottom: 0
+  z-index: 100
+  background-color: $content_background
+
+#sidebar
+  height: 100%
+  min-width: $sidebar_width
+  width: $sidebar_width
+  position: fixed
+  overflow-y: auto
+  border-right: 1px solid transparentize(#333, .75)
+  background-color: $sidebar_background
+
+#content
+  height: 100%
+  max-width: $content_width
+  width: $content_width
+  padding: $content_padding_vertical $content_padding_horizontal
+  margin-left: $sidebar_width
+  background-color: $content_background
+  box-shadow: inset 0px 0px $content_border_width $content_border_spread lighten(black, 25%)
+
+  display: flex
+  flex-direction: column
+
+  pre
+    overflow-y: auto
+
+#filelist
+  .button
+    margin-bottom: 5px
+
+.section
+  padding: 1rem 1.5rem
+
+.icon
+  /* center icon
+  display: flex
+  justify-content: center
+  align-items: center
+
+.is-rounded
+  padding-left: .75em !important
+  padding-right: .75em !important
+
+// 5. Vendor stuff
+@import "font-awesome"
