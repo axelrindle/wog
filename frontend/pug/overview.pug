@@ -21,7 +21,7 @@ block content
             .control
               a(v-on:click="filter = ''").button.is-danger
                 span.icon
-                  i.fa-delete
+                  i.fas.fa-trash-alt
       hr
       
       // file tree
@@ -30,7 +30,7 @@ block content
           p.title Logfiles
             a(v-on:click="refresh").button.is-primary.is-rounded.is-pulled-right
               span.icon
-                i.fa-refresh
+                i.fas.fa-sync-alt
 
           p(v-if="filteredFiles.length === files.length").subtitle Loaded {{ files.length }} files
           p(v-else).subtitle Showing {{ filteredFiles.length }} / {{ files.length }} files
@@ -77,7 +77,7 @@ block content
                   .control
                     a(v-on:click="grep = ''").button.is-danger
                       span.icon
-                        i.fa-delete
+                        i.fas.fa-trash-alt
                           
               // actions
               //.column
