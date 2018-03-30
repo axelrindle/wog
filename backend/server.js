@@ -19,6 +19,7 @@ const debug = config.debug || false;
 const port = config.port || 8080;
 const url = config.url || '/';
 const logs = config.logs || [];
+const title = `${pkg.name} v${pkg.version}`;
 
 // Check logs
 if (logs.length === 0) {
@@ -52,7 +53,7 @@ logger.info(`Loaded ${files.length} log files.`)
 app.get('/', (req, res) => {
   res.render('overview', {
     url: url,
-    title: `${pkg.name} v${pkg.version}`
+    title: `${title} | overview`
   });
 });
 
