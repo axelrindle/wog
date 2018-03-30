@@ -5,7 +5,7 @@
 [![powered by pugjs](https://img.shields.io/badge/powered%20by-pugjs-43A047.svg?style=for-the-badge&colorA=66BB6A)](https://github.com/pugjs/pug)
 
 # wog
-> :books: Web interface for viewing logs.
+> :books: A web interface for viewing logs.
 
 ## Features
 - Simple and clean user interface :sparkles:
