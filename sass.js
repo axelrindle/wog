@@ -8,7 +8,7 @@ const write = require('write');
 const cssnano = require('cssnano')({ preset: 'advanced'});
 
 // Files
-const input = 'sass/base.sass';
+const input = 'frontend/sass/base.sass';
 const output = 'frontend/static/css/style.min.css';
 
 // Process
