@@ -36,8 +36,9 @@ block content
           p(v-else).subtitle Showing {{ filteredFiles.length }} / {{ files.length }} files
           hr
           ul#filelist
-            li(v-for="file in filteredFiles")
-              a(v-on:click="select(file.id)").button.is-link {{ file.path }}
+            li(v-for="(file, index) in filteredFiles")
+              a(v-on:click="select(file.id)" v-if="selected === index").button.is-link {{ file.path }}
+              a(v-on:click="select(file.id)" v-else).button {{ file.path }}
     
     // content
     div#content
