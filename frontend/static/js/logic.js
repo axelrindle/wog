@@ -37,7 +37,6 @@ const app = new Vue({
       this.reset();
       axios.post('/all').then(response => {
         this.files = response.data;
-        console.log(response);
       }).catch(err => {
         this.error = err.message;
       });
