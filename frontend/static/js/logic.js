@@ -16,7 +16,7 @@ const app = new Vue({
       return this.files.filter(el => el.path.indexOf(this.filter) !== -1);
     },
     lines() {
-      return this.selected === -1 ? [] : this.log.split('\n');
+      return (this.selected === -1 || this.log === "") ? [] : this.log.split('\n');
     },
     grepped() {
       const lines = this.lines;
