@@ -3,7 +3,6 @@
 // Require modules
 const fs = require('fs');
 
-const moment = require('moment');
 const glob = require('glob-all');
 const prettyBytes = require('pretty-bytes');
 const express = require('express');
