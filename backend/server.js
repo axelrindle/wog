@@ -35,6 +35,7 @@ app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
 
 // Load log locations
+logger.info("Collecting log files...");
 const files = glob.sync(logs);
 const filesTransformed = files
   .map((el, index) => {
