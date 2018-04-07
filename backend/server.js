@@ -46,7 +46,7 @@ const filesTransformed = files
     };
     return Object.freeze(obj);
   });
-logger.info(`Loaded ${files.length} log files.`)
+logger.info(`Loaded ${files.length} log files.`);
 
 // Setup routes
 app.get('/', (req, res) => {
