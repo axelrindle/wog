@@ -1,6 +1,6 @@
 {
   "name": "wog",
-  "version": "1.0.0",
+  "version": "1.0.0-beta1",
   "description": "A web interface for viewing logs.",
   "main": "backend/server.js",
   "scripts": {
