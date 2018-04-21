@@ -13,9 +13,10 @@ const app = new Vue({
     filter: '',
     selected: -1,
     log: 'Select a file on the left.',
-    grep: '',
+    grep: '', // TODO: Add more filters
     error: ''
   },
+  // TODO: add head and tail functions
   computed: {
     filteredFiles() {
       return this.files.filter(el => el.path.indexOf(this.filter) !== -1);
@@ -29,6 +30,7 @@ const app = new Vue({
       else return lines.filter(el => el.indexOf(this.grep) !== -1).join('\n');
     }
   },
+  // TODO: Add a Go to line action
   methods: {
     reset: function() {
       this.selected = -1;
@@ -61,6 +63,11 @@ const app = new Vue({
         this.error = err.message;
       });
     }
+  },
+  watch: {
+    // TODO: Only log in debug mode
+    // TODO: Deliver debug mode to frontend
+    error: (e) => console.log(e)
   }
 });
 

@@ -12,7 +12,7 @@ let level = 3;
 /**
  * Logs the given message with the given level to the console.
  */
-const log = (n, lvl, message) => {
+const log = (n, lvl, message) => { // TODO: Colorize console output
   if (n <= level) {
     const timestamp = moment().format('DD.MM.YYYY HH:mm:ss');
     const str = `[${timestamp}] (${lvl.toUpperCase()})  >>>  ${message}`;

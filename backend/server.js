@@ -34,6 +34,7 @@ app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
 
+// TODO: Watch for file changes and reload them automagically on the frontend
 // Load log locations
 logger.info("Collecting log files...");
 const files = glob.sync(logs);

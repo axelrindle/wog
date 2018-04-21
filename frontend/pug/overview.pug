@@ -103,6 +103,7 @@ block content
                   li(v-else) Lines: {{ grepped.split('\n').length }} / {{ lines.length }}
                   li Size: {{ files[selected].size }}
       
+      // TODO: Display line numbers
       // actual log content
       pre(v-if="error === ''")
         code {{ grepped }}
