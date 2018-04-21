@@ -1,5 +1,10 @@
 'use strict';
 
+// custom axios instance
+const http = axios.create({
+  baseURL: $('base').attr('href')
+});
+
 // create vue app
 const app = new Vue({
   el: '#app',
@@ -35,7 +40,7 @@ const app = new Vue({
     },
     refresh: function () {
       this.reset();
-      axios.post('/all').then(response => {
+      http.post('/all').then(response => {
         this.files = response.data;
       }).catch(err => {
         this.error = err.message;
@@ -46,7 +51,7 @@ const app = new Vue({
       this.grep = '';
       this.selected = index;
       this.error = '';
-      axios.post(`/${index}`).then(response => {
+      http.post(`/${index}`).then(response => {
         const data = response.data.trim();
         if (data === '') {
           this.data = '';
