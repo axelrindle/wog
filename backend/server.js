@@ -14,7 +14,7 @@ const pkg = require('../package.json');
 
 // Config and defaults
 const config = require('../config');
-const debug = config.debug || false;
+const debug = process.env.DEBUG || false;
 const port = config.port || 8080;
 const url = config.url || '/';
 const logs = config.logs || [];
@@ -28,6 +28,9 @@ if (logs.length === 0) {
 
 // Update log level
 logger.setLevel(debug ? 4 : 3);
+
+// Short debug notice
+if (debug) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!')
 
 // Server setup
 app.set('view engine', 'pug');

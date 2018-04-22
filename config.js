@@ -1,8 +1,5 @@
 module.exports = {
 
-  /** Whether to enable debug logs. */
-  debug: false,
-
   /** The port the server is listening on. */
   port: 8082,
 
