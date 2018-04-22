@@ -31,7 +31,7 @@ If you are using **Apache 2**, you can follow [this tutorial](https://www.digita
 - [x] Mark the selected log file as selected in the UI.
 - [x] Show content of the selected log file.
 - [x] Add content **grep** (means only show lines that contain the given search term).
-- [ ] Option to switch between **grep**ping and **fuzzy finding**.
+- [x] Option to switch between **grep**ping and **fuzzy finding**.
 - [x] Display file information (lines, size).
 - [ ] Add **head** and **tail** functionality (first and last lines of a file).
 - [ ] Add action buttons (refresh, download, clear).
@@ -42,7 +42,7 @@ If you are using **Apache 2**, you can follow [this tutorial](https://www.digita
 - [ ] Add a **Go to line** action.
 - [ ] Watch files for changes and auto-reload on change.
 
-Progress: **8**/**17** (**47,06**%)
+Progress: **9**/**17** (**52,94**%)
 
 ## License
 [MIT](LICENSE)

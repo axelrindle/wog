@@ -13,21 +13,34 @@ const app = new Vue({
     fileFilter: '',
     selected: -1,
     log: 'Select a file on the left.',
+    grepMode: 'grep',
     grep: '', // TODO: Add more filters
     error: ''
   },
-  // TODO: add head and tail functions
   computed: {
     filesFiltered() {
       return this.files.filter(el => el.path.indexOf(this.fileFilter) !== -1);
     },
-    lines() {
-      return (this.selected === -1 || this.log === "") ? [] : this.log.split('\n');
-    },
-    grepped() {
-      const lines = this.lines;
-      if (this.grep === '' || lines.length === 0) return this.log
-      else return lines.filter(el => el.indexOf(this.grep) !== -1).join('\n');
+    linesFiltered() {
+      // check if an item is selected
+      if (this.selected === -1 || this.log === '')
+        return this.log;
+
+      // split raw text into an array of lines
+      let linesArray = this.log.split('\n');
+
+      // perform grep or fuzzy search
+      if (this.grep !== '') {
+        if (this.grepMode === 'grep') {
+          linesArray = linesArray.filter(el => el.indexOf(this.grep) !== -1);
+        } else if (this.grepMode === 'fuzzy') {
+          linesArray = fuzzysearch(this.grep, linesArray);
+        }
+      }
+
+      // TODO: add head and tail functions
+
+      return linesArray.join('\n');
     }
   },
   // TODO: Add a Go to line action
@@ -62,12 +75,23 @@ const app = new Vue({
       }).catch(err => {
         this.error = err.message;
       });
+    },
+    totalLinesAmount: function () {
+      return this.linesFiltered === '' ? 0 : this.log.split('\n').length;
+    },
+    filteredLinesAmount: function () {
+      return this.linesFiltered.split('\n').length;
+    },
+    isFiltered: function () {
+      return this.grep !== '';
     }
   },
   watch: {
     // TODO: Only log in debug mode
     // TODO: Deliver debug mode to frontend
-    error: (e) => console.log(e)
+    error: (e) => {
+      if (e !== '') console.log(`Error: ${e}`);
+    }
   }
 });
 

@@ -77,10 +77,15 @@ block content
                       input(type="checkbox")
                       |  Apply
                 
-              // grep
+              // grep / fuzzy search
               .column
-                p.title.is-6 Grep
+                p.title.is-6 {{ grepMode === 'grep' ? 'Grep' : 'Fuzzy Search' }}
                 .field.has-addons
+                  .control
+                    span.select
+                      select(v-model="grepMode")
+                        option(value="grep") Grep
+                        option(value="fuzzy") Fuzzy
                   .control
                     input.input(type="text", placeholder="Find matches in the log" v-model="grep")
                   .control
@@ -99,14 +104,14 @@ block content
               .column
                 p.title.is-6 Info
                 ul(v-if="selected !== -1")
-                  li(v-if="grep === ''") Lines: {{ lines.length }}
-                  li(v-else) Lines: {{ grepped.split('\n').length }} / {{ lines.length }}
+                  li(v-if="isFiltered()") Lines: {{ filteredLinesAmount() }} / {{ totalLinesAmount() }}
+                  li(v-else) Lines: {{ totalLinesAmount() }}
                   li Size: {{ files[selected].size }}
       
       // TODO: Display line numbers
       // actual log content
       pre(v-if="error === ''")
-        code {{ grepped }}
+        code {{ linesFiltered }}
       pre.error(v-else)
         code {{ error }}
 
@@ -115,4 +120,5 @@ block js
   script(src="vendor/axios.min.js")
   script(src="vendor/jquery-3.3.1.min.js")
   //script(src="vendor/jquery.mCustomScrollbar.concat.min.js")
+  script(src="js/fuzzy.js")
   script(src="js/logic.js")
