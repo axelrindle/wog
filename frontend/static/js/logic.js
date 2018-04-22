@@ -10,7 +10,7 @@ const app = new Vue({
   el: '#app',
   data: {
     files: [],
-    filter: '',
+    fileFilter: '',
     selected: -1,
     log: 'Select a file on the left.',
     grep: '', // TODO: Add more filters
@@ -18,8 +18,8 @@ const app = new Vue({
   },
   // TODO: add head and tail functions
   computed: {
-    filteredFiles() {
-      return this.files.filter(el => el.path.indexOf(this.filter) !== -1);
+    filesFiltered() {
+      return this.files.filter(el => el.path.indexOf(this.fileFilter) !== -1);
     },
     lines() {
       return (this.selected === -1 || this.log === "") ? [] : this.log.split('\n');
@@ -35,7 +35,7 @@ const app = new Vue({
     reset: function() {
       this.selected = -1;
       this.log = 'Select a file on the left.';
-      this.filter = '';
+      this.fileFilter = '';
       this.grep = '';
       this.files = [];
       this.error = '';

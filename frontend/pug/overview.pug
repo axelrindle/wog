@@ -25,7 +25,7 @@ block content
           p.subtitle Find a logfile
           .field.has-addons
             .control
-              input.input(type='text', placeholder='boot.log' v-model="filter")
+              input.input(type='text', placeholder='boot.log' v-model="fileFilter")
             .control
               a(v-on:click="filter = ''").button.is-danger
                 span.icon
@@ -40,11 +40,11 @@ block content
               span.icon
                 i.fas.fa-sync-alt
 
-          p(v-if="filteredFiles.length === files.length").subtitle Loaded {{ files.length }} files
-          p(v-else).subtitle Showing {{ filteredFiles.length }} / {{ files.length }} files
+          p(v-if="filesFiltered.length === files.length").subtitle Loaded {{ files.length }} files
+          p(v-else).subtitle Showing {{ filesFiltered.length }} / {{ files.length }} files
           hr
           ul#filelist
-            li(v-for="(file, index) in filteredFiles")
+            li(v-for="(file, index) in filesFiltered")
               a(v-on:click="select(file.id)" v-if="selected === index").button.is-link {{ file.path }}
               a(v-on:click="select(file.id)" v-else).button {{ file.path }}
     
