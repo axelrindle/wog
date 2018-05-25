@@ -42,15 +42,11 @@ app.use(express.static('frontend/static'));
 logger.info("Collecting log files...");
 const files = glob.sync(logs);
 const filesTransformed = files
-  .map((el, index) => {
-    const bytes = fs.statSync(el).size;
-    const obj = {
-      id: index,
-      path: util.transformFilePath(el),
-      size: prettyBytes(bytes)
-    };
-    return Object.freeze(obj);
-  });
+  .map((el, index) => Object.freeze({
+    id: index,
+    path: util.transformFilePath(el),
+    size: prettyBytes(fs.statSync(el).size)
+  }));
 logger.info(`Loaded ${files.length} log files.`);
 
 // Setup routes
