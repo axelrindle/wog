@@ -1,5 +1,6 @@
 ![header](header.png)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/43ca5dba403b4a75bdf6d285d6d8f994)](https://app.codacy.com/app/axel.rindle/wog?utm_source=github.com&utm_medium=referral&utm_content=axelrindle/wog&utm_campaign=badger)
 [![made with node](https://img.shields.io/badge/made%20with-node.js-c1282d.svg?style=for-the-badge&colorA=ef4041)](https://nodejs.org)
 [![built by developers](https://img.shields.io/badge/built%20by-developers-D15E28.svg?style=for-the-badge&colorA=E36D26)](https://github.com/axelrindle)
 ![built for sysadmin](https://img.shields.io/badge/built%20for-sysadmins-D15E28.svg?style=for-the-badge&colorA=E36D26)
