@@ -21,32 +21,14 @@ block content
       // filter
       section.section
         .container
-          p.title Search
-          p.subtitle Find a logfile
-          .field.has-addons
-            .control
-              input.input(type='text', placeholder='boot.log' v-model="fileFilter")
-            .control
-              a(v-on:click="filter = ''").button.is-danger
-                span.icon
-                  i.fas.fa-trash-alt
+          include overview/sidebar_filter.pug
+      
       hr
       
       // file tree
       section.section
         .container
-          p.title Logfiles
-            a(v-on:click="refresh").button.is-primary.is-rounded.is-pulled-right
-              span.icon
-                i.fas.fa-sync-alt
-
-          p(v-if="filesFiltered.length === files.length").subtitle Loaded {{ files.length }} files
-          p(v-else).subtitle Showing {{ filesFiltered.length }} / {{ files.length }} files
-          hr
-          ul#filelist
-            li(v-for="(file, index) in filesFiltered")
-              a(v-on:click="select(file.id)" v-if="selected === index").button.is-link {{ file.path }}
-              a(v-on:click="select(file.id)" v-else).button {{ file.path }}
+          include overview/sidebar_file_tree.pug
     
     // content
     div#content
@@ -63,50 +45,19 @@ block content
               
               // head & tail
               //.column
-                p.title.is-6 Head / Tail
-                .field.has-addons
-                  .control
-                    span.select
-                      select
-                        option Head
-                        option Tail
-                  .control
-                    input.input(type="number" min="0" value="10")
-                  .control
-                    label.checkbox
-                      input(type="checkbox")
-                      |  Apply
+                include overview/log_head_tail.pug
                 
               // grep / fuzzy search
               .column
-                p.title.is-6 Filter Contents
-                .field.has-addons
-                  .control
-                    span.select
-                      select(v-model="grepMode")
-                        option(value="grep") Grep
-                        option(value="fuzzy") Fuzzy
-                  .control
-                    input.input(type="text", placeholder="Find matches in the log" v-model="grep")
-                  .control
-                    a(v-on:click="grep = ''").button.is-danger
-                      span.icon
-                        i.fas.fa-trash-alt
-                          
+                include overview/log_grep_fuzzy.pug
+              
               // actions
               .column
-                p.title.is-6 Actions
-                a(:href="downloadUrl").button.is-primary Download
-                a(v-on:click="reloadFile").button.is-info Refresh
-                //a.button.is-danger Delete
+                include overview/log_actions.pug
                 
               // info
               .column
-                p.title.is-6 Info
-                ul(v-if="selected !== -1")
-                  li(v-if="isFiltered()") Lines: {{ filteredLinesAmount() }} / {{ totalLinesAmount() }}
-                  li(v-else) Lines: {{ totalLinesAmount() }}
-                  li Size: {{ files[selected].size }}
+                include overview/log_info.pug
       
       // TODO: Display line numbers
       // actual log content

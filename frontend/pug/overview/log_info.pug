@@ -1,0 +1,5 @@
+p.title.is-6 Info
+ul(v-if="selected !== -1")
+  li(v-if="isFiltered()") Lines: {{ filteredLinesAmount() }} / {{ totalLinesAmount() }}
+  li(v-else) Lines: {{ totalLinesAmount() }}
+  li Size: {{ files[selected].size }}

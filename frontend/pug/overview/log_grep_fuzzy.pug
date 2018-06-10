@@ -1,0 +1,13 @@
+p.title.is-6 Filter Contents
+.field.has-addons
+  .control
+    span.select
+      select(v-model="grepMode")
+        option(value="grep") Grep
+        option(value="fuzzy") Fuzzy
+  .control
+    input.input(type="text", placeholder="Find matches in the log" v-model="grep")
+  .control
+    a(v-on:click="grep = ''").button.is-danger
+      span.icon
+        i.fas.fa-trash-alt

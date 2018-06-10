@@ -1,0 +1,9 @@
+p.title Search
+p.subtitle Find a logfile
+.field.has-addons
+  .control
+    input.input(type='text', placeholder='boot.log' v-model="fileFilter")
+  .control
+    a(v-on:click="filter = ''").button.is-danger
+      span.icon
+        i.fas.fa-trash-alt
