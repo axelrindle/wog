@@ -84,6 +84,10 @@ const app = new Vue({
     },
     isFiltered: function () {
       return this.grep !== '';
+    },
+    reloadFile: function () {
+      // just re-select the selected file ;)
+      this.select(this.selected);
     }
   },
   watch: {
