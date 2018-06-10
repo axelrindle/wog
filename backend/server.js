@@ -73,6 +73,20 @@ app.post('/:index', (req, res) => {
   });
 });
 
+// download a file
+app.get('/:index/download', (req, res) => {
+  if (config.enableFileDownloads) {
+    const index = req.params.index;
+    if (index > -1) {
+      res.download(files[index]);
+    } else {
+      res.status(400).send('The ID "-1" is invalid!');
+    }
+  } else {
+    res.status(403).send('Forbidden!');
+  }
+});
+
 // about page
 app.get('/about', (req, res) => {
   res.render('about', {

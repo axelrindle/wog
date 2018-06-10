@@ -96,7 +96,7 @@ block content
               // actions
               .column
                 p.title.is-6 Actions
-                a(v-on:click="downloadFile").button.is-primary Download
+                a(:href="downloadUrl").button.is-primary Download
                 a(v-on:click="reloadFile").button.is-info Refresh
                 //a.button.is-danger Delete
                 

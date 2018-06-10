@@ -20,6 +20,11 @@ module.exports = {
     // excluded
     '!/var/log/**/*.log*gz',
     '!/var/log/**/*.log*xz'
-  ]
+  ],
+
+  /**
+   * Whether to allow users to download log files to their computer.
+   */
+  enableFileDownloads: true
 
 };

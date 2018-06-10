@@ -41,6 +41,9 @@ const app = new Vue({
       // TODO: add head and tail functions
 
       return linesArray.join('\n');
+    },
+    downloadUrl() {
+      return this.selected + '/download';
     }
   },
   // TODO: Add a Go to line action
