@@ -55,7 +55,7 @@ const app = new Vue({
     },
     refresh: function () {
       this.reset();
-      http.post('/all').then(response => {
+      return http.post('/all').then(response => {
         this.files = response.data;
       }).catch(err => {
         this.error = err.message;
@@ -96,9 +96,6 @@ const app = new Vue({
 });
 
 // initially refresh
-app.refresh();
-
-// fade fader out
-setTimeout(() => {
+app.refresh().then(() => {
   $('#fader').fadeOut(500, () => $('#fader').remove());
-}, 250);
+});
