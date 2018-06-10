@@ -1,6 +1,7 @@
 ![header](header.png)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43ca5dba403b4a75bdf6d285d6d8f994)](https://app.codacy.com/app/axel.rindle/wog?utm_source=github.com&utm_medium=referral&utm_content=axelrindle/wog&utm_campaign=badger)
+
 [![made with node](https://img.shields.io/badge/made%20with-node.js-c1282d.svg?style=for-the-badge&colorA=ef4041)](https://nodejs.org)
 [![built by developers](https://img.shields.io/badge/built%20by-developers-D15E28.svg?style=for-the-badge&colorA=E36D26)](https://github.com/axelrindle)
 ![built for sysadmin](https://img.shields.io/badge/built%20for-sysadmins-D15E28.svg?style=for-the-badge&colorA=E36D26)
@@ -35,7 +36,7 @@ If you are using **Apache 2**, you can follow [this tutorial](https://www.digita
 - [x] Option to switch between **grep**ping and **fuzzy finding**.
 - [x] Display file information (lines, size).
 - [ ] Add **head** and **tail** functionality (first and last lines of a file).
-- [ ] Add action buttons (refresh, download, clear).
+- [x] Add action buttons (refresh, download, ~~clear~~).
 - [ ] No online resources to load.
 - [ ] Make the UI more responsive.
 - [ ] Display errors in a nice way to the user.
@@ -43,7 +44,7 @@ If you are using **Apache 2**, you can follow [this tutorial](https://www.digita
 - [ ] Add a **Go to line** action.
 - [ ] Watch files for changes and auto-reload on change.
 
-Progress: **9**/**17** (**52,94**%)
+Progress: **10**/**17** (**58,82**%)
 
 ## License
 [MIT](LICENSE)
