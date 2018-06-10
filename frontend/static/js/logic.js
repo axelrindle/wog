@@ -89,8 +89,10 @@ const app = new Vue({
       return this.grep !== '';
     },
     reloadFile: function () {
-      // just re-select the selected file ;)
-      this.select(this.selected);
+      if (this.selected > -1) {
+        // just re-select the selected file ;)
+        this.select(this.selected);
+      }
     }
   },
   watch: {
