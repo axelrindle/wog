@@ -27,7 +27,7 @@
     "express": "^4.16.3",
     "glob-all": "^3.1.0",
     "moment": "^2.21.0",
-    "pretty-bytes": "^4.0.2",
+    "pretty-bytes": "^5.1.0",
     "pug": "^2.0.3"
   },
   "devDependencies": {
