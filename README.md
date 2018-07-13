@@ -26,26 +26,5 @@ If you are using **Apache 2**, you can follow [this tutorial](https://www.digita
 
 *Note*: You may replace the **Directory** directive used in the tutorial above with the **Location** directive to protect just a certain path of the URL, which may be a reverse proxy. [Look here](https://stackoverflow.com/questions/23565693/how-can-i-password-protect-applications-behind-mod-proxy-in-apache) for more information.
 
-## ToDo List
-- [x] Load log files based on a [glob](https://github.com/isaacs/node-glob) pattern.
-- [x] Have the basic UI set up.
-- [x] Search for a specific log file.
-- [x] Select a log file.
-- [x] Mark the selected log file as selected in the UI.
-- [x] Show content of the selected log file.
-- [x] Add content **grep** (means only show lines that contain the given search term).
-- [x] Option to switch between **grep**ping and **fuzzy finding**.
-- [x] Display file information (lines, size).
-- [ ] Add **head** and **tail** functionality (first and last lines of a file).
-- [x] Add action buttons (refresh, download, ~~clear~~).
-- [ ] No online resources to load.
-- [ ] Make the UI more responsive.
-- [ ] Display errors in a nice way to the user.
-- [ ] Display line numbers.
-- [ ] Add a **Go to line** action.
-- [ ] Watch files for changes and auto-reload on change.
-
-Progress: **10**/**17** (**58,82**%)
-
 ## License
 [MIT](LICENSE)
