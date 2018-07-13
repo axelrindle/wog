@@ -37,7 +37,7 @@
     "bulma": "^0.7.1",
     "cssnano": "^3.10.0",
     "cssnano-preset-advanced": "^4.0.0-rc.2",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.9.2",
     "write": "^1.0.3"
   },
   "snyk": true
