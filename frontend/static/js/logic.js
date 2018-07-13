@@ -6,7 +6,7 @@ const http = axios.create({
 });
 
 // create vue app
-const app = new Vue({
+new Vue({
   el: '#app',
   data: {
     files: [],
@@ -108,10 +108,12 @@ const app = new Vue({
     error: (e) => {
       if (e !== '') console.log(`Error: ${e}`);
     }
-  }
-});
+  },
 
-// initially refresh
-app.refresh().then(() => {
-  $('#fader').fadeOut(500, () => $('#fader').remove());
+  mounted() {
+    // initially refresh
+    this.refresh().then(() => {
+      $('#fader').fadeOut(500, () => $('#fader').remove());
+    });
+  }
 });
