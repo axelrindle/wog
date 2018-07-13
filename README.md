@@ -26,5 +26,8 @@ If you are using **Apache 2**, you can follow [this tutorial](https://www.digita
 
 *Note*: You may replace the **Directory** directive used in the tutorial above with the **Location** directive to protect just a certain path of the URL, which may be a reverse proxy. [Look here](https://stackoverflow.com/questions/23565693/how-can-i-password-protect-applications-behind-mod-proxy-in-apache) for more information.
 
+## ToDo
+[Moved here](https://github.com/axelrindle/wog/projects/1)
+
 ## License
 [MIT](LICENSE)
