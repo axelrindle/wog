@@ -40,6 +40,10 @@ const app = new Vue({
 
       // TODO: add head and tail functions
 
+      // display line numbers
+      // TODO: this method is temporary
+      linesArray = linesArray.map((line, index) => `${index + 1}:\t ${line}`);
+
       return linesArray.join('\n');
     },
     downloadUrl() {
