@@ -5,7 +5,7 @@
 const fs = require('fs');
 const sass = require('node-sass');
 const write = require('write');
-const cssnano = require('cssnano')({ preset: 'advanced'});
+const cssnano = require('cssnano');
 
 // Files
 const input = 'frontend/sass/base.sass';
@@ -21,7 +21,9 @@ new Promise((resolve, reject) => { // compile sass
 })
 .then(result => { // optimize css using cssnano
   console.log('Optimize css using cssnano...');
-  return cssnano.process(result);
+  const postcssOpts = { from: input, to: output };
+  const cssnanoOpts = { preset: 'advanced'};
+  return cssnano.process(result, postcssOpts, cssnanoOpts);
 })
 .then(result => { // write css to file
   console.log(`Write css to ${output}...`);
