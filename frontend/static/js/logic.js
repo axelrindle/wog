@@ -13,8 +13,11 @@ const app = new Vue({
     fileFilter: '',
     selected: -1,
     log: 'Select a file on the left.',
+    filterMode: 'grep',
     grepMode: 'grep',
     grep: '', // TODO: Add more filters
+    lineMode: 'head',
+    line: '',
     error: ''
   },
   computed: {
