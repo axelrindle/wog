@@ -55,12 +55,33 @@ block content
               .column
                 include overview/log_info.pug
       
-      // TODO: Display line numbers
       // actual log content
-      pre(v-if="error === ''")
+      pre#logContent(v-if="error === ''")
         code {{ linesFiltered }}
       pre.error(v-else)
         code {{ error }}
+
+    // Modals
+    .modal#goToLineModal
+      .modal-background
+      .modal-card
+        header.modal-card-head
+          p.modal-card-title Go to line
+          button.button.is-danger.is-rounded(@click="closeGoToLine") X
+        
+        section.modal-card-body
+          .field
+            label.label Enter the line number you want to jump to
+            .control
+              input.input(type='number', placeholder='Find a repository' min="1"
+                          :max="filteredLinesAmount()"
+                          v-model="lineToGoTo")
+
+        footer.modal-card-foot
+          button.button.is-success(@click="goToLine") Go
+          button.button(@click="closeGoToLine") Cancel
+
+
 
 block js
   script(src="vendor/vue.min.js")

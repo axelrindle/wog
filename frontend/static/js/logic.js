@@ -18,6 +18,7 @@ new Vue({
     grep: '', // TODO: Add more filters
     lineMode: 'head',
     line: '',
+    lineToGoTo: 1,
     error: ''
   },
   computed: {
@@ -100,6 +101,20 @@ new Vue({
         // just re-select the selected file ;)
         this.select(this.selected);
       }
+    },
+    openGoToLine: function () {
+      if (this.selected === -1) {
+        alert('Select a file first.');
+      } else {
+        $('#goToLineModal').addClass('is-active');
+      }
+    },
+    closeGoToLine: function () {
+      $('#goToLineModal').removeClass('is-active');
+    },
+    goToLine: function () {
+      this.closeGoToLine();
+      $('#logContent').scrollTop(19.5 * this.lineToGoTo);
     }
   },
   watch: {
