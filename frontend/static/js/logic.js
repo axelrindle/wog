@@ -16,14 +16,14 @@ new Vue({
     files: [],
     fileFilter: '',
     selected: -1,
-    log: 'Select a file on the left.',
+    log: '',
     filterMode: 'grep',
     grepMode: 'grep',
     grep: '', // TODO: Add more filters
     lineMode: 'head',
     line: '',
     lineToGoTo: 1,
-    error: ''
+    error: 'Select a file on the left.'
   },
 
   // computed values (cached; only re-computed when data changes)
@@ -68,11 +68,11 @@ new Vue({
   methods: {
     reset: function() {
       this.selected = -1;
-      this.log = 'Select a file on the left.';
+      this.log = '';
       this.fileFilter = '';
       this.grep = '';
       this.files = [];
-      this.error = '';
+      this.error = 'Select a file on the left.';
     },
     refresh: function () {
       this.reset();
