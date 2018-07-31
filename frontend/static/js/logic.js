@@ -7,7 +7,11 @@ const http = axios.create({
 
 // create vue app
 new Vue({
+
+  // root element
   el: '#app',
+
+  // options & settings
   data: {
     files: [],
     fileFilter: '',
@@ -21,6 +25,8 @@ new Vue({
     lineToGoTo: 1,
     error: ''
   },
+
+  // computed values (cached; only re-computed when data changes)
   computed: {
     filesFiltered() {
       return this.files.filter(el => el.path.indexOf(this.fileFilter) !== -1);
@@ -57,7 +63,8 @@ new Vue({
       return this.selected + '/download';
     }
   },
-  // TODO: Add a Go to line action
+
+  // public functions
   methods: {
     reset: function() {
       this.selected = -1;
@@ -120,6 +127,8 @@ new Vue({
       return this.lineToGoTo > this.filteredLinesAmount;
     }
   },
+
+  // watch data props
   watch: {
     // TODO: Only log in debug mode
     // TODO: Deliver debug mode to frontend
@@ -128,6 +137,7 @@ new Vue({
     }
   },
 
+  // called when Vue is ready
   mounted() {
     // initially refresh
     this.refresh().then(() => {
