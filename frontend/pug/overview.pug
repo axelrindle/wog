@@ -74,11 +74,12 @@ block content
             label.label Enter the line number you want to jump to
             .control
               input.input(type='number', placeholder='Find a repository' min="1"
-                          :max="filteredLinesAmount()"
+                          :max="filteredLinesAmount"
                           v-model="lineToGoTo")
+            .span.has-text-danger(v-if="showGoToLineError()") Must no be bigger than {{ filteredLinesAmount }}!
 
         footer.modal-card-foot
-          button.button.is-success(@click="goToLine") Go
+          button.button.is-success(@click="goToLine" :disabled="showGoToLineError()") Go
           button.button(@click="closeGoToLine") Cancel
 
 

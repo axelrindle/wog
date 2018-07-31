@@ -50,6 +50,9 @@ new Vue({
 
       return linesArray.join('\n');
     },
+    filteredLinesAmount() {
+      return this.linesFiltered.split('\n').length;
+    },
     downloadUrl() {
       return this.selected + '/download';
     }
@@ -90,9 +93,6 @@ new Vue({
     totalLinesAmount: function () {
       return this.linesFiltered === '' ? 0 : this.log.split('\n').length;
     },
-    filteredLinesAmount: function () {
-      return this.linesFiltered.split('\n').length;
-    },
     isFiltered: function () {
       return this.grep !== '';
     },
@@ -115,6 +115,9 @@ new Vue({
     goToLine: function () {
       this.closeGoToLine();
       $('#logContent').scrollTop(19.5 * this.lineToGoTo);
+    },
+    showGoToLineError: function () {
+      return this.lineToGoTo > this.filteredLinesAmount;
     }
   },
   watch: {
