@@ -1,0 +1,51 @@
+.about
+  height: 100%
+  width: 100%
+
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+  align-items: center
+
+  .back
+    position: absolute
+    left: 20px
+    top: 20px
+    padding: 3px 10px
+    font-size: 35px
+    color: $content_background
+    transition: color .2s
+
+    &:hover
+      color: white
+      background-color: $content_background
+
+  h1
+    font-size: 100px
+    font-weight: bold
+
+  h3
+    font-size: 30px
+
+  .links
+    display: flex
+    flex-flow: row nowrap
+    justify-content: center
+    align-items: center
+    margin-top: $about_link_size * 2
+
+    a
+      height: $about_link_size
+      width: $about_link_size
+
+      color: $blue
+      font-size: $about_link_size
+
+      display: flex
+      justify-content: center
+      align-items: center
+
+      transition: color .2s
+
+      &:hover
+        color: $content_background
