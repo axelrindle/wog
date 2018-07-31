@@ -129,7 +129,10 @@ new Vue({
       if (this.selected === -1) {
         alert('Select a file first.');
       } else {
-        $('#goToLineModal').addClass('is-active');
+        $('#goToLineModal')
+          .addClass('is-active')
+          .find('input')
+          .focus();
       }
     },
     closeGoToLine: function () {
