@@ -1,5 +1,25 @@
 'use strict';
 
+// helpers
+// (adapted) Function from David Walsh: http://davidwalsh.name/css-animation-callback
+function whichAnimationEvent() {
+  var t,
+      el = document.createElement("fakeelement");
+
+  var animations = {
+    "animation"      : "animationend",
+    "OAnimation"     : "oAnimationEnd",
+    "MozAnimation"   : "animationend",
+    "WebkitAnimation": "webkitAnimationEnd"
+  }
+
+  for (t in animations){
+    if (el.style[t] !== undefined){
+      return animations[t];
+    }
+  }
+}
+
 // custom axios instance
 const http = axios.create({
   baseURL: $('base').attr('href')
@@ -117,7 +137,13 @@ new Vue({
     },
     goToLine: function () {
       this.closeGoToLine();
-      $('#logContent').scrollTop(19.5 * this.lineToGoTo);
+      $('#logContent')
+        .scrollTop(19.5 * this.lineToGoTo)
+        .find('div[data-line="' + this.lineToGoTo + '"]')
+          .addClass('blink')
+          .one(whichAnimationEvent(), function (event) {
+            $(this).removeClass('blink');
+          });
     },
     showGoToLineError: function () {
       return this.lineToGoTo > this.filteredLinesAmount;

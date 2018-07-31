@@ -13,3 +13,17 @@
 
 hr.bottom
   margin-top: 0
+
+
+.blink
+  animation: blink 1s cubic-bezier(.77,0,.18,1)
+
+@keyframes blink
+  0%
+    background-color: transparent
+
+  50%
+    background-color: $blink_background
+
+  100%
+    background-color: transparent
