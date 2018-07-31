@@ -16,11 +16,13 @@ module.exports = {
    */
   logs: [
     // included
-    '/var/log/**/*.log*',
+    '/var/log/**',
 
     // excluded
-    '!/var/log/**/*.log*gz',
-    '!/var/log/**/*.log*xz'
+    '!/var/log/**/*.*gz',
+    '!/var/log/**/*.*xz',
+    '!/var/log/**/*.*journal',
+    '!/var/log/**/*.*journal~'
   ],
 
   /**
