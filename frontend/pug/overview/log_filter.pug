@@ -14,7 +14,7 @@
   .control
     input.input(type="text", placeholder="Find matches in the log" v-model="grep")
   .control
-    a(v-on:click="grep = ''").button.is-danger
+    a.button.is-danger(@click="grep = ''")
       span.icon
         i.fas.fa-trash-alt
 

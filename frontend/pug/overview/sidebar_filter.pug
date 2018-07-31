@@ -4,6 +4,6 @@ p.subtitle Find a logfile
   .control
     input.input(type='text', placeholder='boot.log' v-model="fileFilter")
   .control
-    a(v-on:click="filter = ''").button.is-danger
+    a.button.is-danger(@click="fileFilter = ''")
       span.icon
         i.fas.fa-trash-alt
