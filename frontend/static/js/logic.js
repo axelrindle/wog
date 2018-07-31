@@ -50,14 +50,10 @@ new Vue({
 
       // TODO: add head and tail functions
 
-      // display line numbers
-      // TODO: this method is temporary
-      linesArray = linesArray.map((line, index) => `${index + 1}:\t ${line}`);
-
-      return linesArray.join('\n');
+      return linesArray;
     },
     filteredLinesAmount() {
-      return this.linesFiltered.split('\n').length;
+      return this.linesFiltered.length;
     },
     downloadUrl() {
       return this.selected + '/download';
