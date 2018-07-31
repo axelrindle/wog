@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const glob = require('glob-all');
 const prettyBytes = require('pretty-bytes');
+const isFile = require('is-file');
 const express = require('express');
 const app = express();
 
@@ -42,11 +43,14 @@ app.use(express.static('frontend/static'));
 logger.info("Collecting log files...");
 const files = glob.sync(logs);
 const filesTransformed = files
-  .map((el, index) => Object.freeze({
-    id: index,
-    path: util.transformFilePath(el),
-    size: prettyBytes(fs.statSync(el).size)
-  }));
+  .filter(el => isFile(el))
+  .map((el, index) => {
+    return {
+      id: index,
+      path: util.transformFilePath(el),
+      size: prettyBytes(fs.statSync(el).size)
+    };
+  });
 logger.info(`Loaded ${files.length} log files.`);
 
 // Setup routes
