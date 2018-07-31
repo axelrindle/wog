@@ -2,15 +2,10 @@
 const path = require('path');
 
 /**
- * @returns The parent directory of a file.
- */
-const parentDir = module.exports.parentDir = file => path.dirname(file).split(path.sep).pop();
-
-/**
  * Transforms a path to show the filename and the parent directory.
  */
 module.exports.transformFilePath = file => {
-  const parent = parentDir(file);
+  const parent = path.basename(path.dirname(file));
   const base = path.basename(file);
   return path.join(parent, base);
 };
