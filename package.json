@@ -32,7 +32,7 @@
     "moment": "^2.22.2",
     "pretty-bytes": "^5.1.0",
     "pug": "^2.0.3",
-    "snyk": "^1.88.2"
+    "snyk": "^1.89.1"
   },
   "devDependencies": {
     "browserslist": "^4.0.1",
