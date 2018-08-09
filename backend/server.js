@@ -46,6 +46,7 @@ const filesTransformed = files
   .filter(el => isFile(el))
   .map((el, index) => {
     return {
+      absolute: el,
       path: util.transformFilePath(el),
       size: prettyBytes(fs.statSync(el).size)
     };
@@ -66,8 +67,10 @@ app.post('/all', (req, res) => res.json(filesTransformed));
 // sends content of a file
 app.post('/:index', (req, res) => {
   const index = req.params.index;
+  const file = filesTransformed[index];
+
   // read the data from the given log file and send it back
-  fs.readFile(files[index], (err, result) => {
+  fs.readFile(file.absolute, (err, result) => {
     if (err) {
       logger.error(err);
       res.status(500).send(err);
@@ -81,7 +84,7 @@ app.get('/:index/download', (req, res) => {
   if (config.enableFileDownloads) {
     const index = req.params.index;
     if (index > -1) {
-      res.download(files[index]);
+      res.download(filesTransformed[index].absolute);
     } else {
       res.status(400).send('The ID "-1" is invalid!');
     }
