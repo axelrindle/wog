@@ -72,7 +72,7 @@ app.post('/:index', (req, res) => {
   // read the data from the given log file and send it back
   fs.readFile(file.absolute, (err, result) => {
     if (err) {
-      logger.error(err);
+      logger.error(`Failed reading "${file}": "${err}"`);
       res.status(500).send(err);
     }
     else res.send(result);
