@@ -51,7 +51,7 @@ const filesTransformed = files
       size: prettyBytes(fs.statSync(el).size)
     };
   });
-logger.info(`Loaded ${files.length} log files.`);
+logger.info(`Loaded ${filesTransformed.length} log files.`);
 
 // Setup routes
 app.get('/', (req, res) => {
