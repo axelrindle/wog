@@ -51,6 +51,12 @@ const filesTransformed = files
       size: prettyBytes(fs.statSync(el).size)
     };
   });
+const filesForFrontend = filesTransformed.map(el => {
+  return {
+    path: el.path,
+    size: el.size
+  };
+});
 logger.info(`Loaded ${filesTransformed.length} log files.`);
 
 // Setup routes
@@ -62,7 +68,7 @@ app.get('/', (req, res) => {
 });
 
 // sends a list of all files
-app.post('/all', (req, res) => res.json(filesTransformed));
+app.post('/all', (req, res) => res.json(filesForFrontend));
 
 // sends content of a file
 app.post('/:index', (req, res) => {
