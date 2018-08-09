@@ -26,7 +26,7 @@ const http = axios.create({
 });
 
 // create vue app
-new Vue({
+const app = new Vue({
 
   // root element
   el: '#app',
@@ -43,7 +43,8 @@ new Vue({
     lineMode: 'head',
     line: '',
     lineToGoTo: 1,
-    error: 'Select a file on the left.'
+    error: 'Select a file on the left.',
+    isLoading: false
   },
 
   // computed values (cached; only re-computed when data changes)
@@ -103,6 +104,7 @@ new Vue({
       this.grep = '';
       this.selected = index;
       this.error = '';
+      this.isLoading = true;
       http.post(`/${index}`).then(response => {
         const data = response.data.trim();
         if (data === '') {
@@ -111,6 +113,9 @@ new Vue({
         } else this.log = data;
       }).catch(err => {
         this.error = err.message;
+      })
+      .finally(() => {
+        this.isLoading = false;
       });
     },
     totalLinesAmount: function () {
