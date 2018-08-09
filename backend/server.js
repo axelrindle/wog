@@ -46,7 +46,6 @@ const filesTransformed = files
   .filter(el => isFile(el))
   .map((el, index) => {
     return {
-      id: index,
       path: util.transformFilePath(el),
       size: prettyBytes(fs.statSync(el).size)
     };

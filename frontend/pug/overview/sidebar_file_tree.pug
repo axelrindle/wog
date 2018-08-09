@@ -8,5 +8,5 @@ p(v-else).subtitle Showing {{ filesFiltered.length }} / {{ files.length }} files
 hr
 ul#filelist
   li(v-for="(file, index) in filesFiltered")
-    a(v-on:click="select(file.id)" v-if="selected === index").button.is-link {{ file.path }}
-    a(v-on:click="select(file.id)" v-else).button {{ file.path }}
+    a(v-on:click="select(index)" v-if="selected === index").button.is-link {{ file.path }}
+    a(v-on:click="select(index)" v-else).button {{ file.path }}
