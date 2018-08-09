@@ -106,7 +106,13 @@ const app = new Vue({
       this.error = '';
       this.isLoading = true;
       http.post(`/${index}`).then(response => {
-        const data = response.data.trim();
+        let data = response.data;
+
+        // convert json objects to a string
+        if (typeof response.data === 'object')
+          data = JSON.stringify(data);
+
+        data = data.trim();
         if (data === '') {
           this.data = '';
           this.error = `The file ${this.files[index].path} is empty!`;
