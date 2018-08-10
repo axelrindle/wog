@@ -11,6 +11,7 @@ const app = express();
 
 const util = require('./util');
 const logger = require('./logger');
+const websocket = require('./websocket');
 const pkg = require('../package.json');
 
 // Config and defaults
@@ -58,6 +59,11 @@ const filesForFrontend = filesTransformed.map(el => {
   };
 });
 logger.info(`Loaded ${filesTransformed.length} log files.`);
+
+// Init websocket
+const expressWs = require('express-ws')(app);
+app.ws('/socket', (ws, req) => websocket(ws, filesTransformed));
+logger.info(`WebSocket server accessible via /socket endpoint.`);
 
 // Setup routes
 app.get('/', (req, res) => {
