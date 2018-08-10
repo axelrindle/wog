@@ -37,8 +37,9 @@ block content
       .card
         header.card-header
           p.card-header-title
-            span(v-if="selected !== -1").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;
-            | Options
+            span(v-if="selected !== -1").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;Options
+          p(style="padding: .75rem;" v-if="socket === null")
+            span.error Automatic refresh disabled!
         .card-content
           .content
             .columns
