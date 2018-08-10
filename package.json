@@ -26,13 +26,15 @@
   },
   "homepage": "https://github.com/axelrindle/wog#readme",
   "dependencies": {
+    "chokidar": "^2.0.4",
     "express": "^4.16.3",
     "glob-all": "^3.1.0",
     "is-file": "^1.0.0",
     "moment": "^2.22.2",
     "pretty-bytes": "^5.1.0",
     "pug": "^2.0.3",
-    "snyk": "^1.89.1"
+    "snyk": "^1.89.1",
+    "ws": "^6.0.0"
   },
   "devDependencies": {
     "browserslist": "^4.0.1",
@@ -42,5 +44,10 @@
     "node-sass": "^4.9.2",
     "write": "^1.0.3"
   },
-  "snyk": true
+  "snyk": true,
+  "optionalDependencies": {
+    "bufferutil": "^4.0.0",
+    "fsevents": "^1.2.4",
+    "utf-8-validate": "^5.0.1"
+  }
 }
