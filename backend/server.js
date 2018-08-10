@@ -63,7 +63,8 @@ logger.info(`Loaded ${filesTransformed.length} log files.`);
 app.get('/', (req, res) => {
   res.render('overview', {
     url: url,
-    title: `${title} | overview`
+    title: `${title} | overview`,
+    wsPort: config.webSocketPort
   });
 });
 
