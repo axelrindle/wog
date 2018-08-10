@@ -3,6 +3,9 @@ module.exports = {
   /** The port the server is listening on. */
   port: 8082,
 
+  /** The port for the websocket server to listen on. */
+  webSocketPort: 8083,
+
   /** A base url when living in a sub-directory. */
   url: '/',
 
