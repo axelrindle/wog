@@ -118,10 +118,10 @@ const app = new Vue({
           this.error = `The file ${this.files[index].path} is empty!`;
         } else {
           this.log = data;
-
-          // make sure socket is not destroyed
-          if (this.socket) this.socket.send(index);
         }
+
+        // make sure socket is not destroyed
+        if (this.socket) this.socket.send(index);
       }).catch(err => {
         this.error = err.message;
       })
