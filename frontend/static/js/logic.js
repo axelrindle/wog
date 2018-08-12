@@ -100,12 +100,14 @@ const app = new Vue({
         this.error = err.message;
       });
     },
-    select: function (index) {
-      this.log = '';
-      this.grep = '';
+    select: function (index, silent = false) {
+      if (!silent) {
+        this.log = '';
+        this.grep = '';
+        this.error = '';
+        this.isLoading = true;
+      }
       this.selected = index;
-      this.error = '';
-      this.isLoading = true;
       http.post(`/${index}`).then(response => {
         let data = response.data;
 
@@ -126,7 +128,12 @@ const app = new Vue({
         this.error = err.message;
       })
       .finally(() => {
-        this.isLoading = false;
+        if (silent) {
+          $('#logContent')
+            .scrollTop(19.5 * this.filteredLinesAmount)
+        } else {
+          this.isLoading = false;
+        }
       });
     },
     totalLinesAmount: function () {
@@ -199,7 +206,9 @@ const app = new Vue({
 
     this.socket.onmessage = function (message) {
       console.log(message);
-      if (message.data === 'file-was-updated') this.select(this.selected);
+      if (message.data === 'file-was-updated') {
+        this.select(this.selected, true);
+      }
     }.bind(this);
 
 
