@@ -3,6 +3,7 @@
 // Require modules
 const fs = require('fs');
 
+const signale = require('signale');
 const glob = require('glob-all');
 const prettyBytes = require('pretty-bytes');
 const isFile = require('is-file');
@@ -10,7 +11,6 @@ const express = require('express');
 const app = express();
 
 const util = require('./util');
-const logger = require('./logger');
 const pkg = require('../package.json');
 
 // Config and defaults
@@ -23,15 +23,12 @@ const title = `${pkg.name} v${pkg.version}`;
 
 // Check logs
 if (logs.length === 0) {
-  logger.fatal('No log file locations were supplied!');
+  signale.fatal('No log file locations were supplied!');
   return;
 }
 
-// Update log level
-logger.setLevel(debug ? 4 : 3);
-
 // Short debug notice
-if (debug) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!')
+if (debug) signale.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!')
 
 // Server setup
 app.set('view engine', 'pug');
@@ -40,7 +37,7 @@ app.use(express.static('frontend/static'));
 
 // TODO: Watch for file changes and reload them automagically on the frontend
 // Load log locations
-logger.info("Collecting log files...");
+signale.await("Collecting log files...");
 const files = glob.sync(logs);
 const filesTransformed = files
   .filter(el => isFile(el))
@@ -57,7 +54,7 @@ const filesForFrontend = filesTransformed.map(el => {
     size: el.size
   };
 });
-logger.info(`Loaded ${filesTransformed.length} log files.`);
+signale.complete(`Loaded ${filesTransformed.length} log files.`);
 
 // Setup routes
 app.get('/', (req, res) => {
@@ -78,7 +75,7 @@ app.post('/:index', (req, res) => {
   // read the data from the given log file and send it back
   fs.readFile(file.absolute, (err, result) => {
     if (err) {
-      logger.error(`Failed reading "${file}": "${err}"`);
+      signale.error(`Failed reading "${file}": "${err}"`);
       res.status(500).send(err);
     }
     else res.send(result);
@@ -109,4 +106,4 @@ app.get('/about', (req, res) => {
 });
 
 // Start server
-app.listen(port, () => logger.info(`Listening on port ${port}.`));
+app.listen(port, () => signale.success(`Listening on port ${port}.`));
