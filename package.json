@@ -34,6 +34,7 @@
     "moment": "^2.22.2",
     "pretty-bytes": "^5.1.0",
     "pug": "^2.0.3",
+    "signale": "^1.2.1",
     "snyk": "^1.89.1"
   },
   "devDependencies": {
@@ -44,10 +45,10 @@
     "node-sass": "^4.9.2",
     "write": "^1.0.3"
   },
-  "snyk": true,
   "optionalDependencies": {
     "bufferutil": "^4.0.0",
     "fsevents": "^1.2.4",
     "utf-8-validate": "^5.0.1"
-  }
+  },
+  "snyk": true
 }
