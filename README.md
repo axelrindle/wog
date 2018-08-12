@@ -20,6 +20,9 @@
 - Configurable :pencil:
 - Watches the file for changes and auto-reloads on change :bell:
 
+## Why does this exist?
+I was tired of always SSHing into my local server and looking through a log file in the terminal. It was painful, especially when the file was very large. So I decided to build myself a small web interface with some extra features to erase the pain of looking through log files via a small terminal.
+
 ## Disclaimer
 *wog* **does NOT** provide any form of authentication. You have to enable authentication by yourself if you wish to access your *wog* instance from outside your home network. I am not responsible for any damage taken to you or your company by not properly securing access to your logs.
 
