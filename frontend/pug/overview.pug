@@ -37,9 +37,18 @@ block content
       .card
         header.card-header
           p.card-header-title
-            span(v-if="selected !== -1").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;Options
-          p(style="padding: .75rem;" v-if="socket === null")
-            span.error Automatic refresh disabled!
+            span(v-if="selected !== -1").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;
+            | Options
+          
+          // Refreshed indicator
+          p.pointer(style="padding: .75rem;" v-if="showRefreshedIndicator")
+            span.has-text-success.icon(title="File updated.")
+              i.far.fa-bell.fa-lg
+                
+          // No socket connection indicator
+          p.pointer(style="padding: .75rem;" v-if="socket === null")
+            span.has-text-danger.icon(title="Automatic refresh disabled!")
+              i.fas.fa-exclamation-triangle.fa-lg
         .card-content
           .content
             .columns

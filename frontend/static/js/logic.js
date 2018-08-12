@@ -45,7 +45,8 @@ const app = new Vue({
     lineToGoTo: 1,
     error: 'Select a file on the left.',
     isLoading: false,
-    socket: null
+    socket: null,
+    showRefreshedIndicator: false
   },
 
   // computed values (cached; only re-computed when data changes)
@@ -120,6 +121,12 @@ const app = new Vue({
           this.error = `The file ${this.files[index].path} is empty!`;
         } else {
           this.log = data;
+
+          // show refresh indicator
+          this.showRefreshedIndicator = true;
+          setTimeout(() => {
+            this.showRefreshedIndicator = false;
+          }, 3000);
         }
 
         // make sure socket is not destroyed

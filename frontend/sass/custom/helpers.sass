@@ -14,8 +14,13 @@
 hr.bottom
   margin-top: 0
 
-.error
-  color: #E53935
+.pointer
+  cursor: pointer
+  transition: all .1s
+  margin: auto
+
+  &:hover
+    background-color: darken(white, 5%)
 
 .blink
   animation: blink 1s cubic-bezier(.77,0,.18,1)
