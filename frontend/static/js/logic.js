@@ -105,9 +105,9 @@ const app = new Vue({
       if (!silent) {
         this.log = '';
         this.grep = '';
-        this.error = '';
         this.isLoading = true;
       }
+      this.error = '';
       this.selected = index;
       http.post(`/${index}`).then(response => {
         let data = response.data;
