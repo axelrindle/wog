@@ -70,7 +70,7 @@ block content
         code
           div(v-for="(line, index) in linesFiltered" :data-line="index + 1") {{ index + 1}}: {{ line }}
       pre(v-else)
-        code.error(v-if="error !== ''") {{ error }}
+        code.has-text-danger(v-if="error !== ''") {{ error }}
         code.loading(v-else)
           span(style="margin-right: 10px;") Loading...
           i.fas.fa-sync-alt.fa-spin.fa-lg
