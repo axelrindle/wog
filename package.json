@@ -26,7 +26,9 @@
   },
   "homepage": "https://github.com/axelrindle/wog#readme",
   "dependencies": {
+    "chokidar": "^2.0.4",
     "express": "^4.16.3",
+    "express-ws": "^4.0.0",
     "glob-all": "^3.1.0",
     "is-file": "^1.0.0",
     "moment": "^2.22.2",
@@ -42,6 +44,11 @@
     "cssnano-preset-advanced": "^4.0.0",
     "node-sass": "^4.9.2",
     "write": "^1.0.3"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.0",
+    "fsevents": "^1.2.4",
+    "utf-8-validate": "^5.0.1"
   },
   "snyk": true
 }

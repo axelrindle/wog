@@ -11,6 +11,7 @@ const express = require('express');
 const app = express();
 
 const util = require('./util');
+const websocket = require('./websocket');
 const pkg = require('../package.json');
 
 // Config and defaults
@@ -56,11 +57,17 @@ const filesForFrontend = filesTransformed.map(el => {
 });
 signale.complete(`Loaded ${filesTransformed.length} log files.`);
 
+// Init websocket
+const expressWs = require('express-ws')(app);
+app.ws('/socket', (ws, req) => websocket(ws, filesTransformed));
+signale.info('WebSocket server accessible via /socket endpoint.');
+
 // Setup routes
 app.get('/', (req, res) => {
   res.render('overview', {
     url: url,
-    title: `${title} | overview`
+    title: `${title} | overview`,
+    wsPort: config.webSocketPort
   });
 });
 

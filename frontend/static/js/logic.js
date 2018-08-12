@@ -44,7 +44,9 @@ const app = new Vue({
     line: '',
     lineToGoTo: 1,
     error: 'Select a file on the left.',
-    isLoading: false
+    isLoading: false,
+    socket: null,
+    showRefreshedIndicator: false
   },
 
   // computed values (cached; only re-computed when data changes)
@@ -99,12 +101,14 @@ const app = new Vue({
         this.error = err.message;
       });
     },
-    select: function (index) {
-      this.log = '';
-      this.grep = '';
-      this.selected = index;
+    select: function (index, silent = false) {
+      if (!silent) {
+        this.log = '';
+        this.grep = '';
+        this.isLoading = true;
+      }
       this.error = '';
-      this.isLoading = true;
+      this.selected = index;
       http.post(`/${index}`).then(response => {
         let data = response.data;
 
@@ -114,14 +118,29 @@ const app = new Vue({
 
         data = data.trim();
         if (data === '') {
-          this.data = '';
           this.error = `The file ${this.files[index].path} is empty!`;
-        } else this.log = data;
+        } else {
+          this.log = data;
+
+          // show refresh indicator
+          this.showRefreshedIndicator = true;
+          setTimeout(() => {
+            this.showRefreshedIndicator = false;
+          }, 3000);
+        }
+
+        // make sure socket is not destroyed
+        if (this.socket) this.socket.send(index);
       }).catch(err => {
         this.error = err.message;
       })
       .finally(() => {
-        this.isLoading = false;
+        if (silent) {
+          $('#logContent')
+            .scrollTop(19.5 * this.filteredLinesAmount)
+        } else {
+          this.isLoading = false;
+        }
       });
     },
     totalLinesAmount: function () {
@@ -175,6 +194,31 @@ const app = new Vue({
 
   // called when Vue is ready
   mounted() {
+    // websocket connection
+    const protocol = location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${location.host}/socket`);
+
+    this.socket.onopen = function (event) {
+      console.log('WebSocket connection established.');
+    }.bind(this);
+
+    this.socket.onclose = function (event) {
+      alert('WebSocket connection closed!\nAutomatic file refresh disabled.');
+      this.socket = null;
+    }.bind(this);
+
+    this.socket.onerror = function (error) {
+      this.error = error;
+    }.bind(this);
+
+    this.socket.onmessage = function (message) {
+      console.log(message);
+      if (message.data === 'file-was-updated') {
+        this.select(this.selected, true);
+      }
+    }.bind(this);
+
+
     // initially refresh
     this.refresh().then(() => {
       $('#fader').fadeOut(500, () => $('#fader').remove());
