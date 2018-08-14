@@ -4,7 +4,7 @@ module.exports = config => ({
   debug: config.debug,
 
   path: path => {
-    let url = this.url;
+    let url = config.url;
     if (!url.endsWith('/'))
       url += '/';
 
