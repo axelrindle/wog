@@ -35,7 +35,9 @@ if (debug) signale.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!')
 app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
+
 app.locals.debug = debug;
+app.locals.url = url;
 
 // Load log locations
 signale.await("Collecting log files...");
@@ -65,7 +67,6 @@ signale.info('WebSocket server accessible via /socket endpoint.');
 // Setup routes
 app.get('/', (req, res) => {
   res.render('overview', {
-    url: url,
     title: `${title} | overview`,
     wsPort: config.webSocketPort
   });
@@ -106,7 +107,6 @@ app.get('/:index/download', (req, res) => {
 // about page
 app.get('/about', (req, res) => {
   res.render('about', {
-    url: url,
     title: `${title} | about`,
     version: pkg.version
   });
