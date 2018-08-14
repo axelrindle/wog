@@ -35,6 +35,7 @@ if (debug) signale.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!')
 app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
+app.locals.debug = debug;
 
 // TODO: Watch for file changes and reload them automagically on the frontend
 // Load log locations

@@ -99,7 +99,10 @@ block content
 
 
 block js
-  script(src="vendor/vue.min.js")
+  if !debug
+    script(src="vendor/vue.min.js")
+  else
+    script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
   script(src="vendor/axios.min.js")
   script(src="vendor/jquery-3.3.1.min.js")
   //script(src="vendor/jquery.mCustomScrollbar.concat.min.js")
