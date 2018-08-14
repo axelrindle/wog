@@ -1,4 +1,4 @@
-'use strict';
+/* global Vue axios */
 
 // import dependencies
 import './bootstrap';

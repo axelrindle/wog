@@ -1,3 +1,5 @@
+/* global Vue */
+
 // Import dependencies
 import './bootstrap';
 
