@@ -15,30 +15,31 @@ module.exports = (app, config) => {
 
   // instantiate passport
   const passport = auth(app);
-  const passportMiddleware = passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-  });
 
   // login post
-  app.get('/login', (req, res) => {
-    res.render('login', {
-      title: `${title} | about`
-    });
-  });
-  app.post('/login', passportMiddleware);
-  app.get('/logout', (req, res) => {
+  app.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/',
+    failureFlash: true
+  }));
+  app.get('/logout', checkAuthenticated, (req, res) => {
     req.logout();
-    res.redirect('/login');
+    res.redirect('/');
   });
 
   // index
-  app.get('/', checkAuthenticated, (req, res) => {
-    res.render('overview', {
-      title: `${title} | overview`,
-      wsPort: config.webSocketPort
-    });
+  app.get('/', (req, res) => {
+    if (req.isAuthenticated()) {
+      res.render('overview', {
+        title: `${title} | overview`,
+        wsPort: config.webSocketPort
+      });
+    } else {
+      res.render('login', {
+        title: `${title} | login`,
+        error: req.flash('error')
+      });
+    }
   });
 
   // sends a list of all files
