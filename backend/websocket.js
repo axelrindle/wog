@@ -3,7 +3,7 @@ const chokidar = require('chokidar');
 
 
 // Export init function
-module.exports = (ws, files) => {
+module.exports = ws => {
 
   let watcher = null;
 
@@ -21,7 +21,7 @@ module.exports = (ws, files) => {
     stopWatching();
 
     // begin watching
-    watcher = chokidar.watch(files[index].absolute);
+    watcher = chokidar.watch(files.transformed[index].absolute);
     watcher
       .on('change', path => ws.send('file-was-updated'))
       .on('unlink', path => ws.send('error', 'File was deleted!'))
