@@ -1,13 +1,40 @@
 // Require modules
 const fs = require('fs');
+
+const auth = require('./auth');
 const pkg = require('../package.json');
 
 const title = `${pkg.name} v${pkg.version}`;
+const checkAuthenticated = (req, res, next) => {
+    if(req.isAuthenticated()) next();
+    else res.redirect('/login');
+};
 
 // Export setup function
 module.exports = (app, config) => {
 
-  app.get('/', (req, res) => {
+  // instantiate passport
+  const passport = auth(app);
+  const passportMiddleware = passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+  });
+
+  // login post
+  app.get('/login', (req, res) => {
+    res.render('login', {
+      title: `${title} | about`
+    });
+  });
+  app.post('/login', passportMiddleware);
+  app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/login');
+  });
+
+  // index
+  app.get('/', checkAuthenticated, (req, res) => {
     res.render('overview', {
       title: `${title} | overview`,
       wsPort: config.webSocketPort
@@ -15,10 +42,10 @@ module.exports = (app, config) => {
   });
 
   // sends a list of all files
-  app.post('/all', (req, res) => res.json(files.frontend));
+  app.post('/all', checkAuthenticated, (req, res) => res.json(files.frontend));
 
   // sends content of a file
-  app.post('/:index', (req, res) => {
+  app.post('/:index', checkAuthenticated, (req, res) => {
     const index = req.params.index;
     const file = files.transformed[index];
 
@@ -33,7 +60,7 @@ module.exports = (app, config) => {
   });
 
   // download a file
-  app.get('/:index/download', (req, res) => {
+  app.get('/:index/download', checkAuthenticated, (req, res) => {
     // make sure downloading is enabled
     if (!config.enableFileDownloads)
       res.status(403).send('Forbidden!');
