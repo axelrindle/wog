@@ -24,6 +24,6 @@ function fuzzytest (needle, haystack) {
   return true;
 }
 
-function fuzzysearch (needle, haystack) {
+export function fuzzysearch (needle, haystack) {
   return haystack.filter(entry => fuzzytest(needle, entry));
 }
