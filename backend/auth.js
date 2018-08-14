@@ -22,6 +22,20 @@ passport.use(new LocalStrategy(
   }
 ));
 
+// Serialization
+passport.serializeUser((username, done) => {
+  done(null, Object.keys(accounts).indexOf(username));
+});
+passport.deserializeUser((index, done) => {
+  const user = Object.keys(accounts)[index];
+  const exists = user !== undefined;
+  if (!exists)
+    done('Unknown username!', null);
+  else
+    done(null, user);
+});
+
+
 // export configured passport instance
 module.exports = app => {
 
