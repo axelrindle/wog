@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
+const locals = require('./locals');
 const routeSetup = require('./routes');
 const util = require('./util');
 const websocket = require('./websocket');
@@ -15,12 +16,18 @@ const expressWs = require('express-ws')(app);
 const config = require('../config');
 const debug = process.env.DEBUG || false;
 const port = config.port || 8080;
-const url = config.url || '/';
+const url = config.url || null;
 const logs = config.logs || [];
 
 // Check logs
 if (logs.length === 0) {
   signale.fatal('No log file locations were supplied!');
+  process.exit(-1);
+}
+
+// Check url
+if (!url) {
+  signale.fatal('No url specified!');
   process.exit(-1);
 }
 
@@ -32,7 +39,7 @@ app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
 app.use(bodyParser.urlencoded());
-app.locals = { debug, url };
+app.locals = locals(config);
 
 (async () => {
   // Load log locations

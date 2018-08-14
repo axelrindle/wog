@@ -13,8 +13,8 @@ block content
       // header
       section.section
         .container
-          a(href="about/")
-            img(src="img/header.png")
+          a(href=path("about"))
+            img(src=path("img/header.png"))
           
       hr.bottom
     
@@ -100,10 +100,10 @@ block content
 
 block js
   if !debug
-    script(src="vendor/vue.min.js")
+    script(src=path("vendor/vue.min.js"))
   else
     script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
-  script(src="vendor/axios.min.js")
-  script(src="vendor/jquery-3.3.1.min.js")
-  //script(src="vendor/jquery.mCustomScrollbar.concat.min.js")
-  script(src="js/logic.js")
+  script(src=path("vendor/axios.min.js"))
+  script(src=path("vendor/jquery-3.3.1.min.js"))
+  //script(src=path("vendor/jquery.mCustomScrollbar.concat.min.js"))
+  script(src=path("js/logic.js"))

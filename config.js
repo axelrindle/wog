@@ -3,8 +3,8 @@ module.exports = {
   /** The port the server is listening on. */
   port: 8082,
 
-  /** A base url when living in a sub-directory. */
-  url: '/',
+  /** The full root url for the application. */
+  url: 'http://localhost:8082/',
 
   /**
    * An array of globs for selecting log files to view in the interface.
