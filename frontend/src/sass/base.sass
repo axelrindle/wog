@@ -1,20 +1,4 @@
-// 1. Import the dependencies
-@import "https://fonts.googleapis.com/css?family=Montserrat:400,600|Space+Mono"
-@import "../../node_modules/bulma/sass/utilities/_all"
-
-// 2. Import modules we need
-@import "../../node_modules/bulma/sass/base/_all"
-@import "../../node_modules/bulma/sass/grid/columns"
-@import "../../node_modules/bulma/sass/layout/footer"
-@import "../../node_modules/bulma/sass/layout/section"
-@import "../../node_modules/bulma/sass/elements/button"
-@import "../../node_modules/bulma/sass/elements/form"
-@import "../../node_modules/bulma/sass/elements/title"
-@import "../../node_modules/bulma/sass/components/card"
-@import "../../node_modules/bulma/sass/components/menu"
-@import "../../node_modules/bulma/sass/components/modal"
-
-// 3. Variables
+// 1. Variables
 $sidebar_background: darken(white, 2%)
 $sidebar_width: 20%
 
@@ -26,6 +10,22 @@ $content_padding_horizontal: 100px
 $about_link_size: 40px
 
 $blink_background: transparentize(#356bd4, .5)
+
+// 2. Import the dependencies
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600|Space+Mono")
+@import "../../../node_modules/bulma/sass/utilities/_all"
+
+// 3. Import modules we need
+@import "../../../node_modules/bulma/sass/base/_all"
+@import "../../../node_modules/bulma/sass/grid/columns"
+@import "../../../node_modules/bulma/sass/layout/footer"
+@import "../../../node_modules/bulma/sass/layout/section"
+@import "../../../node_modules/bulma/sass/elements/button"
+@import "../../../node_modules/bulma/sass/elements/form"
+@import "../../../node_modules/bulma/sass/elements/title"
+@import "../../../node_modules/bulma/sass/components/card"
+@import "../../../node_modules/bulma/sass/components/menu"
+@import "../../../node_modules/bulma/sass/components/modal"
 
 // 4. Customize
 @import "custom/helpers"
