@@ -23,13 +23,6 @@
 ## Why does this exist?
 I was tired of always SSHing into my local server and looking through a log file in the terminal. It was painful, especially when the file was very large. So I decided to build myself a small web interface with some extra features to erase the pain of looking through log files via a small terminal.
 
-## Disclaimer
-*wog* **does NOT** provide any form of authentication. You have to enable authentication by yourself if you wish to access your *wog* instance from outside your home network. I am not responsible for any damage taken to you or your company by not properly securing access to your logs.
-
-If you are using **Apache 2**, you can follow [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-password-authentication-with-apache-on-ubuntu-14-04) on how to password-protect a certain directory.
-
-*Note*: You may replace the **Directory** directive used in the tutorial above with the **Location** directive to protect just a certain path of the URL, which may be a reverse proxy. [Look here](https://stackoverflow.com/questions/23565693/how-can-i-password-protect-applications-behind-mod-proxy-in-apache) for more information.
-
 ## Install
 1. Clone this repository
 ```bash
