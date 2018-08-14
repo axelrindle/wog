@@ -38,7 +38,7 @@ if (debug) signale.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!')
 app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.locals = locals(config);
 
 (async () => {
