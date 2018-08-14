@@ -1,6 +1,6 @@
 {
   "name": "wog",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0-rc.2",
   "description": "A web interface for viewing logs.",
   "main": "backend/server.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "dev": "DEBUG=true node backend/server",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect",
-    "compile:sass": "parcel build frontend/src/sass/base.sass --no-source-maps -d frontend/static/css",
-    "compile:js": "parcel build frontend/src/js/logic.js --no-source-maps -d frontend/static/js"
+    "compile:sass": "parcel build frontend/src/sass/base.sass --no-source-maps -d frontend/static/css --out-file style.min.css",
+    "compile:js": "parcel build frontend/src/js/logi*.js --no-source-maps -d frontend/static/js"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,9 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "chokidar": "^2.0.4",
+    "connect-flash": "^0.1.1",
     "connect-redis": "^3.3.3",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "express-ws": "^4.0.0",
