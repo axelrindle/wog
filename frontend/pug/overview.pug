@@ -37,8 +37,9 @@ block content
       .card
         header.card-header
           p.card-header-title
-            span(v-if="selected !== -1").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;
+            span(v-if="selected !== -1", style="margin: 0;").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;
             | Options
+            a.button.is-danger(href=path('logout'), style="margin-left: 30px;") Logout
           
           // Refreshed indicator
           p.pointer(style="padding: .75rem;" v-if="showRefreshedIndicator")

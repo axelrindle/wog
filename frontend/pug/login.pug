@@ -1,0 +1,53 @@
+extends layout.pug
+
+block content
+  
+  // Content wrapper
+  div.flex.no-justify#app
+  
+    img(src=path("img/header.png"), width="600px")
+    
+    // Login card
+    div.card
+      header.card-header
+        p.card-header-title Login
+        
+      form(action=path("login"), method="POST")
+        // Input items
+        div.card-content
+        
+          // Username
+          .field
+            label.label Username
+            .control.has-icons-left
+              input.input(type="text", name="username", placeholder="Username", v-model="username", required)
+              span.icon.is-small.is-left
+                i.fas.fa-user
+            p.help.is-danger(v-if="username === ''") Enter a username!
+            
+          // Password
+          .field
+            label.label Password
+            .control.has-icons-left
+              input.input(type="text", name="password", placeholder="Password", v-model="password", required)
+              span.icon.is-small.is-left
+                i.fas.fa-key
+            p.help.is-danger(v-if="password === ''") Enter a password!
+            
+          if error
+            p.has-text-danger= error
+
+        // Buttons
+        footer.card-footer
+          input.card-footer-item.pointer(type="submit", value="Login")
+
+
+block js
+  if !debug
+    script(src=path("vendor/vue.min.js"))
+  else
+    script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
+  script(src=path("vendor/axios.min.js"))
+  script(src=path("vendor/jquery-3.3.1.min.js"))
+  //script(src=path("vendor/jquery.mCustomScrollbar.concat.min.js"))
+  script(src=path("js/login.js"))

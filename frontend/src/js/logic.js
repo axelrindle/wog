@@ -1,13 +1,9 @@
-'use strict';
+/* global Vue axios */
 
 // import dependencies
+import './bootstrap';
 import { whichAnimationEvent } from './helpers';
 import { fuzzysearch } from './fuzzy'
-
-// custom axios instance
-const http = axios.create({
-  baseURL: $('base').attr('href')
-});
 
 // create vue app
 new Vue({
@@ -79,7 +75,7 @@ new Vue({
     },
     refresh: function () {
       this.reset();
-      return http.post('/all').then(response => {
+      return axios.post('/all').then(response => {
         this.files = response.data;
       }).catch(err => {
         this.error = err.message;
@@ -93,7 +89,7 @@ new Vue({
       }
       this.error = '';
       this.selected = index;
-      http.post(`/${index}`).then(response => {
+      axios.post(`/${index}`).then(response => {
         let data = response.data;
 
         // convert json objects to a string
