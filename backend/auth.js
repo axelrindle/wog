@@ -43,7 +43,7 @@ module.exports = app => {
   app.use(session({
     secret: config.session.secret,
     saveUninitialized: true,
-    resave: true,
+    resave: false,
     store: new RedisStore(config.session.redis)
   }));
 
