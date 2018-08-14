@@ -37,7 +37,6 @@ app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
 app.locals.debug = debug;
 
-// TODO: Watch for file changes and reload them automagically on the frontend
 // Load log locations
 signale.await("Collecting log files...");
 const files = glob.sync(logs);
