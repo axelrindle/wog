@@ -44,7 +44,12 @@ $ nano config.js
 $ node backend/main.js
 ```
 
+## Configuration
+
+[Look here](Configuration.md)
+
 ## ToDo
+
 [Moved here](https://github.com/axelrindle/wog/projects/1)
 
 ## License
