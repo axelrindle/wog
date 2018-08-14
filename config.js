@@ -28,6 +28,21 @@ module.exports = {
   /**
    * Whether to allow users to download log files to their computer.
    */
-  enableFileDownloads: true
+  enableFileDownloads: true,
+
+  /** Session settings. */
+  session: {
+
+    /** Redis connection settings. */
+    redis: {
+      host: 'localhost',
+      port: 6379,
+      pass: null,
+      db: 0
+    },
+
+    /** A secret string used to encrypt session data. */
+    secret: 'G0uiM2qogaC42lOMqiw3'
+  }
 
 };
