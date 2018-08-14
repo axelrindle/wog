@@ -3,6 +3,8 @@
 // Require modules
 const signale = require('signale');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 const express = require('express');
 const app = express();
 
@@ -39,6 +41,8 @@ app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser(config.session.secret));
+app.use(flash());
 app.locals = locals(config);
 
 (async () => {
