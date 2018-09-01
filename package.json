@@ -49,7 +49,7 @@
   "devDependencies": {
     "browserslist": "^4.0.1",
     "bulma": "^0.7.1",
-    "cssnano": "^4.0.5",
+    "cssnano": "^4.1.0",
     "cssnano-preset-advanced": "^4.0.0",
     "node-sass": "^4.9.2",
     "parcel-bundler": "^1.9.7",
