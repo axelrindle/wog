@@ -51,7 +51,7 @@
     "bulma": "^0.7.1",
     "cssnano": "^4.0.5",
     "cssnano-preset-advanced": "^4.0.0",
-    "node-sass": "^4.9.2",
+    "node-sass": "^4.9.3",
     "parcel-bundler": "^1.9.7",
     "write": "^1.0.3"
   },
