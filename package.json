@@ -46,7 +46,7 @@
     "signale": "^1.2.1",
     "snyk": "^1.94.0",
     "signale": "^1.3.0",
-    "snyk": "^1.95.3"
+    "snyk": "^1.99.1"
   },
   "devDependencies": {
     "browserslist": "^4.1.1",
