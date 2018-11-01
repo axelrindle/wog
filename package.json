@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "browserslist": "^4.1.1",
-    "bulma": "^0.7.1",
+    "bulma": "^0.7.2",
     "cssnano": "^4.1.4",
     "cssnano-preset-advanced": "^4.0.0",
     "node-sass": "^4.9.3",
