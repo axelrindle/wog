@@ -49,7 +49,7 @@
     "snyk": "^1.95.3"
   },
   "devDependencies": {
-    "browserslist": "^4.1.1",
+    "browserslist": "^4.3.4",
     "bulma": "^0.7.1",
     "cssnano": "^4.1.4",
     "cssnano-preset-advanced": "^4.0.0",
