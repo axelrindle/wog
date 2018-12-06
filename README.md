@@ -1,8 +1,6 @@
 ![header](header.png)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43ca5dba403b4a75bdf6d285d6d8f994)](https://app.codacy.com/app/axel.rindle/wog?utm_source=github.com&utm_medium=referral&utm_content=axelrindle/wog&utm_campaign=badger)
-[![Known Vulnerabilities](https://snyk.io/test/github/axelrindle/wog/badge.svg?targetFile=package.json)](https://snyk.io/test/github/axelrindle/wog?targetFile=package.json)
-[![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 
 [![made with node](https://img.shields.io/badge/made%20with-node.js-c1282d.svg?style=for-the-badge&colorA=ef4041)](https://nodejs.org)
 [![built by developers](https://img.shields.io/badge/built%20by-developers-D15E28.svg?style=for-the-badge&colorA=E36D26)](https://github.com/axelrindle)
