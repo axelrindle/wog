@@ -4,11 +4,8 @@
   "description": "A web interface for viewing logs.",
   "main": "backend/server.js",
   "scripts": {
-    "test": "snyk test",
     "sass": "node sass",
     "dev": "DEBUG=true node backend/server",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect",
     "compile:sass": "parcel build frontend/src/sass/base.sass --no-source-maps -d frontend/static/css --out-file style.min.css",
     "compile:js": "parcel build frontend/src/js/logi*.js --no-source-maps -d frontend/static/js"
   },
@@ -43,10 +40,7 @@
     "passport-local": "^1.0.0",
     "pretty-bytes": "^5.1.0",
     "pug": "^2.0.3",
-    "signale": "^1.2.1",
-    "snyk": "^1.94.0",
-    "signale": "^1.3.0",
-    "snyk": "^1.95.3"
+    "signale": "^1.3.0"
   },
   "devDependencies": {
     "browserslist": "^4.1.1",
@@ -61,6 +55,5 @@
     "bufferutil": "^4.0.0",
     "fsevents": "^1.2.4",
     "utf-8-validate": "^5.0.1"
-  },
-  "snyk": true
+  }
 }
