@@ -6,13 +6,12 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const express = require('express');
-const app = express();
 
 const locals = require('./locals');
 const routeSetup = require('./routes');
 const util = require('./util');
 const websocket = require('./websocket');
-const expressWs = require('express-ws')(app);
+const app = require('express-ws')(express()).app;
 
 // Config and defaults
 const config = require('../config');
