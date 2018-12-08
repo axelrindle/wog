@@ -29,7 +29,7 @@ block content
           .field
             label.label Password
             .control.has-icons-left
-              input.input(type="text", name="password", placeholder="Password", v-model="password", required)
+              input.input(type="password", name="password", placeholder="Password", v-model="password", required)
               span.icon.is-small.is-left
                 i.fas.fa-key
             p.help.is-danger(v-if="password === ''") Enter a password!
