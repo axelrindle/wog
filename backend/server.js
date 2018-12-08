@@ -33,7 +33,7 @@ if (!url) {
 }
 
 // Short debug notice
-if (debug) signale.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!')
+if (debug) signale.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
 // Server setup
 app.set('view engine', 'pug');
