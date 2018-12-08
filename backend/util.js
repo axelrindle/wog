@@ -22,7 +22,7 @@ module.exports.loadLogFiles = logs => {
 
   // find all files from the given glob
   return new Promise((resolve, reject) => {
-    glob(logs, (err, matches) => {
+    glob(logs, { silent: true },(err, matches) => {
       if (err) reject(err);
       else resolve(matches);
     });

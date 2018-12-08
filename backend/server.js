@@ -48,7 +48,12 @@ app.locals = locals(config);
 (async () => {
   // Load log locations
   signale.await("Collecting log files...");
-  global.files = await util.loadLogFiles(logs);
+  try {
+    global.files = await util.loadLogFiles(logs);
+  } catch(e) {
+    signale.fatal(e);
+    process.exit(-1);
+  }
   signale.complete(`Loaded ${files.transformed.length} log files.`);
 
   // Init websocket
