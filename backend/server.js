@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const express = require('express');
+const helmet = require('helmet');
 
 const locals = require('./app/locals');
 const routeSetup = require('./app/routes');
@@ -45,6 +46,7 @@ app.use(express.static('frontend/static'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.session.secret));
 app.use(flash());
+app.use(helmet());
 app.locals = locals(config);
 
 (async () => {
