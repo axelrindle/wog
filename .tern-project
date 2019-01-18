@@ -1,0 +1,8 @@
+{
+    "dontLoad": [
+        "node_modules/**",
+        "frontend/**",
+        ".github/**",
+        ".cache/**"
+    ]
+}
