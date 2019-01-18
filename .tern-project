@@ -1,8 +1,25 @@
 {
-    "dontLoad": [
-        "node_modules/**",
-        "frontend/**",
-        ".github/**",
-        ".cache/**"
-    ]
+  "dontLoad": [
+    "node_modules/**",
+    "frontend/**",
+    ".github/**",
+    ".cache/**"
+  ],
+  "libs": [],
+  "plugins": {
+    "node": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "node_resolve": {},
+    "complete_strings": {
+      "maxLength": 15
+    },
+    "doc_comment": {
+      "fullDocs": true,
+      "strong": false
+    }
+  },
+  "loadEagerly": []
 }
