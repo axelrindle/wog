@@ -5,8 +5,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
-const accounts = require('../accounts');
-const config = require('../config');
+const accounts = require('@root/accounts');
+const config = require('@root/config');
 
 // Configure strategy
 passport.use(new LocalStrategy(

@@ -1,5 +1,8 @@
 'use strict';
 
+// Register module aliases
+require('module-alias/register');
+
 // Require modules
 const signale = require('signale');
 const bodyParser = require('body-parser');
@@ -7,10 +10,10 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const express = require('express');
 
-const locals = require('./locals');
-const routeSetup = require('./routes');
+const locals = require('./app/locals');
+const routeSetup = require('./app/routes');
 const util = require('./util');
-const websocket = require('./websocket');
+const websocket = require('./app/websocket');
 const app = require('express-ws')(express()).app;
 
 // Config and defaults

@@ -34,6 +34,7 @@
     "express-ws": "^4.0.0",
     "glob-all": "^3.1.0",
     "is-file": "^1.0.0",
+    "module-alias": "^2.1.0",
     "moment": "^2.22.2",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
@@ -50,5 +51,8 @@
     "bufferutil": "^4.0.0",
     "fsevents": "^1.2.4",
     "utf-8-validate": "^5.0.1"
+  },
+  "_moduleAliases": {
+    "@root": "."
   }
 }

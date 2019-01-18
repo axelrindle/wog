@@ -2,7 +2,7 @@
 const fs = require('fs');
 
 const auth = require('./auth');
-const pkg = require('../package.json');
+const pkg = require('@root/package.json');
 
 const title = `${pkg.name} v${pkg.version}`;
 const checkAuthenticated = (req, res, next) => {

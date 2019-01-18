@@ -1,7 +1,6 @@
 // Require modules
 const chokidar = require('chokidar');
 
-
 // Export init function
 module.exports = ws => {
 
