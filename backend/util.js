@@ -1,52 +1,35 @@
-// Require modules
-const fs = require('fs');
-const path = require('path');
-
-const glob = require('glob-all');
-const isFile = require('is-file');
-const prettyBytes = require('pretty-bytes');
+/**
+ * Thrown to break out of a forEach loop.
+ */
+global.BreakException = function () { /* no params ;) */ };
 
 /**
- * Transforms a path to show the filename and the parent directory.
+ * Loop through the keys of an object.
+ *
+ * @param  {object}   obj      The object to loop through.
+ * @param  {Function} callback A handler function. Takes one argument for the current key.
  */
-const transformFilePath = file => {
-  const parent = path.basename(path.dirname(file));
-  const base = path.basename(file);
-  return path.join(parent, base);
+global.objectKeyLoop = (obj, callback) => {
+  try {
+    Object.keys(obj).forEach(callback);
+  } catch (e) {
+    if (e !== BreakException) throw e;
+  }
 };
 
 /**
- * Loads all files from the given glob and returns a transformed object.
+ * Logs an error message and immediately terminates the application.
+ *
+ * @param  {string} err The error message.
  */
-module.exports.loadLogFiles = logs => {
-
-  // find all files from the given glob
-  return new Promise((resolve, reject) => {
-    glob(logs, { silent: true },(err, matches) => {
-      if (err) reject(err);
-      else resolve(matches);
-    });
-  })
-
-  // transform the path into an object with more data
-  .then(matches => {
-    return matches
-      .filter(el => isFile(el))
-      .map((el, index) => ({
-        absolute: el, // preserve absolute path
-        path: transformFilePath(el), // path to be shown to the user
-        size: prettyBytes(fs.statSync(el).size) // estimated file size
-        // TODO: Size must be recalculated when a file is updated
-      }));
-  })
-
-  // return an object holding a list for internal use
-  // and a list to be used at the frontend
-  .then(transformed => ({
-    transformed,
-    frontend: transformed.map(el => ({
-      path: el.path,
-      size: el.size
-    }))
-  }));
+global.fail = (err) => {
+  logger.fatal(err);
+  process.exit(-1);
 };
+
+/**
+ * The characters to use for nanoid/generate.
+ *
+ * @type {String}
+ */
+global.NANOID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';

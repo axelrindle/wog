@@ -19,7 +19,15 @@
     "doc_comment": {
       "fullDocs": true,
       "strong": false
-    }
+    },
+    "modules": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "commonjs": {}
   },
-  "loadEagerly": []
+  "loadEagerly": [
+    "backend/*.js"
+  ]
 }

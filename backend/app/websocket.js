@@ -1,32 +1,41 @@
 // Require modules
-const chokidar = require('chokidar');
+const nanoid = require('nanoid/generate');
 
-// Export init function
-module.exports = ws => {
+/**
+ * Shorthand function for sending an error to the client.
+ * @param  {WebSocket} ws The WebSocket instance.
+ * @param  {any}       e  The error.
+ */
+const sendError = (ws, e) => {
+  ws.send({ type: 'error', data: e });
+};
 
-  let watcher = null;
+/**
+ * Handles a websocket route request.
+ *
+ * @param  {WebSocket} ws  A websocket instance.
+ * @param  {Request}   req The express request instance.
+ */
+module.exports = (ws, req) => {
+  const connectionId = nanoid(NANOID_ALPHABET, 10);
 
-  function stopWatching() {
-    if (watcher) {
-      watcher.close();
-      watcher = null;
+  ws.on('message', message => {
+    try {
+      const parsed = JSON.parse(message);
+      switch (parsed.type) {
+        case 'changeFile':
+
+          break;
+        default:
+          sendError(ws, `Unknown event "${parsed.type}"!`);
+          break;
+      }
+    } catch (e) {
+      sendError(ws, e);
     }
-  }
-
-  // handlers
-  ws.on('message', index => {
-
-    // if already watching destroy the previous instance
-    stopWatching();
-
-    // begin watching
-    watcher = chokidar.watch(files.transformed[index].absolute);
-    watcher
-      .on('change', path => ws.send('file-was-updated'))
-      .on('unlink', path => ws.send('error', 'File was deleted!'))
-      .on('error', error => ws.send('error', error));
-
   });
 
-  ws.on('close', () => stopWatching());
+  ws.on('close', () => {
+
+  });
 };

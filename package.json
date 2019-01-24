@@ -4,7 +4,7 @@
   "description": "A web interface for viewing logs.",
   "main": "backend/server.js",
   "scripts": {
-    "dev": "DEBUG=true node backend/server",
+    "dev": "DEBUG=true node backend/main",
     "compile:sass": "parcel build frontend/src/sass/base.sass --no-source-maps -d frontend/static/css --out-file style.min.css",
     "compile:js": "parcel build frontend/src/js/logi*.js --no-source-maps -d frontend/static/js"
   },
@@ -37,6 +37,7 @@
     "is-file": "^1.0.0",
     "module-alias": "^2.1.0",
     "moment": "^2.22.2",
+    "nanoid": "^2.0.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pretty-bytes": "^5.1.0",

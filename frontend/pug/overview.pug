@@ -3,36 +3,36 @@ extends layout.pug
 block content
   // overlay
   div#fader
-  
+
   // container
   div#app
-  
+
     //sidebar
     div#sidebar
-    
+
       // header
       section.section
         .container
           a(href=path("about"))
             img(src=path("img/header.png"))
-          
+
       hr.bottom
-    
+
       // filter
       section.section
         .container
           include overview/sidebar_filter.pug
-      
+
       hr
-      
+
       // file tree
       section.section
         .container
           include overview/sidebar_file_tree.pug
-    
+
     // content
     div#content
-    
+
       // options card
       .card
         header.card-header
@@ -40,12 +40,12 @@ block content
             span(v-if="selected !== -1", style="margin: 0;").subtitle.is-6 {{ files[selected].path }}&nbsp;&nbsp;|&nbsp;&nbsp;
             | Options
             a.button.is-danger(href=path('logout'), style="margin-left: 30px;") Logout
-          
+
           // Refreshed indicator
           p.pointer(style="padding: .75rem;" v-if="showRefreshedIndicator")
             span.has-text-success.icon(title="File updated.")
               i.far.fa-bell.fa-lg
-                
+
           // No socket connection indicator
           p.pointer(style="padding: .75rem;" v-if="socket === null")
             span.has-text-danger.icon(title="Automatic refresh disabled!")
@@ -53,19 +53,19 @@ block content
         .card-content
           .content
             .columns
-                
+
               // grep / fuzzy search
               .column
                 include overview/log_filter.pug
-              
+
               // actions
               .column
                 include overview/log_actions.pug
-                
+
               // info
               .column
                 include overview/log_info.pug
-      
+
       // actual log content
       pre#logContent(v-if="error === '' && !isLoading")
         code
@@ -83,7 +83,7 @@ block content
         header.modal-card-head
           p.modal-card-title Go to line
           button.button.is-danger.is-rounded(@click="closeGoToLine") X
-        
+
         section.modal-card-body
           .field
             label.label Enter the line number you want to jump to
@@ -100,7 +100,7 @@ block content
 
 
 block js
-  if !debug
+  if !_debug
     script(src=path("vendor/vue.min.js"))
   else
     script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")

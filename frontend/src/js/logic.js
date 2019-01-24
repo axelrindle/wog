@@ -16,6 +16,7 @@ new Vue({
     files: [],
     fileFilter: '',
     selected: -1,
+    fileSize: '',
     log: '',
     filterMode: 'grep',
     grepMode: 'grep',
@@ -32,7 +33,7 @@ new Vue({
   // computed values (cached; only re-computed when data changes)
   computed: {
     filesFiltered() {
-      return this.files.filter(el => el.path.indexOf(this.fileFilter) !== -1);
+      return this.files.filter(el => el.name.indexOf(this.fileFilter) !== -1);
     },
     linesFiltered() {
       // check if an item is selected
@@ -89,18 +90,14 @@ new Vue({
       }
       this.error = '';
       this.selected = index;
-      axios.post(`/${index}`).then(response => {
-        let data = response.data;
-
-        // convert json objects to a string
-        if (typeof response.data === 'object')
-          data = JSON.stringify(data);
-
-        data = data.trim();
-        if (data === '') {
+      axios.post(`/${this.files[index].id}`).then(response => {
+        const data = response.data;
+        if (data.contents === '') {
           this.error = `The file ${this.files[index].path} is empty!`;
+          this.fileSize = '0 B'
         } else {
-          this.log = data;
+          this.log = data.contents;
+          this.fileSize = data.size;
 
           // show refresh indicator
           this.showRefreshedIndicator = true;
@@ -108,11 +105,8 @@ new Vue({
             this.showRefreshedIndicator = false;
           }, 3000);
         }
-
-        // make sure socket is not destroyed
-        if (this.socket) this.socket.send(index);
       }).catch(err => {
-        this.error = err.message;
+        this.error = err;
       })
       .finally(() => {
         if (silent) {

@@ -6,7 +6,6 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
 const accounts = require('@root/accounts');
-const config = require('@root/config');
 
 // Configure strategy
 passport.use(new LocalStrategy(
@@ -41,10 +40,10 @@ module.exports = app => {
 
   // setup session store
   app.use(session({
-    secret: config.session.secret,
+    secret: config.secure.secret,
     saveUninitialized: true,
     resave: false,
-    store: new RedisStore(config.session.redis)
+    store: new RedisStore(config.secure.redis)
   }));
 
   // Init passport authentication

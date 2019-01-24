@@ -1,16 +1,18 @@
 // Locals used in the templates
-module.exports = config => ({
-  url: config.url,
-  debug: config.debug,
+module.exports = app => {
+  app.locals = {
+    url: config.app.url,
+    _debug: DEBUG,
 
-  path: path => {
-    let url = config.url;
-    if (!url.endsWith('/'))
-      url += '/';
+    path: path => {
+      let url = config.app.url;
+      if (!url.endsWith('/'))
+        url += '/';
 
-    if (path.startsWith('/'))
-      path = path.substring(1);
+      if (path.startsWith('/'))
+        path = path.substring(1);
 
-    return url + path;
-  }
-});
+      return url + path;
+    }
+  };
+};
