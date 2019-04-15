@@ -33,3 +33,15 @@ global.fail = (err) => {
  * @type {String}
  */
 global.NANOID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+/**
+ * Get a value from the environment. If it is not set, return an
+ * optional default value.
+ * 
+ * @param  {string} key An environment variable.
+ * @param  {any} default An optional default value, if no value was found.
+ * @return {any} The associated value, or undefined.
+ */
+global.env = (key, default) => {
+  return process.env[key] || default;
+};

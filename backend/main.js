@@ -3,6 +3,9 @@
 // Register any modules/services
 require('module-alias/register');
 
+// Load the environment
+require('dotenv').config();
+
 // Define global variables
 global.DEBUG = process.env.DEBUG || false;
 global.logger = require('signale');

@@ -6,7 +6,6 @@ logger.await('Loading configuration...');
 
 // Find config files
 const files = glob.sync(path.join(path.dirname(__dirname), 'config/*.js'));
-// TODO: Replace entries in config files with default placeholders. Actual values should be read from an extra file (like in laravel: .env)
 
 // Create config object
 const config = {};
