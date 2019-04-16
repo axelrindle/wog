@@ -23,6 +23,9 @@
     "url": "https://github.com/axelrindle/wog/issues"
   },
   "homepage": "https://github.com/axelrindle/wog#readme",
+  "engines": {
+    "node": ">=10.15.3"
+  },
   "dependencies": {
     "body-parser": "^1.18.3",
     "chokidar": "^2.0.4",
