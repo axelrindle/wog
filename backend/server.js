@@ -5,9 +5,10 @@ const flash = require('connect-flash');
 const express = require('express');
 const helmet = require('helmet');
 
+const myLogger = logger.scope('server');
 const app = require('express-ws')(express()).app;
 
-logger.await('Starting webserver...');
+myLogger.await('Starting webserver...');
 
 // Checks
 if (!config.app.url) fail('No url specified!');
@@ -27,4 +28,4 @@ require('./app/routes')(app);
 
 // Start server
 const port = config.app.port;
-app.listen(port, () => logger.success(`Listening on port ${port}.`));
+app.listen(port, () => myLogger.success(`Listening on port ${port}.`));

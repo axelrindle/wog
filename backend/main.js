@@ -8,7 +8,14 @@ require('dotenv').config();
 
 // Define global variables
 global.DEBUG = process.env.DEBUG || false;
-global.logger = require('signale');
+
+const signale = require('signale');
+signale.config({
+  logLevel: DEBUG ? 'debug' : 'info',
+  displayTimestamp: true
+});
+global.logger = signale.scope('main');
+
 require('./util');
 require('./config');
 

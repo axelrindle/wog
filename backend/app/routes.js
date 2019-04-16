@@ -4,11 +4,15 @@ const fs = require('fs');
 const auth = require('./auth');
 const pkg = require('@root/package.json');
 
+const myLogger = logger.scope('router');
 const title = `${pkg.name} v${pkg.version}`;
 
 const checkAuthenticated = (req, res, next) => {
-    if(req.isAuthenticated()) next();
-    else res.redirect('/login');
+  if(req.isAuthenticated()) next();
+  else {
+    myLogger.warn('Unauthenticated request: ' + req);
+    res.redirect('/login');
+  }
 };
 const requireParameters = list => {
   return (req, res, next) => {
@@ -30,9 +34,15 @@ const requireParameters = list => {
 // Export setup function
 module.exports = app => {
 
+  // debug access logger
+  if (DEBUG) app.use((req, res, next) => {
+    myLogger.debug('%s %s from %s', req.method, req.url, req.ip);
+    next();
+  });
+
   // Init websocket
   app.ws('/socket', checkAuthenticated, require('./websocket'));
-  logger.note('WebSocket server accessible via /socket endpoint.');
+  myLogger.info('WebSocket server accessible via /socket endpoint.');
 
   // instantiate passport
   const passport = auth(app);
@@ -74,7 +84,7 @@ module.exports = app => {
       const contents = files.read(req.params.id);
       res.json(contents);
     } catch (e) {
-      logger.debug(e);
+      myLogger.error(e);
       res.status(500).json({ type: 'error', data: e });
     }
   });

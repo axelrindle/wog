@@ -20,10 +20,11 @@ global.objectKeyLoop = (obj, callback) => {
 /**
  * Logs an error message and immediately terminates the application.
  *
- * @param  {string} err The error message.
+ * @param {string} err The error message.
+ * @param {object} theLogger The signale instance to use.
  */
-global.fail = (err) => {
-  logger.fatal(err);
+global.fail = (err, theLogger = logger) => {
+  theLogger.fatal(DEBUG ? err : err.message || err);
   process.exit(-1);
 };
 
