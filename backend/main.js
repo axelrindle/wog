@@ -21,8 +21,8 @@ require('./config');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
-// Load log files
-require('./files');
+// Initialize adapters
+require('./adapter-manager');
 
 // Start the server
 require('./server');
