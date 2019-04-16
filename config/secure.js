@@ -6,9 +6,9 @@ module.exports = {
   /** Redis connection settings. */
   redis: {
     host: env('REDIS_HOST'),
-    port: env('REDIS_PORT', 6379),
+    port: parseInt(env('REDIS_PORT', 6379)),
     pass: env('REDIS_PASS'),
-    db: env('REDIS_DB', 0)
+    db: parseInt(env('REDIS_DB', 0))
   },
 
   /** A secret string used to encrypt session data. */

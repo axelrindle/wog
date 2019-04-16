@@ -4,10 +4,10 @@
 module.exports = {
 
   /** The port the server is listening on. */
-  port: env('APP_PORT', 8082),
+  port: parseInt(env('APP_PORT', 8082)),
 
   /** The port the websocket server is listening on. */
-  socketPort: env('APP_SOCKET_PORT', 8083),
+  socketPort: parseInt(env('APP_SOCKET_PORT', 8083)),
 
   /** The full root url for the application. */
   url: env('APP_URL', 'http://localhost:8082/'),
