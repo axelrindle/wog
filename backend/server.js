@@ -17,6 +17,7 @@ if (!config.app.url) fail('No url specified!');
 app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 app.use(express.static('frontend/static'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.secure.secret));
 app.use(flash());

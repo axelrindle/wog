@@ -5,8 +5,6 @@
 class AdapterManager {
   constructor() {
     this.instances = {};
-    this.selected = -1;
-
     this.init();
   }
 
@@ -37,18 +35,14 @@ class AdapterManager {
     return this.enabled;
   }
 
-  select(index) {
-    if (index < 0) throw new Exception('The index must be greater than or equal to 0!');
-    this.selected = index;
-  }
-
   /**
    * Returns the currently selected adapter instance.
    *
-   * @return {BaseAdapter|null} The active adapter.
+   * @param string key The adapter to select.
+   * @return {BaseAdapter|null} The selected adapter.
    */
-  get theAdapter() {
-    return this.selected === -1 ? null : this.instances[this.selected];
+  getAdapter(key) {
+    return this.instances[key];
   }
 }
 
