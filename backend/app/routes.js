@@ -44,10 +44,8 @@ module.exports = app => {
   app.ws('/socket', checkAuthenticated, require('./websocket'));
   myLogger.info('WebSocket server accessible via /socket endpoint.');
 
-  // instantiate passport
+  // setup passport routes
   const passport = auth(app);
-
-  // login post
   app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/',
