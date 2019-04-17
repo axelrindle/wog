@@ -1,9 +1,9 @@
 /* global Vue axios */
 
-// import dependencies
-import './bootstrap';
-import { whichAnimationEvent } from './helpers';
-import { fuzzysearch } from './fuzzy'
+// require dependencies
+require('./bootstrap');
+const { whichAnimationEvent } = require('./helpers');
+const { fuzzysearch } = require('./fuzzy');
 
 // create vue app
 new Vue({
