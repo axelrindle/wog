@@ -70,6 +70,15 @@ class FileAdapter extends BaseAdapter {
       });
   }
 
+  download(res, id) {
+    const entry = this.getEntry(id);
+    if (entry !== null) {
+      res.download(entry.path);
+    } else {
+      res.status(404).json({ type: 'error', data: `No file found with id ${id}!` });
+    }
+  }
+
   dispose() {
     this.watcher.close();
     this.logger.info('Disposed.');

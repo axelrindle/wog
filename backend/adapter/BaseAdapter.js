@@ -90,6 +90,15 @@ class BaseAdapter extends EventEmitter {
   getContents(id) {
     unimplemented();
   }
+
+  /**
+   * Downloads the contents for the given entry as a file.
+   * @param  {Response} res The response object.
+   * @param  {string} id The entry id.
+   */
+  download(res, id) {
+    unimplemented();
+  }
 }
 
 module.exports = BaseAdapter;
