@@ -22,6 +22,11 @@ class FileAdapter extends BaseAdapter {
     this.logger.complete(`Initially loaded ${this.files.length} files.`);
   }
 
+  dispose() {
+    this.watcher.close();
+    this.logger.info('Disposed.');
+  }
+
   loadFiles() {
     // glob all files specified by the given patterns
     this.files = glob.sync(this.options.glob, { silent: true })
@@ -79,11 +84,6 @@ class FileAdapter extends BaseAdapter {
     } else {
       res.status(404).json({ type: 'error', data: `No file found with id ${id}!` });
     }
-  }
-
-  dispose() {
-    this.watcher.close();
-    this.logger.info('Disposed.');
   }
 }
 
