@@ -4,6 +4,11 @@
 const baseUrl = $('base').attr('href');
 axios.defaults.baseURL = baseUrl;
 
+/**
+ * Some utility functions.
+ *
+ * @type {Object}
+ */
 window.helpers = {
   path(path) {
     let url = baseUrl;
