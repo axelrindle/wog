@@ -1,11 +1,13 @@
 {
   "dontLoad": [
     "node_modules/**",
-    "frontend/**",
     ".github/**",
     ".cache/**"
   ],
-  "libs": [],
+  "libs": [
+    "browser",
+    "jquery"
+  ],
   "plugins": {
     "node": {
       "dontLoad": "",
@@ -28,6 +30,7 @@
     "commonjs": {}
   },
   "loadEagerly": [
-    "backend/*.js"
+    "backend/*.js",
+    "frontend/**/*.vue"
   ]
 }
