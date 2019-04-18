@@ -37,7 +37,9 @@
 <script>
 module.exports = {
   name: 'FileList',
-
+  props: {
+    socket: WebSocket
+  },
   data() {
     return {
       loading: true,
@@ -82,6 +84,7 @@ module.exports = {
     },
     select(index) {
       this.selected.file = index;
+      if (this.socket) this.socket.send({ event: 'changeEntry', entry: this.selected.file });
     }
   },
   watch: {
@@ -93,6 +96,7 @@ module.exports = {
     },
     'selected.adapter': function() {
       localStorage.setItem('selectedAdapter', this.selected.adapter);
+      if (this.socket) this.socket.send({ event: 'changeAdapter', adapter: this.selected.adapter });
       this.refresh();
     }
   },

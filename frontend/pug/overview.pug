@@ -19,7 +19,7 @@ block content
 
       hr.bottom
 
-      file-list(@ready="ready()" ref="fileList")
+      file-list(@ready="ready()" :socket="socket" ref="fileList")
 
     // content
     log-viewer(ref="logViewer" :adapter="theAdapter" :entry="theEntry")

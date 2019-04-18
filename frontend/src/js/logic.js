@@ -15,7 +15,7 @@ new Vue({
 
   data: {
     adapters: [],
-    error: 'Select a file on the left.',
+    error: null,
     isLoading: false,
     socket: null
   },
@@ -52,25 +52,27 @@ new Vue({
     const protocol = location.protocol === 'http:' ? 'ws' : 'wss';
     const url = `${protocol}://${location.host}/socket`;
     console.log(url);
-    this.socket = new WebSocket(url);
+    this.socket = new BetterWebSocket(url);
+    this.socket
+      .on('open', () => {
+        console.log('WebSocket connection established.');
+      })
+      .on('close', () => {
+        alert('WebSocket connection closed!\nAutomatic file refresh disabled.');
+        this.socket = null;
+      })
+      .on('error', err => {
+        this.error = err;
+      })
+      .on('message', msg => {
+        const parsed = JSON.parse(msg);
+        switch (parsed.event) {
+          case 'contentsUpdated':
 
-    this.socket.onopen = function (event) {
-      console.log('WebSocket connection established.');
-    }.bind(this);
+            break;
+          default:
 
-    this.socket.onclose = function (event) {
-      alert('WebSocket connection closed!\nAutomatic file refresh disabled.');
-      this.socket = null;
-    }.bind(this);
-
-    this.socket.onerror = function (error) {
-      this.error = error;
-    }.bind(this);
-
-    this.socket.onmessage = function (message) {
-      if (message.data === 'file-was-updated') {
-        this.select(this.selected, true);
-      }
-    }.bind(this);
+        }
+      });
   }
 });
