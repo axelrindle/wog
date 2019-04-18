@@ -60,6 +60,9 @@ module.exports = {
     },
     allShown() {
       return this.shown === this.files.length;
+    },
+    theEntry() {
+      return this.files[this.selected.file];
     }
   },
   methods: {

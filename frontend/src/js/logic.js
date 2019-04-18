@@ -2,158 +2,38 @@
 
 // require dependencies
 require('./bootstrap');
-const { whichAnimationEvent } = require('./helpers');
-const { fuzzysearch } = require('./fuzzy');
+const FileList = require('../vue/FileList');
+const LogViewer = require('../vue/LogViewer');
+const isMounted = require('vue-is-mounted');
 
 // create vue app
 new Vue({
-
-  // root element
+  name: 'Overview',
   el: '#app',
+  components: { FileList, LogViewer },
+  mixins: [ isMounted ],
 
-  // options & settings
   data: {
-    files: [],
-    fileFilter: '',
-    selected: -1,
-    fileSize: '',
-    log: '',
-    filterMode: 'grep',
-    grepMode: 'grep',
-    grep: '', // TODO: Add more filters
-    lineMode: 'head',
-    line: '',
-    lineToGoTo: 1,
+    adapters: [],
     error: 'Select a file on the left.',
     isLoading: false,
-    socket: null,
-    showRefreshedIndicator: false
+    socket: null
   },
-
-  // computed values (cached; only re-computed when data changes)
   computed: {
-    filesFiltered() {
-      return this.files.filter(el => el.name.indexOf(this.fileFilter) !== -1);
+    theAdapter() {
+      if(!this.isMounted) return;
+      return this.$refs.fileList.selected.adapter;
     },
-    linesFiltered() {
-      // check if an item is selected
-      if (this.selected === -1 || this.log === '')
-        return this.log;
-
-      // split raw text into an array of lines
-      let linesArray = this.log.split('\n');
-
-      // perform grep or fuzzy search
-      if (this.grep !== '') {
-        if (this.grepMode === 'grep') {
-          linesArray = linesArray.filter(el => el.indexOf(this.grep) !== -1);
-        } else if (this.grepMode === 'fuzzy') {
-          linesArray = fuzzysearch(this.grep, linesArray);
-        }
-      }
-
-      // TODO: add head and tail functions
-
-      return linesArray;
-    },
-    filteredLinesAmount() {
-      return this.linesFiltered.length;
-    },
-    downloadUrl() {
-      return this.selected + '/download';
+    theEntry() {
+      if(!this.isMounted) return;
+      return this.$refs.fileList.theEntry;
     }
   },
 
   // public functions
   methods: {
-    reset: function() {
-      this.selected = -1;
-      this.log = '';
-      this.fileFilter = '';
-      this.grep = '';
-      this.files = [];
-      this.error = 'Select a file on the left.';
-    },
-    refresh: function () {
-      this.reset();
-      return axios.post('/all').then(response => {
-        this.files = response.data;
-      }).catch(err => {
-        this.error = err.message;
-      });
-    },
-    select: function (index, silent = false) {
-      if (!silent) {
-        this.log = '';
-        this.grep = '';
-        this.isLoading = true;
-      }
-      this.error = '';
-      this.selected = index;
-      axios.post(`/${this.files[index].id}`).then(response => {
-        const data = response.data;
-        if (data.contents === '') {
-          this.error = `The file ${this.files[index].path} is empty!`;
-          this.fileSize = '0 B'
-        } else {
-          this.log = data.contents;
-          this.fileSize = data.size;
-
-          // show refresh indicator
-          this.showRefreshedIndicator = true;
-          setTimeout(() => {
-            this.showRefreshedIndicator = false;
-          }, 3000);
-        }
-      }).catch(err => {
-        this.error = err;
-      })
-      .finally(() => {
-        if (silent) {
-          $('#logContent')
-            .scrollTop(19.5 * this.filteredLinesAmount)
-        } else {
-          this.isLoading = false;
-        }
-      });
-    },
-    totalLinesAmount: function () {
-      return this.linesFiltered === '' ? 0 : this.log.split('\n').length;
-    },
-    isFiltered: function () {
-      return this.grep !== '';
-    },
-    reloadFile: function () {
-      if (this.selected > -1) {
-        // just re-select the selected file ;)
-        this.select(this.selected);
-      }
-    },
-    openGoToLine: function () {
-      if (this.selected === -1) {
-        alert('Select a file first.');
-      } else {
-        $('#goToLineModal')
-          .addClass('is-active')
-          .find('input')
-          .focus();
-      }
-    },
-    closeGoToLine: function () {
-      $('#goToLineModal').removeClass('is-active');
-    },
-    goToLine: function () {
-      this.closeGoToLine();
-      $('#logContent')
-        .scrollTop(19.5 * this.lineToGoTo)
-        .find('div[data-line="' + this.lineToGoTo + '"]')
-          .addClass('blink')
-          .one(whichAnimationEvent(), function (event) {
-            $(this).removeClass('blink');
-          });
-    },
-    showGoToLineError: function () {
-      return this.lineToGoTo > this.filteredLinesAmount;
+    ready() {
+      $('#fader').fadeOut(500, () => $('#fader').remove());
     }
   },
 
@@ -161,8 +41,8 @@ new Vue({
   watch: {
     // TODO: Only log in debug mode
     // TODO: Deliver debug mode to frontend
-    error: (e) => {
-      if (e !== '') console.log(`Error: ${e}`);
+    error() {
+      if (this.error) console.error(this.error);
     }
   },
 
@@ -192,10 +72,5 @@ new Vue({
         this.select(this.selected, true);
       }
     }.bind(this);
-
-    // initially refresh
-    this.refresh().then(() => {
-      $('#fader').fadeOut(500, () => $('#fader').remove());
-    });
   }
 });

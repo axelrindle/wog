@@ -65,7 +65,9 @@ class FileAdapter extends BaseAdapter {
         return fs.readFile(entry.path, { encoding: 'utf-8' });
       })
       .then(contents => {
-        result.contents = contents;
+        const lines = contents.split('\n');
+        lines.splice(lines.length - 1, 1);
+        result.lines = lines;
         return result;
       });
   }

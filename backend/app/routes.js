@@ -93,28 +93,28 @@ module.exports = app => {
   });
 
   // sends content of a file
-  app.post('/:id', checkAuthenticated, requireParameters(['id']), (req, res) => {
-    try {
-      const contents = files.read(req.params.id);
-      res.json(contents);
-    } catch (e) {
-      myLogger.error(e);
-      res.status(500).json({ type: 'error', data: e });
-    }
+  app.post('/contents', checkAuthenticated, requireParameters(['adapter', 'id']), (req, res) => {
+    const adapter = req.body.adapter;
+    const entryId = req.body.id;
+    adapters.getAdapter(adapter).getContents(entryId)
+      .then(contents => {
+        res.json(contents);
+      })
+      .catch(err => {
+        myLogger.error(err);
+        res.status(500).json({ type: 'error', data: err });
+      });
   });
 
   // download a file
-  app.get('/:id/download', checkAuthenticated, requireParameters(['id']), (req, res) => {
+  app.get('/download/:adapter/:id', checkAuthenticated, requireParameters(['adapter', 'id']), (req, res) => {
     // make sure downloading is enabled
     if (!config.app.enableFileDownloads)
       return res.status(403).send('Forbidden!');
 
-    const id = req.body.id;
-    if (!files.find(id)) {
-      return res.status(404).send(`No file found with ID "${id}"!`);
-    }
-
-    res.download(files.find(id).path);
+    const adapter = req.params.adapter;
+    const entryId = req.params.id;
+    adapter.getAdapter(adapter).download(res, entryId);
   });
 
   // about page
