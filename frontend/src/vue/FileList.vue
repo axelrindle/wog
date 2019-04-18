@@ -92,6 +92,7 @@ module.exports = {
       }
     },
     'selected.adapter': function() {
+      localStorage.setItem('selectedAdapter', this.selected.adapter);
       this.refresh();
     }
   },
@@ -101,6 +102,12 @@ module.exports = {
     axios.post('/all', { type: 'adapters' })
       .then(response => {
         this.adapters = response.data;
+
+        // select saved adapter
+        const previous = localStorage.getItem('selectedAdapter');
+        if (this.adapters.indexOf(previous) > -1) {
+          this.selected.adapter = previous;
+        }
       }).catch(err => {
         this.error = err.message;
       })
