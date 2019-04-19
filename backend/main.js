@@ -21,8 +21,13 @@ require('./config');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
-// Initialize adapters
-require('./adapter-manager');
+// since the adapterManager init function is async,
+// we need a top level async executor
+(async () => {
+  // Initialize adapters
+  require('./adapter-manager');
+  await adapters.init();
 
-// Start the server
-require('./server');
+  // Start the server
+  require('./server');
+})();

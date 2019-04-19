@@ -24,12 +24,6 @@ class BaseAdapter extends EventEmitter {
     super();
     this.options = options;
     this.logger = logger.scope(this.name);
-
-    try {
-      this.init();
-    } catch (e) {
-      fail(e, this.logger);
-    }
   }
 
   generateId() {
