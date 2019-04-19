@@ -16,7 +16,7 @@ class RedisAdapter extends BaseAdapter {
     const self = this;
     return new Promise((resolve, reject) => {
       self.client = redis.createClient(self.options.connection);
-      self.client.on("error", reject);
+      self.client.on('error', reject);
       self.client.on('ready', () => {
         self.logger.complete('Connected to redis.');
         self.loadEntries();
