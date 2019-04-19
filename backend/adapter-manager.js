@@ -18,10 +18,10 @@ class AdapterManager {
     // Load configured adapters
     const available = config.adapters.available;
     const options = config.adapters.options;
-    this.enabled = config.adapters.enabled.split(',');
+    const enabled = config.adapters.enabled.split(',');
 
     // Create class instances for every enabled adapter
-    await asyncForEach(this.enabled, async (el) => {
+    await asyncForEach(enabled, async (el) => {
       // the path to the file is configured (alias/module/etc.)
       // we can just require it
       // and create a class instance with the given options
@@ -44,7 +44,7 @@ class AdapterManager {
   }
 
   list() {
-    return this.enabled;
+    return Object.keys(this.instances);
   }
 
   /**
