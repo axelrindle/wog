@@ -114,7 +114,7 @@ module.exports = app => {
 
     const adapter = req.params.adapter;
     const entryId = req.params.id;
-    adapter.getAdapter(adapter).download(res, entryId);
+    adapters.getAdapter(adapter).download(res, entryId);
   });
 
   // about page
