@@ -1,7 +1,7 @@
 /**
  * Thrown to break out of a forEach loop.
  */
-global.BreakException = function () { /* no params ;) */ };
+const BreakException = function () { /* no params ;) */ };
 
 /**
  * Loop through the keys of an object.

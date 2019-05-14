@@ -1,6 +1,4 @@
 // Require modules
-const fs = require('fs');
-
 const auth = require('./auth');
 const pkg = require('@root/package.json');
 
@@ -78,7 +76,7 @@ module.exports = app => {
       case 'adapters':
         res.json(adapters.list());
         break;
-      case 'entries':
+      case 'entries': {
         const selectedAdapter = req.body.adapter;
         if (!selectedAdapter) {
           res.status(400).json({ type: 'error', data: 'No adapter selected!' });
@@ -86,6 +84,7 @@ module.exports = app => {
           res.json(adapters.getAdapter(selectedAdapter).entries);
         }
         break;
+      }
       default:
         res.status(400).json({ type: 'error', data: `Unknown type ${type}!` });
         break;

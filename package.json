@@ -54,6 +54,7 @@
   "devDependencies": {
     "@vue/component-compiler-utils": "^3.0.0",
     "bulma": "^0.7.1",
+    "eslint": "^5.16.0",
     "parcel-bundler": "^1.12.3",
     "sass": "^1.15.2",
     "vue-template-compiler": "^2.6.10"

@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable getter-return */
+/* eslint-disable no-unused-vars */
 // Require modules
 const EventEmitter = require('events');
 const nanoid = require('nanoid/generate');
