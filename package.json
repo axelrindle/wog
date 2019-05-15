@@ -4,6 +4,7 @@
   "description": "A web interface for viewing logs.",
   "main": "backend/server.js",
   "scripts": {
+    "start": "node backend/main",
     "dev": "DEBUG=true node backend/main",
     "compile:sass": "parcel build frontend/src/sass/base.sass --no-source-maps -d frontend/static/css --out-file style.min.css",
     "compile:js": "parcel build frontend/src/js/logi*.js --no-source-maps -d frontend/static/js",
