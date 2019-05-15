@@ -43,11 +43,5 @@ block content
 
 
 block js
-  if !debug
-    script(src=path("vendor/vue.min.js"))
-  else
-    script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
-  script(src=path("vendor/axios.min.js"))
-  script(src=path("vendor/jquery-3.3.1.min.js"))
-  //script(src=path("vendor/jquery.mCustomScrollbar.concat.min.js"))
+  script(src='https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js', integrity='sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=', crossorigin='anonymous')
   script(src=path("js/login.js"))
