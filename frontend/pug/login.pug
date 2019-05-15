@@ -1,21 +1,21 @@
 extends layout.pug
 
 block content
-  
+
   // Content wrapper
   div.flex.no-justify#app
-  
+
     img(src=path("img/header.png"), width="600px")
-    
+
     // Login card
     div.card
       header.card-header
         p.card-header-title Login
-        
+
       form(action=path("login"), method="POST")
         // Input items
         div.card-content
-        
+
           // Username
           .field
             label.label Username
@@ -24,7 +24,7 @@ block content
               span.icon.is-small.is-left
                 i.fas.fa-user
             p.help.is-danger(v-if="username === ''") Enter a username!
-            
+
           // Password
           .field
             label.label Password
@@ -33,7 +33,7 @@ block content
               span.icon.is-small.is-left
                 i.fas.fa-key
             p.help.is-danger(v-if="password === ''") Enter a password!
-            
+
           if error
             p.has-text-danger= error
 
