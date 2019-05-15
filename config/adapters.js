@@ -1,3 +1,6 @@
+// Require modules
+const { env } = require('../backend/util');
+
 /**
  * Define active adapters.
  * @type {Object}

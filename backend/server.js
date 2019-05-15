@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const express = require('express');
 const helmet = require('helmet');
+const { fail } = require('./util');
 
 const myLogger = logger.scope('server');
 const app = require('express-ws')(express()).app;

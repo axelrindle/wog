@@ -9,13 +9,9 @@
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
         "DEBUG": "readonly",
-        "NANOID_ALPHABET": "readonly",
-        "env": true,
-        "fail": true,
         "config": true,
         "logger": true,
-        "adapters": true,
-        "objectKeyLoop": true
+        "adapters": true
     },
     "parserOptions": {
         "ecmaVersion": 2018

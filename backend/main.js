@@ -16,7 +16,6 @@ signale.config({
 });
 global.logger = signale.scope('main');
 
-require('./util');
 require('./config');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');

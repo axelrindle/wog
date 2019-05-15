@@ -1,3 +1,6 @@
+// Require modules
+const { env } = require('../backend/util');
+
 /**
  * Secure settings (passwords, connection details, etc.)
  */

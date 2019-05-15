@@ -4,6 +4,7 @@
 // Require modules
 const EventEmitter = require('events');
 const nanoid = require('nanoid/generate');
+const { NANOID_ALPHABET } = require('../util');
 
 /**
  * Throws an exception indicating that a function has to be implemented by a sub class.

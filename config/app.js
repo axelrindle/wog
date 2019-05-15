@@ -1,3 +1,6 @@
+// Require modules
+const { env } = require('../backend/util');
+
 /**
  * Application specific configuration (server settings, etc.)
  */
