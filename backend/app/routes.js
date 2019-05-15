@@ -1,6 +1,7 @@
 // Require modules
 const auth = require('./auth');
 const pkg = require('@root/package.json');
+const { getPath } = require('../util');
 
 const myLogger = logger.scope('router');
 const title = `${pkg.name} v${pkg.version}`;
@@ -9,7 +10,7 @@ const checkAuthenticated = (req, res, next) => {
   if(req.isAuthenticated()) next();
   else {
     myLogger.warn('Unauthenticated request: ' + req);
-    res.redirect('/login');
+    res.redirect(getPath('login'));
   }
 };
 const requireParameters = list => {
@@ -45,13 +46,13 @@ module.exports = app => {
   // setup passport routes
   const passport = auth(app);
   app.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/',
+    successRedirect: getPath(),
+    failureRedirect: getPath(),
     failureFlash: true
   }));
   app.get('/logout', checkAuthenticated, (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.redirect(getPath());
   });
 
   // index
