@@ -52,8 +52,8 @@ exports.getPath = path => {
   if (!url.endsWith('/'))
     url += '/';
 
-  if (path.startsWith('/'))
+  if (path && path.startsWith('/'))
     path = path.substring(1);
 
-  return url + path;
+  return path ? url + path : url;
 };
