@@ -146,8 +146,8 @@ module.exports = {
           }
         })
         .catch(err => {
-          console.error(err);
-          this.error = err.message;
+          console.error(err.response.data);
+          this.error = err.response.data.msg;
         })
         .then(() => {
           this.loading = false;

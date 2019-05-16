@@ -102,8 +102,8 @@ module.exports = app => {
         res.json(contents);
       })
       .catch(err => {
-        theAdapter.logger.error(err);
-        res.status(500).json({ type: 'error', data: err });
+        theAdapter.logger.error(err.message);
+        res.status(500).json({ type: 'error', msg: err.message });
       });
   });
 
