@@ -96,12 +96,13 @@ module.exports = app => {
   app.post('/contents', checkAuthenticated, requireParameters(['adapter', 'id']), (req, res) => {
     const adapter = req.body.adapter;
     const entryId = req.body.id;
-    adapters.getAdapter(adapter).getContents(entryId)
+    const theAdapter = adapters.getAdapter(adapter);
+    theAdapter.getContents(entryId)
       .then(contents => {
         res.json(contents);
       })
       .catch(err => {
-        myLogger.error(err);
+        theAdapter.logger.error(err);
         res.status(500).json({ type: 'error', data: err });
       });
   });
