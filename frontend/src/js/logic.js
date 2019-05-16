@@ -1,6 +1,4 @@
-/* global Vue axios */
-
-// require dependencies
+// Require dependencies
 require('./bootstrap');
 const FileList = require('../vue/FileList');
 const LogViewer = require('../vue/LogViewer');

@@ -1,7 +1,5 @@
-/* global Vue */
-
-// Import dependencies
-import './bootstrap';
+// Require dependencies
+require('./bootstrap');
 
 new Vue({
   el: '#app',

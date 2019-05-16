@@ -1,5 +1,3 @@
-/* global axios */
-
 // Set base url
 const baseUrl = $('base').attr('href');
 axios.defaults.baseURL = baseUrl;
@@ -48,6 +46,6 @@ class BetterWebSocket extends WebSocket {
     const theEvent = `on${event}`;
     this[theEvent] = callback;
     return this;
-  };
+  }
 }
 window.BetterWebSocket = BetterWebSocket;
