@@ -29,6 +29,7 @@
     "node": ">=10.15.3"
   },
   "dependencies": {
+    "@axelrindle/async-for-each": "^1.0.0",
     "body-parser": "^1.18.3",
     "chokidar": "^2.0.4",
     "connect-flash": "^0.1.1",

@@ -2,13 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { objectKeyLoop } = require('./util');
-
-// https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
+const asyncForEach = require('@axelrindle/async-for-each');
 
 /**
  * The AdapterManager holds all configured adapters and is used
