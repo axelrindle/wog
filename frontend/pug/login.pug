@@ -43,5 +43,10 @@ block content
 
 
 block js
+  if !_debug
+    script(src='https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js', integrity='sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY=', crossorigin='anonymous')
+  else
+    script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
   script(src='https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js', integrity='sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=', crossorigin='anonymous')
+  script(src='https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js', integrity='sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=', crossorigin='anonymous')
   script(src=path("js/login.js"))
