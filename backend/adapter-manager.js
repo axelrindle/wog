@@ -1,4 +1,6 @@
 // Require modules
+const fs = require('fs');
+const path = require('path');
 const { objectKeyLoop } = require('./util');
 
 // https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404
@@ -14,12 +16,34 @@ async function asyncForEach(array, callback) {
  */
 class AdapterManager {
   constructor() {
+    this.logger = logger.scope('adapter-manager');
+    this.adapters = this.available();
     this.instances = {};
+  }
+
+  /**
+   * Loads available adapters (built-in and custom).
+   */
+  available() {
+    const builtInDir = path.resolve(__dirname, 'adapter');
+    const builtIn = fs.readdirSync(builtInDir);
+
+    const extra = config.adapters.available;
+
+    const result = {};
+    builtIn.forEach(el => {
+      const name = path.basename(el, '.js').toLowerCase().replace('adapter', '');
+      if (name === 'base') return; // skip BaseAdapter
+      result[name] = path.resolve(builtInDir, el);
+    });
+    this.logger.debug(`Loaded ${Object.keys(result).length} adapters: `);
+    this.logger.debug(result);
+
+    return Object.assign(result, extra);
   }
 
   async init() {
     // Load configured adapters
-    const available = config.adapters.available;
     const options = config.adapters.options;
     const enabled = config.adapters.enabled.split(',');
 
@@ -28,7 +52,13 @@ class AdapterManager {
       // the path to the file is configured (alias/module/etc.)
       // we can just require it
       // and create a class instance with the given options
-      const clazz = require(available[el]);
+      const toLoad = this.adapters[el];
+      if (!toLoad) {
+        this.logger.error(`No adapter found with name ${el}!`);
+        return;
+      }
+
+      const clazz = require(toLoad);
       const instance = new clazz(options[el]);
       try {
         await instance.init();

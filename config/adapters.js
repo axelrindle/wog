@@ -8,23 +8,20 @@ const { env } = require('../backend/util');
 module.exports = {
 
   /**
-   * Defines available adapters.
+   * Defines custom adapters.
    * @type {Object}
    */
-  available: {
-    files: '@adapter/FileAdapter.js',
-    redis: '@adapter/RedisAdapter.js'
-  },
+  available: {},
 
   /**
    * Defines what adapters should be loaded.
    * @type {string}
    */
-  enabled: env('ADAPTERS', 'files'),
+  enabled: env('ADAPTERS', 'file'),
 
   options: {
 
-    files: {
+    file: {
       /**
        * An array of globs for selecting log files to view in the interface.
        *
