@@ -30,8 +30,10 @@ class AdapterManager {
       if (name === 'base') return; // skip BaseAdapter
       result[name] = path.resolve(builtInDir, el);
     });
-    this.logger.debug(`Loaded ${Object.keys(result).length} adapters: `);
-    this.logger.debug(result);
+    if (DEBUG) {
+      this.logger.debug(`Loaded ${Object.keys(result).length} adapters: `);
+      this.logger.debug(result);
+    }
 
     return Object.assign(result, extra);
   }

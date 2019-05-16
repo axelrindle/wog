@@ -11,7 +11,6 @@ global.DEBUG = process.env.DEBUG || false;
 
 const signale = require('signale');
 signale.config({
-  logLevel: DEBUG ? 'debug' : 'info',
   displayTimestamp: true
 });
 global.logger = signale.scope('main');
