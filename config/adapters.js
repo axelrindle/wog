@@ -47,9 +47,9 @@ module.exports = {
 
     redis: {
       connection: {
-        host: env('ADAPTER_REDIS_HOST'),
-        port: env('ADAPTER_REDIS_PORT', 6379),
-        password: env('ADAPTER_REDIS_PASS')
+        host: env('ADAPTER_REDIS_HOST', env('REDIS_HOST')),
+        port: env('ADAPTER_REDIS_PORT', env('REDIS_PORT', 6379)),
+        password: env('ADAPTER_REDIS_PASS', env('REDIS_PASS'))
       },
       keys: env('ADAPTER_REDIS_KEYS')
     }
