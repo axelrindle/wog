@@ -72,7 +72,6 @@ class FileAdapter extends BaseAdapter {
       })
       .then(contents => {
         const lines = contents.split('\n');
-        lines.splice(lines.length - 1, 1);
         result.lines = lines;
         return result;
       });
