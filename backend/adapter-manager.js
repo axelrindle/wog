@@ -16,26 +16,30 @@ class AdapterManager {
   }
 
   /**
-   * Loads available adapters (built-in and custom).
+   * Loads available adapters (built-in and packages).
    */
   available() {
     const builtInDir = path.resolve(__dirname, 'adapter');
+    const packagesDir = path.resolve(__dirname, '..', 'packages');
     const builtIn = fs.readdirSync(builtInDir);
-
-    const extra = config.adapters.available;
-
+    const packages = fs.readdirSync(packagesDir);
     const result = {};
+
     builtIn.forEach(el => {
       const name = path.basename(el, '.js').toLowerCase().replace('adapter', '');
       if (name === 'base') return; // skip BaseAdapter
-      result[name] = path.resolve(builtInDir, el);
+      result[name] = path.join(builtInDir, el);
+    });
+    packages.forEach(el => {
+      const pkg = require(path.join(packagesDir, el, 'package.json'));
+      result[pkg.registryName] = path.join(packagesDir, el, pkg.main);
     });
     if (DEBUG) {
       this.logger.debug(`Loaded ${Object.keys(result).length} adapters: `);
       this.logger.debug(result);
     }
 
-    return Object.assign(result, extra);
+    return result;
   }
 
   async init() {

@@ -67,6 +67,7 @@
     "utf-8-validate": "^5.0.1"
   },
   "_moduleAliases": {
-    "@root": "."
+    "@root": ".",
+    "@BaseAdapter": "./backend/adapter/BaseAdapter"
   }
 }

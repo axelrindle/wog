@@ -8,12 +8,6 @@ const { env } = require('../backend/util');
 module.exports = {
 
   /**
-   * Defines custom adapters.
-   * @type {Object}
-   */
-  available: {},
-
-  /**
    * Defines what adapters should be loaded.
    * @type {string}
    */
