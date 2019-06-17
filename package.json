@@ -2,7 +2,7 @@
   "name": "wog",
   "version": "1.0.0-rc.2",
   "description": "A web interface for viewing logs.",
-  "main": "backend/server.js",
+  "main": "backend/main.js",
   "scripts": {
     "start": "node backend/main",
     "dev": "DEBUG=true node backend/main",
