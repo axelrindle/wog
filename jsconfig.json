@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "baseUrl": ".",
+    "paths": {
+      "@root": [
+        "."
+      ],
+      "@BaseAdapter": [
+        "./backend/adapter/BaseAdapter"
+      ]
+    }
+  },
+  "include": [
+    "backend/**/*",
+    "packages/**/*"
+  ]
+}

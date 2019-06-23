@@ -1,7 +1,14 @@
 'use strict';
 
 // Register any modules/services
-require('module-alias/register');
+const path = require('path');
+const moduleAlias = require('module-alias');
+const paths = require('../jsconfig.json').compilerOptions.paths;
+const aliases = {};
+Object.keys(paths).forEach(el => {
+  aliases[el] = path.resolve(path.dirname(__dirname), paths[el][0]);
+});
+moduleAlias.addAliases(aliases);
 
 // Load the environment
 require('dotenv').config();

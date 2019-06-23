@@ -65,9 +65,5 @@
     "bufferutil": "^4.0.0",
     "fsevents": "^1.2.4",
     "utf-8-validate": "^5.0.1"
-  },
-  "_moduleAliases": {
-    "@root": ".",
-    "@BaseAdapter": "./backend/adapter/BaseAdapter"
   }
 }
