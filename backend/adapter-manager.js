@@ -1,7 +1,6 @@
 // Require modules
 const fs = require('fs');
 const path = require('path');
-const { objectKeyLoop } = require('./util');
 const asyncForEach = require('@axelrindle/async-for-each');
 
 /**
@@ -70,7 +69,7 @@ class AdapterManager {
   }
 
   dispose() {
-    objectKeyLoop(this.instances, el => {
+    Object.keys(this.instances).forEach(el => {
       this.instances[el].dispose();
     });
     this.instances = null;

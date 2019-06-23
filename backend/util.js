@@ -1,23 +1,4 @@
 /**
- * Thrown to break out of a forEach loop.
- */
-const BreakException = function () { /* no params ;) */ };
-
-/**
- * Loop through the keys of an object.
- *
- * @param  {object}   obj      The object to loop through.
- * @param  {Function} callback A handler function. Takes one argument for the current key.
- */
-exports.objectKeyLoop = (obj, callback) => {
-  try {
-    Object.keys(obj).forEach(callback);
-  } catch (e) {
-    if (e !== BreakException) throw e;
-  }
-};
-
-/**
  * Logs an error message and immediately terminates the application.
  *
  * @param {string} err The error message.
