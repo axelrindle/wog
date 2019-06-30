@@ -84,7 +84,6 @@ module.exports = {
   data() {
     return {
       loading: false,
-      error: 'No entry selected!',
       content: null,
       showIndicator: {
         refresh: false,
@@ -129,6 +128,14 @@ module.exports = {
     },
     showGoToLineError() {
       return parseInt(this.lineToGoTo) > this.filteredLinesAmount;
+    },
+    error() {
+      if (this.$root.error) return this.$root.error;
+      if (this.loading) return null;
+      if (!this.adapter) return 'No adapter selected!';
+      if (!this.entry) return 'No entry selected!';
+      if (!this.content) return 'This entry is empty!';
+      return null;
     }
   },
   methods: {
@@ -136,18 +143,22 @@ module.exports = {
       return window.helpers.path(path);
     },
     refresh() {
+      this.$root.error = null;
       this.loading = true;
-      this.error = null;
       axios.post('/contents', { adapter: this.adapter, id: this.entry.id })
         .then(response => {
           this.content = response.data;
           if (this.content.lines.length === 0) {
-            this.error = 'The file is empty.';
+            this.content = null;
           }
         })
         .catch(err => {
-          console.error(err.response.data);
-          this.error = err.response.data.msg;
+          console.error(err.response.data || err);
+          if (err.response) {
+            this.$root.error = err.response.data.msg;
+          } else {
+            this.$root.error = err;
+          }
         })
         .then(() => {
           this.loading = false;

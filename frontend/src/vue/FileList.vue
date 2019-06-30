@@ -49,8 +49,7 @@ module.exports = {
       selected: {
         adapter: null,
         file: -1
-      },
-      error: null
+      }
     };
   },
   computed: {
@@ -69,6 +68,7 @@ module.exports = {
   },
   methods: {
     refresh() {
+      this.$root.error = null;
       this.loading = true;
       this.selected.file = -1;
       this.files = [];
@@ -76,7 +76,7 @@ module.exports = {
         .then(response => {
           this.files = response.data;
         }).catch(err => {
-          this.error = err.message;
+          this.$root.error = err.message;
         })
         .then(() => {
           this.loading = false;
@@ -84,7 +84,8 @@ module.exports = {
     },
     select(index) {
       this.selected.file = index;
-      if (this.socket) this.socket.send({ event: 'changeEntry', entry: this.selected.file });
+      const fileId = this.files[this.selected.file].id;
+      if (this.socket) this.socket.send(JSON.stringify({ event: 'changeEntry', entry: fileId }));
     }
   },
   watch: {
@@ -96,7 +97,7 @@ module.exports = {
     },
     'selected.adapter': function() {
       localStorage.setItem('selectedAdapter', this.selected.adapter);
-      if (this.socket) this.socket.send({ event: 'changeAdapter', adapter: this.selected.adapter });
+      this.socket.send(JSON.stringify({ event: 'changeAdapter', adapter: this.selected.adapter }));
       this.refresh();
     }
   },
@@ -113,7 +114,7 @@ module.exports = {
           this.selected.adapter = previous;
         }
       }).catch(err => {
-        this.error = err.message;
+        this.$root.error = err.message;
       })
       .then(() => {
         this.loading = false;

@@ -35,15 +35,6 @@ new Vue({
     }
   },
 
-  // watch data props
-  watch: {
-    // TODO: Only log in debug mode
-    // TODO: Deliver debug mode to frontend
-    error() {
-      if (this.error) console.error(this.error);
-    }
-  },
-
   // called when Vue is ready
   mounted() {
     // websocket connection
