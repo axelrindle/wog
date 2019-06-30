@@ -36,12 +36,18 @@ module.exports = (ws, req) => {
       myLogger.debug(parsed);
       switch (parsed.event) {
         case 'changeAdapter':
+          if (currentAdapter) {
+            currentAdapter.unregisterSocket(connectionId);
+          }
           currentAdapter = adapters.getAdapter(parsed.adapter);
-          if (currentAdapter.supportsEvents())
+          if (currentAdapter.supportsEvents()) {
             currentAdapter.registerSocket(connectionId, ws);
+          }
           break;
         case 'changeEntry':
-          currentAdapter.watchEntry(parsed.entry);
+          if (currentAdapter.supportsEvents()) {
+            currentAdapter.watchEntry(parsed.entry);
+          }
           break;
         default:
           sendError(ws, `Unknown event "${parsed.event}"!`);
