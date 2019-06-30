@@ -45,9 +45,18 @@ class FileAdapter extends BaseAdapter {
 
   createFileWatcher() {
     this.watcher = new FSWatcher()
-      .on('change', path => this.emit('change', path))
-      .on('unlink', path => this.emit('unlink', path))
-      .on('error', error => this.emit('error', error));
+      //.on('add', path => this.handleFileEvent('add', path))
+      .on('change', path => this.handleFileEvent('change', path))
+      .on('unlink', path => {
+        const entry = this.files.find(el => el.path === path);
+        const index = this.files.indexOf(entry);
+        if (index > -1) {
+          this.files.splice(index, 1);
+          this.logger.info(`The file at '${path}' has been deleted.`);
+          this.handleFileEvent('unlink', path);
+        }
+      })
+      .on('error', error => this.handleFileEvent('error', error));
     this.logger.info('File watching initialized.');
   }
 
@@ -84,6 +93,19 @@ class FileAdapter extends BaseAdapter {
     } else {
       res.status(404).json({ type: 'error', data: `No file found with id ${id}!` });
     }
+  }
+
+  watchEntry(id) {
+    this.watcher.add(this.getEntry(id).path);
+  }
+
+  handleFileEvent(event, path) {
+    if (DEBUG) this.logger.debug(`${event}: ${path}`);
+    Object.values(this.sockets).forEach(el => {
+      el.send(JSON.stringify({
+        type: event, path
+      }));
+    });
   }
 }
 

@@ -7,10 +7,10 @@ const nanoid = require('nanoid/generate');
 const { NANOID_ALPHABET } = require('../util');
 
 /**
- * Throws an exception indicating that a function has to be implemented by a sub class.
+ * Throws an error indicating that a function has to be implemented by a sub class.
  */
 const unimplemented = () => {
-  throw new Exception("Not implemented!");
+  throw new Error("Not implemented!");
 };
 
 /**
@@ -28,6 +28,7 @@ class BaseAdapter extends EventEmitter {
     super();
     this.options = options;
     this.logger = logger.scope(this.name);
+    this.sockets = {};
   }
 
   generateId() {
@@ -52,6 +53,14 @@ class BaseAdapter extends EventEmitter {
    */
   dispose() {
     /* Might be unused ;) */
+  }
+
+  registerSocket(id, ws) {
+    this.sockets[id] = ws;
+  }
+
+  unregisterSocket(id) {
+    delete this.sockets[id];
   }
 
   // -------------------------------
@@ -95,6 +104,10 @@ class BaseAdapter extends EventEmitter {
    * @param  {string} id The entry id.
    */
   download(res, id) {
+    unimplemented();
+  }
+
+  watchEntry(id) {
     unimplemented();
   }
 }

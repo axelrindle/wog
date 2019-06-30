@@ -40,7 +40,7 @@ module.exports = app => {
   });
 
   // Init websocket
-  app.ws('/socket', checkAuthenticated, require('./websocket'));
+  app.ws('/socket', require('./websocket'));
   myLogger.info('WebSocket server accessible via /socket endpoint.');
 
   // setup passport routes

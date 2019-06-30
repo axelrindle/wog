@@ -40,9 +40,7 @@ new Vue({
     // websocket connection
     const protocol = location.protocol === 'http:' ? 'ws' : 'wss';
     const url = `${protocol}://${location.host}/socket`;
-    console.log(url);
-    this.socket = new BetterWebSocket(url);
-    this.socket
+    this.socket = new BetterWebSocket(url)
       .on('open', () => {
         console.log('WebSocket connection established.');
       })
@@ -54,13 +52,23 @@ new Vue({
         this.error = err;
       })
       .on('message', msg => {
-        const parsed = JSON.parse(msg);
-        switch (parsed.event) {
-          case 'contentsUpdated':
-
+        const parsed = JSON.parse(msg.data);
+        switch (parsed.type) {
+          case 'add':
+            this.$refs.fileList.refresh();
+            break;
+          case 'change':
+            this.$refs.logViewer.refresh();
+            break;
+          case 'unlink':
+            this.$refs.fileList.refresh();
+            break;
+          case 'error':
+            this.error = parsed.msg;
             break;
           default:
-
+            console.error(`Unknown event: ${parsed.event}`);
+            break;
         }
       });
   }
