@@ -21,13 +21,14 @@
 // Head & Tail
 .field.has-addons(v-else)
   .control
-    span.select
+    span.has-text-grey Work In Progress...
+    //span.select
       select(v-model="lineMode")
         option(value="head") Head
         option(value="tail") Tail
-  .control
+  //.control
     input.input(type="number" min="0" value="10" v-model="line")
-  .control
+  //.control
     label.checkbox
       input(type="checkbox")
       |  Apply
