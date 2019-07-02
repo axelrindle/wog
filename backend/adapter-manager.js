@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const asyncForEach = require('@axelrindle/async-for-each');
+const isDirectory = require('is-directory');
 
 /**
  * The AdapterManager holds all configured adapters and is used
@@ -21,7 +22,7 @@ class AdapterManager {
     const builtInDir = path.resolve(__dirname, 'adapter');
     const packagesDir = path.resolve(__dirname, '..', 'packages');
     const builtIn = fs.readdirSync(builtInDir);
-    const packages = fs.readdirSync(packagesDir);
+    const packages = isDirectory.sync(packagesDir) ? fs.readdirSync(packagesDir) : [];
     const result = {};
 
     builtIn.forEach(el => {
