@@ -5,7 +5,6 @@
       p.card-header-title
         span(v-if="filePath", style="margin: 0;").subtitle.is-6 {{ filePath }}&nbsp;&nbsp;|&nbsp;&nbsp;
         | Options
-        a.button.is-danger(:href="path('logout')", style="margin-left: 30px;") Logout
 
       // Refreshed indicator
       p.pointer(style="padding: .75rem;" v-if="showIndicator.refresh")

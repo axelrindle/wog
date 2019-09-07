@@ -14,8 +14,10 @@ block content
       // header
       section.section
         .container
-          a(href=path("about"))
-            img(src=path("img/header.png"))
+          img(src=path("img/header.png"))
+          .buttons.is-centered
+            a.button(href=path("about")) About
+            a.button.is-danger(href=path('logout')) Logout
 
       hr.bottom
 
