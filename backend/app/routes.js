@@ -2,6 +2,7 @@
 const auth = require('./auth');
 const pkg = require('@root/package.json');
 const { getPath } = require('../util');
+const locals = require('./locals');
 
 const myLogger = logger.scope('router');
 const title = `${pkg.name} v${pkg.version}`;
@@ -36,6 +37,11 @@ module.exports = app => {
   // debug access logger
   if (DEBUG) app.use((req, res, next) => {
     myLogger.debug('%s %s from %s', req.method, req.url, req.ip);
+    next();
+  });
+
+  app.use((req, res, next) => {
+    res.locals = locals.local(req);
     next();
   });
 

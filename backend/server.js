@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.secure.secret));
 app.use(flash());
 app.use(helmet());
-require('./app/locals')(app);
+require('./app/locals').global(app);
 
 // Setup routes
 require('./app/routes')(app);
