@@ -14,10 +14,7 @@ block content
       // header
       section.section
         .container
-          img(src=path("img/header.png"))
-          .buttons.is-centered
-            a.button(href=path("about")) About
-            a.button.is-danger(href=path('logout')) Logout
+          include partials/nav
 
       hr.bottom
 
@@ -27,10 +24,5 @@ block content
     log-viewer(ref="logViewer" :adapter="theAdapter" :entry="theEntry")
 
 block js
-  if !_debug
-    script(src='https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js', integrity='sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY=', crossorigin='anonymous')
-  else
-    script(src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js")
-  script(src='https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js', integrity='sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=', crossorigin='anonymous')
-  script(src='https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js', integrity='sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=', crossorigin='anonymous')
+  include partials/vendor_scripts
   script(src=path("js/logic.js"))
