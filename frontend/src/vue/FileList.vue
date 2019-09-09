@@ -29,9 +29,9 @@
           select(v-model="selected.adapter" :disabled="loading")
             option(v-for="adapter in adapters" :value="adapter") {{ adapter }}
         hr
-        ul#filelist
+        ul.button-list
           li(v-for="(file, index) in filesFiltered")
-            a(@click="select(index)" :title="file.path" :class="{ 'is-link': selected.file === index }").button {{ file.name }}
+            a.button(@click="select(index)" :title="file.path" :class="{ 'is-link': selected.file === index }") {{ file.name }}
 </template>
 
 <script>
