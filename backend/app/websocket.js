@@ -33,7 +33,7 @@ module.exports = (ws, req) => {
   ws.on('message', message => {
     try {
       const parsed = JSON.parse(message);
-      myLogger.debug(parsed);
+      if (DEBUG) myLogger.debug(parsed);
       switch (parsed.event) {
         case 'changeAdapter':
           if (currentAdapter) {
