@@ -41,7 +41,7 @@ module.exports = app => {
   });
 
   app.use((req, res, next) => {
-    res.locals = locals.local(req);
+    res.locals = locals.local(req); // TODO: Doesn't work as expected, 'user' is always undefined
     next();
   });
 
@@ -66,7 +66,8 @@ module.exports = app => {
     if (req.isAuthenticated()) {
       res.render('overview', {
         title: `${title} | overview`,
-        wsPort: config.app.socketPort
+        wsPort: config.app.socketPort,
+        user: req.user
       });
     } else {
       res.render('login', {
