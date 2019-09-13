@@ -29,7 +29,7 @@ app.use(helmet());
 require('./app/locals')(app);
 
 // Setup routes
-require('./app/routes')(app);
+require('./app/router')(app);
 
 // Start server
 const port = config.app.port;

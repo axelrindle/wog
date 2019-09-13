@@ -72,7 +72,7 @@ module.exports = {
       this.loading = true;
       this.selected.file = -1;
       this.files = [];
-      axios.post('/all', { type: 'entries', adapter: this.selected.adapter })
+      axios.post('/all/objects', { type: 'entries', adapter: this.selected.adapter })
         .then(response => {
           this.files = response.data;
         }).catch(err => {
@@ -104,7 +104,7 @@ module.exports = {
 
   mounted() {
     // load adapters
-    axios.post('/all', { type: 'adapters' })
+    axios.post('/all/objects', { type: 'adapters' })
       .then(response => {
         this.adapters = response.data;
 

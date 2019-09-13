@@ -123,7 +123,7 @@ module.exports = {
       return this.linesFiltered.length;
     },
     downloadUrl() {
-      return this.path(`/download/${this.adapter}/${this.entry.id}`);
+      return this.path(`/entry/download/${this.adapter}/${this.entry.id}`);
     },
     showGoToLineError() {
       return parseInt(this.lineToGoTo) > this.filteredLinesAmount;
@@ -144,7 +144,7 @@ module.exports = {
     refresh() {
       this.$root.error = null;
       this.loading = true;
-      axios.post('/contents', { adapter: this.adapter, id: this.entry.id })
+      axios.post('/entry/contents', { adapter: this.adapter, id: this.entry.id })
         .then(response => {
           this.content = response.data;
           if (this.content.lines.length === 0) {

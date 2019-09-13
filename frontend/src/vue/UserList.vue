@@ -64,7 +64,7 @@ module.exports = {
       this.loading = true;
       this.selected = -1;
       this.users = [];
-      axios.post('/users')
+      axios.post('/all/users')
         .then(response => {
           this.users = response.data;
         }).catch(err => {
