@@ -189,7 +189,11 @@ module.exports = {
   },
   watch: {
     entry() {
-      this.refresh();
+      if (this.entry) {
+        this.refresh();
+      } else {
+        this.content = null;
+      }
     }
   }
 }
