@@ -1,8 +1,34 @@
+/** --------------------------------------
+ *  Specific to elements
+ */
+
+hr.bottom
+  margin-top: 0
+
+p.welcome
+  text-align: center
+  margin-bottom: 16px
+
+
+/** --------------------------------------
+ *  Layout utilities
+ */
+
+.flex
+  height: 100%
+  width: 100%
+  display: flex
+  flex-flow: column nowrap
+  justify-content: center
+  align-items: center
+
+  &.no-justify
+    justify-content: flex-start
+
 .section
   padding: 1rem 1.5rem
 
 .icon
-  /* center icon
   display: flex
   justify-content: center
   align-items: center
@@ -11,8 +37,13 @@
   padding-left: .75em !important
   padding-right: .75em !important
 
-hr.bottom
-  margin-top: 0
+.button-list .button
+  margin-bottom: 5px
+
+
+/** --------------------------------------
+ *  UX
+ */
 
 .pointer
   cursor: pointer
@@ -26,16 +57,10 @@ hr.bottom
     border: none !important
     border-radius: 0 !important
 
-.flex
-  height: 100%
-  width: 100%
-  display: flex
-  flex-flow: column nowrap
-  justify-content: center
-  align-items: center
 
-  &.no-justify
-    justify-content: flex-start
+/** --------------------------------------
+ *  Animations
+ */
 
 .blink
   animation: blink 1s cubic-bezier(.77,0,.18,1)
@@ -49,7 +74,3 @@ hr.bottom
 
   100%
     background-color: transparent
-
-p.welcome
-  text-align: center
-  margin-bottom: 16px
