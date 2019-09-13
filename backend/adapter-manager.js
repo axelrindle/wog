@@ -32,7 +32,9 @@ class AdapterManager {
     });
     packages.forEach(el => {
       const pkg = require(path.join(packagesDir, el, 'package.json'));
-      result[pkg.registryName] = path.join(packagesDir, el, pkg.main);
+      if (typeof pkg['wog-package'] === 'object' && pkg['wog-package'].type === 'adapter') {
+        result[pkg['wog-package'].registryName] = path.join(packagesDir, el, pkg.main);
+      }
     });
     if (DEBUG) {
       this.logger.debug(`Loaded ${Object.keys(result).length} adapters: `);
