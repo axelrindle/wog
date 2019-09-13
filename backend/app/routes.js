@@ -2,6 +2,7 @@
 const auth = require('./auth');
 const pkg = require('@root/package.json');
 const { getPath } = require('../util');
+const accounts = require('./accounts');
 const locals = require('./locals');
 
 const myLogger = logger.scope('router');
@@ -72,6 +73,18 @@ module.exports = app => {
     }
   });
 
+  // administration
+  app.get('/admin', checkAuthenticated, (req, res) => {
+    if (req.user.role === 'admin') {
+      res.render('administration', {
+        title: `${title} | administration`,
+        user: req.user
+      });
+    } else {
+      res.redirect(getPath());
+    }
+  });
+
   // sends a list of all adapters/entries
   app.post('/all', checkAuthenticated, (req, res) => {
     const type = req.body.type;
@@ -92,6 +105,11 @@ module.exports = app => {
         res.status(400).json({ type: 'error', data: `Unknown type ${type}!` });
         break;
     }
+  });
+
+  // sends a list of all users
+  app.post('/users', checkAuthenticated, (req, res) => {
+    res.json(accounts.all());
   });
 
   // sends content of a file

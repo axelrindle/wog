@@ -1,0 +1,27 @@
+extends layout.pug
+
+block content
+  // overlay
+  div.flex#fader
+    p.title.is-2.has-text-white Loading...
+
+  // container
+  div#app
+
+    //sidebar
+    div#sidebar
+
+      // header
+      section.section
+        .container
+          include partials/nav
+
+      hr.bottom
+
+      user-list(@ready="ready()" ref="userList")
+
+    user-editor(:user="theUser" ref="userEditor")
+
+block js
+  include partials/vendor_scripts
+  script(src=path("js/logic_administration.js"))
