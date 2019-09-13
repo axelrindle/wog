@@ -40,11 +40,6 @@ module.exports = app => {
     next();
   });
 
-  app.use((req, res, next) => {
-    res.locals = locals.local(req); // TODO: Doesn't work as expected, 'user' is always undefined
-    next();
-  });
-
   // Init websocket
   app.ws('/socket', require('./websocket'));
   myLogger.info('WebSocket server accessible via /socket endpoint.');
