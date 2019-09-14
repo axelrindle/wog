@@ -25,9 +25,16 @@
 
         p(v-if="allShown").subtitle Loaded {{ shown }} files
         p(v-else).subtitle Showing {{ shown }} / {{ files.length }} files
-        .select
-          select(v-model="selected.adapter" :disabled="loading")
-            option(v-for="adapter in adapters" :value="adapter") {{ adapter }}
+        .field.is-horizontal
+          .field-label.is-normal
+            label.label Adapter
+          .field-body
+            .field
+              .control
+                .select
+                  select(v-model="selected.adapter" :disabled="loading")
+                    option(v-for="adapter in adapters" :value="adapter") {{ adapter }}
+
         hr
         ul.button-list
           li(v-for="(file, index) in filesFiltered")
