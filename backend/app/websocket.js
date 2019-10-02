@@ -18,10 +18,8 @@ const sendError = (ws, e) => {
  * Handles a websocket route request.
  *
  * @param {WebSocket} ws A websocket instance.
- * @param {Request} req The express request instance.
  */
-// eslint-disable-next-line no-unused-vars
-module.exports = (ws, req) => {
+module.exports = ws => {
   // a unique connection id is used to identify this connection
   // to the adapters
   const connectionId = nanoid(NANOID_ALPHABET, 10);
