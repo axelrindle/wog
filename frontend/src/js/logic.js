@@ -49,7 +49,7 @@ new Vue({
         this.socket = null;
       })
       .on('error', err => {
-        this.error = err;
+        console.error(err);
       })
       .on('message', msg => {
         const parsed = JSON.parse(msg.data);
