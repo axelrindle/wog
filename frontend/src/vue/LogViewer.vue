@@ -25,9 +25,9 @@
           .column
             p.title.is-6 Actions
             .field.is-grouped
-              a(:href="downloadUrl" v-if="filteredLinesAmount").control.button.is-primary Download
+              a(:href="downloadUrl" v-if="entry").control.button.is-primary Download
               a(@click="refresh" v-if="entry").control.button.is-info Refresh
-              a(@click="openGoToLine" v-if="filteredLinesAmount").control.button.is-link Go to line
+              a(@click="openGoToLine" v-if="entry").control.button.is-link Go to line
           // info
           .column
             p.title.is-6 Info
