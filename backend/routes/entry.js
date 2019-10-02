@@ -14,8 +14,9 @@ module.exports = (app, router) => {
         res.json(contents);
       })
       .catch(err => {
-        theAdapter.logger.error(err.message);
-        res.status(500).json({ type: 'error', msg: err.message });
+        const msg = err.message ? err.message : err;
+        theAdapter.logger.error(msg);
+        res.status(500).json({ type: 'error', msg });
       });
   });
 
