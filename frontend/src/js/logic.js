@@ -38,8 +38,7 @@ new Vue({
   // called when Vue is ready
   mounted() {
     // websocket connection
-    const protocol = location.protocol === 'http:' ? 'ws' : 'wss';
-    const url = `${protocol}://${location.host}/socket`;
+    const url = $('meta[name="socket"]').attr("value");
     this.socket = new BetterWebSocket(url)
       .on('open', () => {
         console.log('WebSocket connection established.');

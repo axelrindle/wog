@@ -12,6 +12,9 @@ module.exports = {
   /** The port the websocket server is listening on. */
   socketPort: parseInt(env('APP_SOCKET_PORT', 8083)),
 
+  /** Whether the application is running behind a proxy. */
+  isProxy: env('APP_IS_BEHIND_PROXY', false),
+
   /** The full root url for the application. */
   url: env('APP_URL', 'http://localhost:8082/'),
 

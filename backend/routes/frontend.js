@@ -13,10 +13,13 @@ module.exports = app => {
   // index
   app.get('/', (req, res) => {
     if (req.isAuthenticated()) {
+      const wsUrl = config.app.isProxy ?
+        `${req.protocol.replace('http', 'ws')}://${req.hostname.split(':')[0]}:${config.app.socketPort}` :
+        `${config.app.url}${config.app.url.endsWith('/') ? '' : '/'}socket`;
       res.render('overview', {
         title: `${title} | overview`,
-        wsPort: config.app.socketPort,
-        user: req.user
+        user: req.user,
+        wsUrl
       });
     } else {
       res.render('login', {
