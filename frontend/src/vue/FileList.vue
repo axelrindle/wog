@@ -104,7 +104,7 @@ module.exports = {
     },
     'selected.adapter': function() {
       localStorage.setItem('selectedAdapter', this.selected.adapter);
-      this.socket.send(JSON.stringify({ event: 'changeAdapter', adapter: this.selected.adapter }));
+      if (this.socket) this.socket.send(JSON.stringify({ event: 'changeAdapter', adapter: this.selected.adapter }));
       this.refresh();
     }
   },
