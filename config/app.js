@@ -18,9 +18,7 @@ module.exports = {
   /** The full root url for the application. */
   url: env('APP_URL', 'http://localhost:8082/'),
 
-  /**
-  * Whether to allow users to download log files to their computer.
-  */
+  /** Whether to allow users to download log files to their computer. */
   enableFileDownloads: env('ENABLE_FILE_DOWNLOADS', false)
 
 };
