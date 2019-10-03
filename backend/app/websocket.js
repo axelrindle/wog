@@ -1,5 +1,8 @@
 // Require modules
 const nanoid = require('nanoid/generate');
+const expressWs = require('express-ws');
+const WebSocket = require('ws');
+
 const { NANOID_ALPHABET } = require('../util');
 
 const myLogger = logger.scope('websocket');
@@ -19,7 +22,7 @@ const sendError = (ws, e) => {
  *
  * @param {WebSocket} ws A websocket instance.
  */
-module.exports = ws => {
+const handler = ws => {
   // a unique connection id is used to identify this connection
   // to the adapters
   const connectionId = nanoid(NANOID_ALPHABET, 10);
@@ -63,4 +66,25 @@ module.exports = ws => {
     if (currentAdapter && currentAdapter.supportsEvents())
       currentAdapter.unregisterSocket(connectionId);
   });
+};
+
+/**
+ * Initialize a WebSocket server.
+ */
+module.exports = app => {
+
+  // based on whether we are running behind a proxy, deploy the /socket route
+  // or create my own WebSocket server instance
+  if (!config.app.isProxy) {
+    expressWs(app);
+    app.ws('/socket', handler);
+  } else {
+    const wss = new WebSocket.Server({ port: config.app.socketPort });
+    wss.on('connection', handler);
+    wss.on('error', error => {
+      myLogger.error(error);
+    });
+  }
+
+  myLogger.info(`WebSocket server accessible via ${config.app.isProxy ? 'port ' + config.app.socketPort : '/socket endpoint'}.`);
 };

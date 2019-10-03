@@ -4,15 +4,10 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const express = require('express');
 const helmet = require('helmet');
-
-const wsHandler = require('./app/websocket');
 const { fail } = require('./util');
 
 const myLogger = logger.scope('server');
-const ws = require('express-ws')(express(), null, { wsOptions: {
-  port: config.app.isProxy ? config.app.socketPort : null
-} });
-const app = ws.app;
+const app = express();
 
 myLogger.await('Starting webserver...');
 
@@ -34,12 +29,7 @@ app.use(helmet());
 require('./app/locals')(app);
 
 // Init websocket
-if (!config.app.isProxy) {
-  app.ws('/socket', wsHandler);
-} else {
-  ws.getWss().on('connection', wsHandler);
-}
-myLogger.info(`WebSocket server accessible via ${config.app.isProxy ? 'port ' + config.app.socketPort : '/socket endpoint'}.`);
+require('./app/websocket')(app);
 
 // Setup routes
 require('./app/router')(app);
