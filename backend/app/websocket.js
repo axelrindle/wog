@@ -30,7 +30,6 @@ const handler = ws => {
 
   let currentAdapter;
 
-  // TODO: Figure out how to integrate websockets with the adapters
   ws.on('message', message => {
     try {
       const parsed = JSON.parse(message);
@@ -60,8 +59,8 @@ const handler = ws => {
     }
   });
 
-  ws.on('close', () => {
-    myLogger.info("Connection closed with ID " + connectionId);
+  ws.on('close', code => {
+    myLogger.info(`Connection closed with ID ${connectionId} (code: ${code})`);
     // if we have an old adapter registered, remove it
     if (currentAdapter && currentAdapter.supportsEvents())
       currentAdapter.unregisterSocket(connectionId);
