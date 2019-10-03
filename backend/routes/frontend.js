@@ -30,16 +30,18 @@ module.exports = app => {
   });
 
   // administration
-  app.get('/admin', checkAuthenticated, (req, res) => {
-    if (req.user.role === 'admin') {
-      res.render('administration', {
-        title: `${title} | administration`,
-        user: req.user
-      });
-    } else {
-      res.redirect(getPath());
-    }
-  });
+  if (DEBUG) { // TODO: enable admin page when it's finished
+    app.get('/admin', checkAuthenticated, (req, res) => {
+      if (req.user.role === 'admin') {
+        res.render('administration', {
+          title: `${title} | administration`,
+          user: req.user
+        });
+      } else {
+        res.redirect(getPath());
+      }
+    });
+  }
 
   // about page
   app.get('/about', (req, res) => {
