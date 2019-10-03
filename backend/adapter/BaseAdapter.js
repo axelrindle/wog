@@ -29,6 +29,7 @@ class BaseAdapter extends EventEmitter {
     this.options = options;
     this.logger = logger.scope(this.name);
     this.sockets = {};
+    this.watchMap = {};
   }
 
   generateId() {
@@ -61,6 +62,7 @@ class BaseAdapter extends EventEmitter {
 
   unregisterSocket(id) {
     delete this.sockets[id];
+    delete this.watchMap[id];
   }
 
   // -------------------------------
@@ -107,8 +109,8 @@ class BaseAdapter extends EventEmitter {
     unimplemented();
   }
 
-  watchEntry(id) {
-    unimplemented();
+  watchEntry(wsId, entryId) {
+    this.watchMap[wsId] = entryId;
   }
 }
 

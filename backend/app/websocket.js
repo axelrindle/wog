@@ -46,7 +46,7 @@ const handler = ws => {
           break;
         case 'changeEntry':
           if (currentAdapter.supportsEvents()) {
-            currentAdapter.watchEntry(parsed.entry);
+            currentAdapter.watchEntry(connectionId, parsed.entry);
           }
           break;
         default:

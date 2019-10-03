@@ -44,16 +44,20 @@ class FileAdapter extends BaseAdapter {
   }
 
   createFileWatcher() {
+    const findByPath = path => this.files.find(el => el.path === path);
     this.watcher = new FSWatcher()
       //.on('add', path => this.handleFileEvent('add', path))
-      .on('change', path => this.handleFileEvent('change', path))
+      .on('change', path => {
+        const entry = findByPath(path);
+        this.handleFileEvent('change', path, entry.id);
+      })
       .on('unlink', path => {
-        const entry = this.files.find(el => el.path === path);
+        const entry = findByPath(path);
         const index = this.files.indexOf(entry);
         if (index > -1) {
           this.files.splice(index, 1);
           this.logger.info(`The file at '${path}' has been deleted.`);
-          this.handleFileEvent('unlink', path);
+          this.handleFileEvent('unlink', path, entry.id);
         }
       })
       .on('error', error => this.handleFileEvent('error', error));
@@ -95,17 +99,28 @@ class FileAdapter extends BaseAdapter {
     }
   }
 
-  watchEntry(id) {
-    this.watcher.add(this.getEntry(id).path);
+  watchEntry(wsId, entryId) {
+    // remove previous file from watching, if any
+    if (this.watchMap[wsId]) {
+      this.watcher.unwatch(this.getEntry(this.watchMap[wsId]).path);
+    }
+    super.watchEntry(wsId, entryId); // update map
+    this.watcher.add(this.getEntry(entryId).path);
   }
 
-  handleFileEvent(event, path) {
+  handleFileEvent(event, path, entryId) {
     if (DEBUG) this.logger.debug(`${event}: ${path}`);
-    Object.values(this.sockets).forEach(el => {
-      el.send(JSON.stringify({
-        type: event, path
-      }));
-    });
+
+    // find associated socket(s)
+    for (let wsId in this.watchMap) {
+      let _entryId = this.watchMap[wsId];
+      if (_entryId == entryId) {
+        const socket = this.sockets[wsId];
+        socket.send(JSON.stringify({
+          type: event, path
+        }));
+      }
+    }
   }
 }
 
