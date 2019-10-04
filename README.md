@@ -22,9 +22,9 @@
 I was tired of always SSHing into my local server and looking through a log file in the terminal. It was painful, especially when the file was very large. So I decided to build myself a small web interface with some extra features to erase the pain of looking through log files via a small terminal.
 
 ## Install
-1. Clone this repository
+1. [Download and unpack the latest release](https://github.com/axelrindle/wog/releases)
 ```bash
-$ git clone https://github.com/axelrindle/wog
+$ tar xzvf wog-0.3.0.tar.gz -C wog
 ```
 
 2. Install dependencies
@@ -32,9 +32,10 @@ $ git clone https://github.com/axelrindle/wog
 $ npm install --only=production
 ```
 
-3. Configure your installation
+3. [Configure your installation](https://github.com/axelrindle/wog/wiki/Configuration)
 ```bash
-$ nano config.js
+$ cp .env.example .env
+$ nano .env
 ```
 
 4. Start the server
@@ -43,11 +44,9 @@ $ node backend/main.js
 ```
 
 ## Configuration
-
 [Look here](Configuration.md)
 
 ## ToDo
-
 [Moved here](https://github.com/axelrindle/wog/projects/1)
 
 ## License
