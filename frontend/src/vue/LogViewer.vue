@@ -39,7 +39,7 @@
   // actual log content
   pre#logContent(v-if="!error && !loading")
     code
-      div(v-for="(line, index) in linesFiltered" :data-line="index + 1") {{ index + 1}}: {{ line }}
+      div(v-for="line in linesFiltered" :data-line="line.lineNumber") {{ line.lineNumber }}: {{ line.text }}
   pre(v-else)
     code.has-text-danger(v-if="error") {{ error }}
     code.loading(v-else)
@@ -109,7 +109,7 @@ module.exports = {
       // TODO: highlight matched elements
       if (this.grep !== '') {
         if (this.grepMode === 'grep') {
-          lines = lines.filter(el => el.indexOf(this.grep) !== -1);
+          lines = lines.filter(el => el.text.indexOf(this.grep) !== -1);
         } else if (this.grepMode === 'fuzzy') {
           lines = fuzzysearch(this.grep, lines);
         }
@@ -146,9 +146,13 @@ module.exports = {
       this.loading = true;
       axios.post('/entry/contents', { adapter: this.adapter, id: this.entry.id })
         .then(response => {
-          this.content = response.data;
-          if (this.content.lines.length === 0) {
-            this.content = null;
+          if (response.data.lines.length > 0) {
+            this.content = response.data;
+
+            let line = 1;
+            this.content.lines = this.content.lines.map(el => ({
+              lineNumber: line++, text: el
+            }));
           }
         })
         .catch(err => {
