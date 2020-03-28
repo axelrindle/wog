@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node backend/main",
     "dev": "DEBUG=true node backend/main",
-    "compile:sass": "parcel build frontend/src/sass/style.sass --no-source-maps -d frontend/static/css --out-file style.min.css",
+    "compile:scss": "parcel build frontend/src/scss/style.scss --no-source-maps -d frontend/static/css --out-file style.min.css",
     "compile:js": "parcel build frontend/src/js/*.js --no-source-maps -d frontend/static/js",
     "watch:js": "parcel watch frontend/src/js/*.js --no-source-maps -d frontend/static/js --no-hmr"
   },

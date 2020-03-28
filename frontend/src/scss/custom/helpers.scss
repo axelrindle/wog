@@ -1,0 +1,92 @@
+/** --------------------------------------
+ *  Specific to elements
+ */
+
+hr.bottom {
+  margin-top: 0;
+}
+
+p.welcome {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+
+/** --------------------------------------
+ *  Layout utilities
+ */
+
+.flex {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  &.no-justify {
+    justify-content: flex-start;
+  }
+}
+
+.section {
+  padding: 1rem 1.5rem;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.is-rounded {
+  padding-left: .75em !important;
+  padding-right: .75em !important;
+}
+
+.button-list .button {
+  margin-bottom: 5px;
+}
+
+
+/** --------------------------------------
+ *  UX
+ */
+
+.pointer {
+  cursor: pointer;
+  transition: all .1s;
+  margin: auto;
+
+  &:hover {
+    background-color: darken(white, 5%);
+  }
+
+  &.card-footer-item {
+    border: none !important;
+    border-radius: 0 !important;
+  }
+}
+
+
+/** --------------------------------------
+ *  Animations
+ */
+
+.blink {
+  animation: blink 1s cubic-bezier(.77,0,.18,1);
+}
+
+@keyframes blink {
+  0% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: $blink_background;
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
