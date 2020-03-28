@@ -13,7 +13,7 @@ passport.use(new LocalStrategy(
     if (!accounts.has(username)) {
       return done(null, false, { message: 'Unknown username!' });
     }
-    if (accounts.checkAuth(username, password)) {
+    if (!accounts.checkAuth(username, password)) {
       return done(null, false, { message: 'Incorrect password!' });
     }
 
@@ -48,5 +48,6 @@ module.exports = app => {
   // persistent login sessions
   app.use(passport.session());
 
-  return passport;
+  // persist passport instance
+  app.set('passport', passport);
 };

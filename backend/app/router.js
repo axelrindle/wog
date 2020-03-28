@@ -1,11 +1,10 @@
 // Require modules
 const express = require('express');
-const auth = require('./auth');
 const pkg = require('@root/package.json');
-const { getPath } = require('../util');
 
 const myLogger = logger.scope('router');
 const middleware = require('./middleware')(myLogger);
+const AuthController = require('../controllers/AuthController');
 
 const routes = {
   frontend: require('../routes/frontend'),
@@ -28,16 +27,9 @@ module.exports = app => {
   });
 
   // setup passport routes
-  const passport = auth(app);
-  app.post('/login', passport.authenticate('local', {
-    successRedirect: getPath(),
-    failureRedirect: getPath(),
-    failureFlash: true
-  }));
-  app.get('/logout', middleware.checkAuthenticated, (req, res) => {
-    req.logout();
-    res.redirect(getPath());
-  });
+  const myAuthController = new AuthController(app);
+  app.post('/login', myAuthController.login());
+  app.get('/logout', middleware.checkAuthenticated, myAuthController.logout.bind(myAuthController));
 
   // register frontend routes
   routes.frontend(app);

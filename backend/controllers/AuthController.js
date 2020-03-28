@@ -1,0 +1,27 @@
+// Require modules
+const Controller = require('./Controller');
+const { getPath } = require('../util');
+
+/**
+ * The AuthController is responsible for authenticating users.
+ */
+module.exports = class AuthController extends Controller {
+
+  init() {
+    this.passport = this.app.get('passport');
+  }
+
+  login() {
+    return this.passport.authenticate('local', {
+      successRedirect: getPath(),
+      failureRedirect: getPath(),
+      failureFlash: true
+    });
+  }
+
+  logout(req, res) {
+    req.logout();
+    res.redirect(getPath());
+  }
+
+};

@@ -32,6 +32,7 @@ require('./app/locals')(app);
 require('./app/websocket')(app);
 
 // Setup routes
+require('./app/auth')(app);
 require('./app/router')(app);
 
 // Start server
