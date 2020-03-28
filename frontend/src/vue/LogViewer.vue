@@ -73,7 +73,7 @@
 </template>
 
 <script>
-const { fuzzysearch } = require('../js/fuzzy');
+const { fuzzysearch } = require('../js/util/fuzzy');
 
 module.exports = {
   name: 'LogViewer',

@@ -1,5 +1,6 @@
 // Require dependencies
-require('./bootstrap');
+require('./util/bootstrap');
+const BetterWebSocket = require('./util/BetterWebSocket');
 const FileList = require('../vue/FileList');
 const LogViewer = require('../vue/LogViewer');
 const isMounted = require('vue-is-mounted');

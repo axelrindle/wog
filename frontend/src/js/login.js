@@ -1,5 +1,5 @@
 // Require dependencies
-require('./bootstrap');
+require('./util/bootstrap');
 
 new Vue({
   el: '#app',

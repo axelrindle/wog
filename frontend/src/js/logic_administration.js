@@ -1,5 +1,5 @@
 // Require dependencies
-require('./bootstrap');
+require('./util/bootstrap');
 const UserList = require('../vue/UserList');
 const UserEditor = require('../vue/UserEditor');
 const isMounted = require('vue-is-mounted');
