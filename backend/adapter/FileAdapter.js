@@ -17,7 +17,7 @@ const globPromisified = util.promisify(glob);
  */
 class FileAdapter extends BaseAdapter {
   init() {
-    this.logger.await(`Loading files...`);
+    this.logger.info(`Loading files...`);
     return this.loadFiles();
   }
 
@@ -39,7 +39,7 @@ class FileAdapter extends BaseAdapter {
           }));
 
         this.createFileWatcher();
-        this.logger.complete(`Initially loaded ${this.files.length} files.`);
+        this.logger.info(`Initially loaded ${this.files.length} files.`);
       });
   }
 

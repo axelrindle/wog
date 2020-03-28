@@ -33,7 +33,7 @@ const handler = ws => {
   ws.on('message', message => {
     try {
       const parsed = JSON.parse(message);
-      if (DEBUG) myLogger.debug(parsed);
+      if (DEBUG) myLogger.debug(message);
       switch (parsed.event) {
         case 'changeAdapter':
           if (currentAdapter) {

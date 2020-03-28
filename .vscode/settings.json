@@ -10,9 +10,11 @@
     "mixins",
     "nanoid",
     "pkgs",
+    "printf",
     "promisify",
     "signale",
     "targz",
+    "uncolorize",
     "yesno"
   ]
 }

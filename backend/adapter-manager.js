@@ -38,7 +38,7 @@ class AdapterManager {
     });
     if (DEBUG) {
       this.logger.debug(`Loaded ${Object.keys(result).length} adapters: `);
-      this.logger.debug(result);
+      this.logger.debug('\n' + JSON.stringify(result, null, 2));
     }
 
     return result;
@@ -56,7 +56,7 @@ class AdapterManager {
       // and create a class instance with the given options
       const toLoad = this.adapters[el];
       if (!toLoad) {
-        this.logger.error(`No adapter found with name ${el}!`);
+        this.logger.warn(`No adapter found with name ${el}!`);
         return;
       }
 

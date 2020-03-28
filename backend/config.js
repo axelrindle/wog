@@ -2,8 +2,6 @@
 const path = require('path');
 const glob = require('glob-all');
 
-logger.await('Loading configuration...');
-
 // Find config files
 const files = glob.sync(path.join(path.dirname(__dirname), 'config/*.js'));
 
@@ -16,4 +14,3 @@ files.forEach(el => {
 
 // Make the config object global
 global.config = Object.freeze(config);
-logger.complete('Configuration loaded.');

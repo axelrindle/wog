@@ -2,10 +2,9 @@
  * Logs an error message and immediately terminates the application.
  *
  * @param {string} err The error message.
- * @param {object} theLogger The signale instance to use.
  */
-exports.fail = (err, theLogger = logger) => {
-  theLogger.fatal(DEBUG ? err : err.message || err);
+exports.fail = err => {
+  console.error(DEBUG ? err : err.message || err);
   process.exit(-1);
 };
 

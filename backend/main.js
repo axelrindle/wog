@@ -10,19 +10,18 @@ Object.keys(paths).forEach(el => {
 });
 moduleAlias.addAliases(aliases);
 
-// Load the environment
-require('dotenv').config();
+const { fail } = require('./util');
 
 // Define global variables
 global.DEBUG = process.env.DEBUG || false;
+global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 
-const signale = require('signale');
-signale.config({
-  displayTimestamp: true
-});
-global.logger = signale.scope('main');
-
+// Load environment variables and configuration
+require('dotenv').config();
 require('./config');
+
+// Create logger
+global.logger = require('./logger');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
@@ -37,7 +36,6 @@ if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
     // Start the server
     require('./server');
   } catch (error) {
-    logger.fatal(error);
-    process.exit(-1);
+    fail(error);
   }
 })();
