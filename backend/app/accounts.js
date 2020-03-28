@@ -12,7 +12,7 @@ const clone = el => {
 /**
  * An array of all accounts without sensitive data.
  */
-const all = module.exports.all = accounts.map(clone);
+module.exports.all = accounts.map(clone);
 
 /**
  * Find the matching user account.
@@ -20,9 +20,10 @@ const all = module.exports.all = accounts.map(clone);
  * @param {String} name The username to search.
  * @returns {(Object|undefined)} the account object with the given name, or `null`.
  */
-const find = module.exports.find = name => {
-  const account = all.find(el => el.name === name);
-  return account ? account : undefined;
+const find = name => accounts.find(el => el.name === name);
+module.exports.find = name => {
+  const account = find(name);
+  return account ? clone(account) : undefined;
 };
 
 /**
@@ -31,7 +32,7 @@ const find = module.exports.find = name => {
  * @param {String} name
  * @returns {boolean}
  */
-const has = module.exports.has = name => find(name) !== undefined;
+module.exports.has = name => find(name) !== undefined;
 
 /**
  * Check whether a given username/password combination is valid to authenticate.
@@ -40,4 +41,4 @@ const has = module.exports.has = name => find(name) !== undefined;
  * @param {string} pass The password.
  * @returns {boolean} Whether the authentication was successful.
  */
-module.exports.checkAuth = (name, pass) => has(name) && find(name).pass === pass;
+module.exports.checkAuth = (name, pass) => find(name).pass === pass;
