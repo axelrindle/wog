@@ -39,7 +39,9 @@
   // actual log content
   pre#logContent(v-if="!error && !loading")
     code
-      div(v-for="line in linesFiltered" :data-line="line.lineNumber") {{ line.lineNumber }}: {{ line.text }}
+      div(v-for="line in linesFiltered" :data-line="line.lineNumber")
+        span.has-text-link {{ line.lineNumber }}:&nbsp;
+        span {{ line.text }}
   pre(v-else)
     code.has-text-danger(v-if="error") {{ error }}
     code.loading(v-else)
