@@ -40,8 +40,4 @@ const has = module.exports.has = name => find(name) !== undefined;
  * @param {string} pass The password.
  * @returns {boolean} Whether the authentication was successful.
  */
-module.exports.checkAuth = (name, pass) => {
-  let success = has(name) && find(name).pass === pass;
-  console.log(`${name} + ${pass} => ${success}`);
-  return success;
-}
+module.exports.checkAuth = (name, pass) => has(name) && find(name).pass === pass;
