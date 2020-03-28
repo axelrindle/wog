@@ -44,7 +44,7 @@ module.exports = class ListController extends Controller {
    * @param {Express.Response} res
    */
   users(req, res) {
-    res.json(this.accounts.all());
+    res.json(this.accounts.all);
   }
 
 };
