@@ -15,7 +15,7 @@ module.exports = class AuthController extends Controller {
     return this.passport.authenticate('local', {
       successRedirect: getPath(),
       failureRedirect: getPath(),
-      failureFlash: true
+      failureFlash: 'Invalid username or password!'
     });
   }
 

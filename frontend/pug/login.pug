@@ -20,10 +20,10 @@ block content
           .field
             label.label Username
             .control.has-icons-left
-              input.input(type="text", name="username", placeholder="Username", v-model="username", required)
+              input.input(type="text", name="username", placeholder="Username",
+                          v-model="username", required, value=messages.username ? messages.username[0] : "")
               span.icon.is-small.is-left
                 i.fas.fa-user
-            p.help.is-danger(v-if="username === ''") Enter a username!
 
           // Password
           .field
@@ -32,7 +32,6 @@ block content
               input.input(type="password", name="password", placeholder="Password", v-model="password", required)
               span.icon.is-small.is-left
                 i.fas.fa-key
-            p.help.is-danger(v-if="password === ''") Enter a password!
 
           if error
             p.has-text-danger= error
@@ -40,8 +39,3 @@ block content
         // Buttons
         footer.card-footer
           input.card-footer-item.has-background-success.has-text-white.pointer(type="submit", value="Login")
-
-
-block js
-  include partials/vendor_scripts
-  script(src=path("js/login.js"))

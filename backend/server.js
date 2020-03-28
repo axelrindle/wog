@@ -1,7 +1,7 @@
 // Require modules
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const flash = require('connect-flash');
+const flash = require('express-flash');
 const express = require('express');
 const helmet = require('helmet');
 const { fail } = require('./util');

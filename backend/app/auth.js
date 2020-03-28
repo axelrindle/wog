@@ -9,12 +9,17 @@ const accounts = require('./accounts');
 
 // Configure strategy
 passport.use(new LocalStrategy(
-  (username, password, done) => {
+  {
+    passReqToCallback: true
+  },
+  (req, username, password, done) => {
     if (!accounts.has(username)) {
-      return done(null, false, { message: 'Unknown username!' });
+      req.flash('username', username);
+      return done(null, false);
     }
     if (!accounts.checkAuth(username, password)) {
-      return done(null, false, { message: 'Incorrect password!' });
+      req.flash('username', username);
+      return done(null, false);
     }
 
     return done(null, username);
