@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const { format, transports } = require('winston');
 const { combine, printf } = format;
 
-const logDirectory = path.join(ROOT_DIRECTORY, 'logs');
+const logDirectory = storage.register('logs');
 
 /**
  * Just the raw logging format without coloring.

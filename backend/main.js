@@ -16,20 +16,18 @@ const { fail } = require('./util');
 global.DEBUG = process.env.DEBUG || false;
 global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 
+// Create global instances
+global.storage = require('./init/storage');
 global.config = require('./init/config');
-
-// Create logger
 global.logger = require('./init/logger');
+global.adapters = require('./init/adapter-manager');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
-// Initialize adapters
-global.adapters = require('./init/adapter-manager');
-
-// since the adapterManager init function is async,
-// we need a top level async executor
+// call init functions in an async scope
 (async () => {
   try {
+    await storage.init();
     await adapters.init();
 
     require('./init/server');
