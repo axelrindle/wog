@@ -11,9 +11,11 @@
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
         "DEBUG": "readonly",
+        "ROOT_DIRECTORY": "readonly",
         "config": true,
         "logger": true,
         "adapters": true,
+        "storage": true,
         "Vue": true,
         "axios": true
     },
