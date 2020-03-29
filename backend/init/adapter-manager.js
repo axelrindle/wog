@@ -19,8 +19,8 @@ class AdapterManager {
    * Loads available adapters (built-in and packages).
    */
   available() {
-    const builtInDir = path.resolve(__dirname, 'adapter');
-    const packagesDir = path.resolve(__dirname, '..', 'packages');
+    const builtInDir = path.resolve(__dirname, '..', 'adapter');
+    const packagesDir = path.resolve(ROOT_DIRECTORY, 'packages');
     const builtIn = fs.readdirSync(builtInDir);
     const packages = isDirectory.sync(packagesDir) ? fs.readdirSync(packagesDir) : [];
     const result = {};

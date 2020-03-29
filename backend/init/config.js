@@ -3,7 +3,7 @@ const path = require('path');
 const glob = require('glob-all');
 
 // Find config files
-const files = glob.sync(path.join(path.dirname(__dirname), 'config/*.js'));
+const files = glob.sync(path.join(ROOT_DIRECTORY, 'config/*.js'));
 
 // Create config object
 const config = {};
