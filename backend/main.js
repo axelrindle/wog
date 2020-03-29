@@ -18,18 +18,18 @@ global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 
 // Load environment variables and configuration
 require('dotenv').config();
-global.config = require('./config');
+global.config = require('./init/config');
 
 // Create logger
-global.logger = require('./logger');
+global.logger = require('./init/logger');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
 // Initialize adapters
-global.adapters = require('./adapter-manager');
+global.adapters = require('./init/adapter-manager');
 
 // Initialize server
-const startServer = require('./server');
+const startServer = require('./init/server');
 
 // since the adapterManager init function is async,
 // we need a top level async executor

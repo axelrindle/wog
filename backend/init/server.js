@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const flash = require('express-flash');
 const express = require('express');
 const helmet = require('helmet');
-const { fail } = require('./util');
+const { fail } = require('../util');
 
 const myLogger = logger.scope('server');
 const app = express();
@@ -26,14 +26,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.secure.secret));
 app.use(flash());
 app.use(helmet());
-require('./app/locals')(app);
+require('../app/locals')(app);
 
 // Init websocket
-require('./app/websocket')(app);
+require('../app/websocket')(app);
 
 // Setup routes
-require('./app/auth')(app);
-require('./app/router')(app);
+require('../app/auth')(app);
+require('../app/router')(app);
 
 // Start server
 module.exports = () => {
