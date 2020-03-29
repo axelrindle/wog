@@ -12,5 +12,5 @@ files.forEach(el => {
   config[namespace] = require(el);
 });
 
-// Make the config object global
-global.config = Object.freeze(config);
+// Export the configuration
+module.exports = Object.freeze(config);

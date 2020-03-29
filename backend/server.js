@@ -36,5 +36,7 @@ require('./app/auth')(app);
 require('./app/router')(app);
 
 // Start server
-const port = config.app.port;
-app.listen(port, () => myLogger.info(`Listening on port ${port}.`));
+module.exports = () => {
+  const port = config.app.port;
+  app.listen(port, () => myLogger.info(`Listening on port ${port}.`));
+};

@@ -93,4 +93,5 @@ class AdapterManager {
   }
 }
 
-global.adapters = new AdapterManager();
+// Export class instance
+module.exports = new AdapterManager();
