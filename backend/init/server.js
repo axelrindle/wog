@@ -9,7 +9,7 @@ const { fail } = require('../util');
 const myLogger = logger.scope('server');
 const app = express();
 
-myLogger.info('Starting webserver...');
+myLogger.info('Configuring webserver...');
 
 // Checks
 if (!config.app.url) fail('No url specified!');
@@ -36,7 +36,5 @@ require('../app/auth')(app);
 require('../app/router')(app);
 
 // Start server
-module.exports = () => {
-  const port = config.app.port;
-  app.listen(port, () => myLogger.info(`Listening on port ${port}.`));
-};
+const port = config.app.port;
+app.listen(port, () => myLogger.info(`Listening on port ${port}.`));

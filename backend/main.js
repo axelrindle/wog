@@ -28,16 +28,13 @@ if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 // Initialize adapters
 global.adapters = require('./init/adapter-manager');
 
-// Initialize server
-const startServer = require('./init/server');
-
 // since the adapterManager init function is async,
 // we need a top level async executor
 (async () => {
   try {
     await adapters.init();
 
-    startServer();
+    require('./init/server');
   } catch (error) {
     fail(error);
   }
