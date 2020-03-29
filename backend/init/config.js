@@ -2,6 +2,9 @@
 const path = require('path');
 const glob = require('glob-all');
 
+// Load .env file
+require('dotenv').config();
+
 // Find config files
 const files = glob.sync(path.join(ROOT_DIRECTORY, 'config/*.js'));
 

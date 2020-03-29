@@ -16,8 +16,6 @@ const { fail } = require('./util');
 global.DEBUG = process.env.DEBUG || false;
 global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 
-// Load environment variables and configuration
-require('dotenv').config();
 global.config = require('./init/config');
 
 // Create logger
