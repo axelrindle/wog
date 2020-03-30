@@ -39,7 +39,7 @@ class Storage {
    * Build the absolute path to a directory or file in the storage.
    *
    * @param {string} name The relative path.
-   * @returns {Promise} A promise.
+   * @returns {string} The absolute path.
    */
   getPath(name = "") {
     return path.join(this.root, name);
