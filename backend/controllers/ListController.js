@@ -7,7 +7,7 @@ const Controller = require('./Controller');
 module.exports = class ListController extends Controller {
 
   init() {
-    this.accounts = require('../app/accounts');
+    this.logger = logger.scope('ListController');
   }
 
   /**
@@ -44,7 +44,12 @@ module.exports = class ListController extends Controller {
    * @param {Express.Response} res
    */
   users(req, res) {
-    res.json(this.accounts.all);
+    accounts.all()
+      .then(result => res.json(result))
+      .catch(err => {
+        this.logger.error(err);
+        res.status(500).json({ type: 'error', data: err.toString() });
+      })
   }
 
 };

@@ -5,24 +5,21 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
-const accounts = require('./accounts');
-
 // Configure strategy
 passport.use(new LocalStrategy(
   {
     passReqToCallback: true
   },
   (req, username, password, done) => {
-    if (!accounts.has(username)) {
-      req.flash('username', username);
-      return done(null, false);
-    }
-    if (!accounts.checkAuth(username, password)) {
-      req.flash('username', username);
-      return done(null, false);
-    }
-
-    return done(null, username);
+    accounts.checkAuth(username, password)
+      .then(success => {
+        if (!success) {
+          req.flash('username', username);
+          done(null, false);
+        }
+        else return done(null, username);
+      })
+      .catch(err => done(err, null));
   }
 ));
 
@@ -31,12 +28,15 @@ passport.serializeUser((username, done) => {
   done(null, username);
 });
 passport.deserializeUser((username, done) => {
-  const user = accounts.find(username);
-  if (!user) done('Unknown user!', null);
-  else done(null, user);
+  accounts.find(username)
+    .then(user => {
+      if (!user) done('Unknown user!', null);
+      else done(null, user);
+    })
+    .catch(err => done(err, null));
 });
 
-// export configured passport instance
+// export init function
 module.exports = app => {
 
   // setup session store

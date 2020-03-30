@@ -104,3 +104,4 @@ typings/
 frontend/static/js/
 frontend/static/css/
 packages/
+storage/

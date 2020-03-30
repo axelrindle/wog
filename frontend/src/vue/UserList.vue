@@ -28,7 +28,7 @@
         hr
         ul.button-list
           li(v-for="(user, index) in usersFiltered")
-            a.button(@click="selected = index" :class="{ 'is-link': selected === index }") {{ user.name }}
+            a.button(@click="selected = index" :class="{ 'is-link': selected === index }") {{ user.username }}
 </template>
 
 <script>
@@ -37,16 +37,14 @@ module.exports = {
   data() {
     return {
       loading: true,
-      users: [{
-        name: 'wog'
-      }],
+      users: [],
       filter: '',
       selected: -1
     };
   },
   computed: {
     usersFiltered() {
-      return this.users.filter(el => el.name.indexOf(this.filter) !== -1);
+      return this.users.filter(el => el.username.indexOf(this.filter) !== -1);
     },
     shown() {
       return this.usersFiltered.length;
@@ -79,7 +77,7 @@ module.exports = {
   watch: {
     filter() {
       if (this.selected !== -1 &&
-          this.users[this.selected].name.indexOf(this.filter) === -1) {
+          this.users[this.selected].username.indexOf(this.filter) === -1) {
         this.selected.file = -1;
       }
     },

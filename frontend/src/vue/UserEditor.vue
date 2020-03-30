@@ -18,7 +18,7 @@
         .field-body
           .field
             .control.is-expanded.has-icons-left
-              input.input(type="text" :value="user.name" disabled)
+              input.input(type="text" :value="user.username" disabled)
               span.icon.is-small.is-left
                 i.fas.fa-user
 

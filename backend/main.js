@@ -21,6 +21,7 @@ global.storage = require('./init/storage');
 global.config = require('./init/config');
 global.logger = require('./init/logger');
 global.adapters = require('./init/adapter-manager');
+global.accounts = require('./init/accounts');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
@@ -29,6 +30,7 @@ if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
   try {
     await storage.init();
     await adapters.init();
+    await accounts.init();
 
     require('./init/server');
   } catch (error) {
