@@ -9,8 +9,6 @@ const { fail } = require('../util');
 const myLogger = logger.scope('server');
 const app = express();
 
-myLogger.info('Configuring webserver...');
-
 // Checks
 if (!config.app.url) fail('No url specified!');
 
