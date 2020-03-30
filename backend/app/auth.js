@@ -17,18 +17,20 @@ passport.use(new LocalStrategy(
           req.flash('username', username);
           done(null, false);
         }
-        else return done(null, username);
+        else {
+          accounts.findByUsername(username).then(user => done(null, user))
+        }
       })
       .catch(err => done(err, null));
   }
 ));
 
 // Serialization
-passport.serializeUser((username, done) => {
-  done(null, username);
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
-passport.deserializeUser((username, done) => {
-  accounts.find(username)
+passport.deserializeUser((id, done) => {
+  accounts.findById(id)
     .then(user => {
       if (!user) done('Unknown user!', null);
       else done(null, user);

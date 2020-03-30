@@ -10,15 +10,16 @@ const { Database } = (() => {
 const queries = {
   createTable: `
     CREATE TABLE accounts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL UNIQUE,
       password TEXT NOT NULL,
-      role TEXT NOT NULL DEFAULT 'user',
-      PRIMARY KEY(username)
+      role TEXT NOT NULL DEFAULT 'user'
     )
   `,
-  seed: 'INSERT INTO accounts VALUES (?, ?, ?);',
-  selectAll: 'SELECT username, role FROM accounts',
-  selectFind: 'SELECT * FROM accounts WHERE username = ?'
+  seed: 'INSERT INTO accounts VALUES (NULL, ?, ?, ?);',
+  selectAll: 'SELECT id, username, role FROM accounts',
+  selectFindById: 'SELECT * FROM accounts WHERE id = ?',
+  selectFindByUsername: 'SELECT * FROM accounts WHERE username = ?'
 };
 
 /**
@@ -136,14 +137,29 @@ class Accounts {
   }
 
   /**
+   * Queries a specific user identified by the id.
+   *
+   * @param {string} id
+   * @returns {Promise} A Promise which resolves with the result row.
+   */
+  findById(id) {
+    return new Promise((resolve, reject) => {
+      this.db.get(queries.selectFindById, id, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      })
+    });
+  }
+
+  /**
    * Queries a specific user identified by the username.
    *
    * @param {string} username
    * @returns {Promise} A Promise which resolves with the result row.
    */
-  find(username) {
+  findByUsername(username) {
     return new Promise((resolve, reject) => {
-      this.db.get(queries.selectFind, username, (err, row) => {
+      this.db.get(queries.selectFindByUsername, username, (err, row) => {
         if (err) reject(err);
         else resolve(row);
       })
@@ -158,7 +174,7 @@ class Accounts {
    * @returns {Promise<boolean>} A Promise which resolves with the result.
    */
   checkAuth(username, password) {
-    return this.find(username)
+    return this.findByUsername(username)
       .then(user => {
         if (!user) return false;
         else {
