@@ -12,6 +12,7 @@
     "pkgs",
     "printf",
     "promisify",
+    "resave",
     "signale",
     "targz",
     "uncolorize",
