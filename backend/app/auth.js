@@ -1,7 +1,7 @@
 // Require modules
+const { URL } = require('url');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
@@ -41,12 +41,20 @@ passport.deserializeUser((id, done) => {
 // export init function
 module.exports = app => {
 
+  const theUrl = new URL(config.app.url);
+
   // setup session store
   app.use(session({
     secret: config.secure.secret,
     saveUninitialized: true,
     resave: false,
-    store: new RedisStore(config.secure.redis)
+    unset: 'destroy',
+    store: new RedisStore(Object.assign({
+      prefix: 'wog_session:'
+    }, config.secure.redis)),
+    cookie: Object.assign({
+      secure: theUrl.protocol === 'https'
+    }, config.secure.cookie)
   }));
 
   // Init passport authentication

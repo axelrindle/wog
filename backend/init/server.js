@@ -17,6 +17,7 @@ app.set('view engine', 'pug');
 app.set('views', 'frontend/pug');
 if (!DEBUG) {
   app.enable('view cache');
+  app.set('trust proxy', config.app.isProxy);
 }
 app.use(express.static('frontend/static'));
 app.use(bodyParser.json());

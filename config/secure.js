@@ -15,6 +15,16 @@ module.exports = {
   },
 
   /** A secret string used to encrypt session data. */
-  secret: env('APP_KEY')
+  secret: env('APP_KEY'),
+
+  /**
+   * Options for session cookies.
+   * See https://www.npmjs.com/package/express-session#cookie
+   */
+  cookie: {
+
+    /** Defines the maximum age of cookies. Defaults to 24 hours. */
+    maxAge: env('APP_COOKIE_MAX_AGE', 1000 * 60 * 60 * 24)
+  }
 
 };
