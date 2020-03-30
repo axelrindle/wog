@@ -14,7 +14,7 @@ if (!config.app.url) fail('No url specified!');
 
 // Server setup
 app.set('view engine', 'pug');
-app.set('views', 'frontend/pug');
+app.set('views', 'frontend/views');
 if (!DEBUG) {
   app.enable('view cache');
   app.set('trust proxy', config.app.isProxy);
