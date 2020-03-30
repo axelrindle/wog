@@ -12,6 +12,7 @@
         "SharedArrayBuffer": "readonly",
         "DEBUG": "readonly",
         "ROOT_DIRECTORY": "readonly",
+        "accounts": true,
         "config": true,
         "logger": true,
         "adapters": true,
