@@ -28,6 +28,11 @@ new Vue({
       return this.$refs.fileList.theEntry;
     }
   },
+  watch: {
+    isMounted(val) {
+      if (val) $('.fader').fadeOut(500, () => $(this).remove());
+    }
+  },
 
   // public functions
   methods: {
