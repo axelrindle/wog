@@ -1,8 +1,17 @@
-html, body, #app {
+* {
+  outline: none !important;
+}
+
+html, body, .app {
   height: 100%;
   width: 100%;
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-flow: row nowrap;
 }
 
 pre, pre code {
@@ -10,7 +19,7 @@ pre, pre code {
   font-size: 13px;
 }
 
-#fader {
+.fader {
   position: absolute;
   left: 0;
   right: 0;
@@ -18,32 +27,31 @@ pre, pre code {
   bottom: 0;
   z-index: 100;
   background-color: $content_background;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#sidebar {
+.sidebar {
   height: 100%;
-  min-width: $sidebar_width;
   width: $sidebar_width;
-  position: fixed;
   overflow-y: auto;
   border-right: 1px solid transparentize(#333, .75);
   background-color: $sidebar_background;
 }
 
-#content {
+.content {
   height: 100%;
-  max-width: $content_width;
-  width: $content_width;
+  flex: 1 0 auto;
   padding: $content_padding_vertical $content_padding_horizontal;
-  margin-left: $sidebar_width;
   background-color: $content_background;
-
-  &.small {
-    padding: $content_padding_vertical $content_padding_horizontal * 3;
-  }
-
   display: flex;
   flex-direction: column;
+
+  &.log {
+    max-width: calc(100% - #{$sidebar_width});
+  }
 
   pre {
     height: 100%;

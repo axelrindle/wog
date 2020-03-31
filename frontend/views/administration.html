@@ -1,25 +1,57 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-  <div class="flex" id="fader">
-    <p class="title is-2 has-text-white">
-      Loading...
-    </p>
-  </div>
+  {% include "partials/fader.html" %}
 
-  <div id="app">
+  <div class="app" id="app">
 
-    <div id="sidebar">
+    <div class="sidebar">
       <section class="section">
         <div class="container">
           {% include "partials/nav.html" %}
         </div>
       </section>
-      <hr class="bottom">
-      <user-list @ready="ready()" ref="userList"></user-list>
+
+      <hr>
+
+      <!-- Section buttons -->
+      <section class="section">
+        <div class="buttons">
+          {% raw %}
+            <button class="button is-fullwidth" :class="{ 'is-link': selected === index }"
+                    v-for="(component, index) in components" :key="index"
+                    @click="selected = index" :title="component.description">
+              <span class="icon is-small"><i :class="component.icon"></i></span>
+              <span>{{ component.name }}</span>
+            </button>
+          {% endraw %}
+        </div>
+      </section>
     </div> <!-- end #sidebar -->
 
-    <user-editor :user="theUser" ref="userEditor"></user-editor>
+    <div class="content">
+      <div class="columns">
+        <div class="column is-10-desktop is-offset-1-desktop">
+          <div class="card">
+
+            <header class="card-header">
+              <p class="card-header-title">
+                {% raw %}
+                  <span class="subtitle is-6">Administration | {{ theComponent.name }}</span>
+                {% endraw %}
+              </p>
+            </header>
+
+            <div class="card-content">
+              <keep-alive>
+                <component :is="theComponent.component"></component>
+              </keep-alive>
+            </div> <!-- end .card-content -->
+
+          </div> <!-- end .card -->
+        </div> <!-- end .column -->
+      </div> <!-- end .columns -->
+    </div>
 
   </div> <!-- end #app -->
 {% endblock %}

@@ -1,5 +1,5 @@
 <template>
-  <div id="content">
+  <div class="content log">
 
     <div class="card">
       <header class="card-header">
@@ -26,83 +26,81 @@
       </header>
 
       <div class="card-content">
-        <div class="content">
-          <div class="columns">
+        <div class="columns">
 
-            <!-- grep / fuzzy search-->
-            <div class="column">
-              <!-- Mode selection-->
-              <div class="select" style="margin-bottom: 6px;">
-                <select v-model="filterMode">
-                  <option value="grep">Grep &amp; Fuzzy</option>
-                  <option value="lines">Head &amp; Tail</option>
-                </select>
+          <!-- grep / fuzzy search-->
+          <div class="column">
+            <!-- Mode selection-->
+            <div class="select" style="margin-bottom: 6px;">
+              <select v-model="filterMode">
+                <option value="grep">Grep &amp; Fuzzy</option>
+                <option value="lines">Head &amp; Tail</option>
+              </select>
+            </div>
+
+            <!-- Grep & Fuzzy-->
+            <div class="field has-addons" v-if="filterMode === 'grep'">
+              <div class="control">
+                <span class="select">
+                  <select v-model="grepMode">
+                    <option value="grep">Grep</option>
+                    <option value="fuzzy">Fuzzy</option>
+                  </select>
+                </span>
               </div>
-
-              <!-- Grep & Fuzzy-->
-              <div class="field has-addons" v-if="filterMode === 'grep'">
-                <div class="control">
-                  <span class="select">
-                    <select v-model="grepMode">
-                      <option value="grep">Grep</option>
-                      <option value="fuzzy">Fuzzy</option>
-                    </select>
+              <div class="control">
+                <input class="input" type="text" placeholder="Find matches in the log" v-model="grep">
+              </div>
+              <div class="control">
+                <a class="button is-danger" @click="grep = ''">
+                  <span class="icon">
+                    <i class="fas fa-trash-alt"></i>
                   </span>
-                </div>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Find matches in the log" v-model="grep">
-                </div>
-                <div class="control">
-                  <a class="button is-danger" @click="grep = ''">
-                    <span class="icon">
-                      <i class="fas fa-trash-alt"></i>
-                    </span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- Head & Tail-->
-              <div class="field has-addons" v-else>
-                <div class="control">
-                  <span class="has-text-grey">Work In Progress...</span>
-                  <!--span.select
-                  select(v-model="lineMode")
-                    option(value="head") Head
-                    option(value="tail") Tail
-                  -->
-                </div>
-                <!--.controlinput.input(type="number" min="0" value="10" v-model="line")
-                -->
-                <!--.control
-                label.checkbox
-                  input(type="checkbox")
-                  |  Apply
-                -->
-              </div>
-            </div> <!-- end .column -->
-
-            <!-- actions-->
-            <div class="column">
-              <p class="title is-6">Actions</p>
-              <div class="field is-grouped">
-                <a class="control button is-primary" :href="downloadUrl" v-if="entry">Download</a>
-                <a class="control button is-info" @click="refresh" v-if="entry">Refresh</a>
-                <a class="control button is-link" @click="openGoToLine" v-if="entry">Go to line</a>
+                </a>
               </div>
             </div>
 
-            <!-- info-->
-            <div class="column">
-              <p class="title is-6">Info</p>
-              <ul v-if="content">
-                <li v-if="grep">Lines: {{ filteredLinesAmount }} / {{ content.lines.length }}</li>
-                <li v-else>Lines: {{ filteredLinesAmount }}</li>
-                <li>Size: ~{{ content.size }}</li>
-              </ul>
+            <!-- Head & Tail-->
+            <div class="field has-addons" v-else>
+              <div class="control">
+                <span class="has-text-grey">Work In Progress...</span>
+                <!--span.select
+                select(v-model="lineMode")
+                  option(value="head") Head
+                  option(value="tail") Tail
+                -->
+              </div>
+              <!--.controlinput.input(type="number" min="0" value="10" v-model="line")
+              -->
+              <!--.control
+              label.checkbox
+                input(type="checkbox")
+                |  Apply
+              -->
             </div>
+          </div> <!-- end .column -->
 
-          </div> <!-- .columns -->
-        </div> <!-- .content -->
+          <!-- actions-->
+          <div class="column">
+            <p class="title is-6">Actions</p>
+            <div class="field is-grouped">
+              <a class="control button is-primary" :href="downloadUrl" v-if="entry">Download</a>
+              <a class="control button is-info" @click="refresh" v-if="entry">Refresh</a>
+              <a class="control button is-link" @click="openGoToLine" v-if="entry">Go to line</a>
+            </div>
+          </div>
+
+          <!-- info-->
+          <div class="column">
+            <p class="title is-6">Info</p>
+            <ul v-if="content">
+              <li v-if="grep">Lines: {{ filteredLinesAmount }} / {{ content.lines.length }}</li>
+              <li v-else>Lines: {{ filteredLinesAmount }}</li>
+              <li>Size: ~{{ content.size }}</li>
+            </ul>
+          </div>
+
+        </div> <!-- .columns -->
       </div> <!-- end .card-content -->
     </div> <!-- end .card -->
 

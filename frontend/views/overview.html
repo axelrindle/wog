@@ -1,15 +1,11 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-  <div class="flex" id="fader">
-    <p class="title is-2 has-text-white">
-      Loading...
-    </p>
-  </div>
+  {% include "partials/fader.html" %}
 
-  <div id="app">
+  <div class="app" id="app">
 
-    <div id="sidebar">
+    <div class="sidebar">
       <section class="section">
         <div class="container">
           {% include "partials/nav.html" %}
