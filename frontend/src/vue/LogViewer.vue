@@ -108,10 +108,10 @@
 
     <!-- actual log content-->
     <pre id="logContent" v-if="!error &amp;&amp; !loading"><code>
-        <div v-for="line in linesFiltered" :data-line="line.lineNumber" :key="line.lineNumber">
-          <span class="has-text-link">{{ line.lineNumber }}:&nbsp;</span>
-          <span>{{ line.text }}</span>
-        </div>
+      <div v-for="line in linesFiltered" :data-line="line.lineNumber" :key="line.lineNumber">
+        <span class="has-text-link">{{ line.lineNumber }}:&nbsp;</span>
+        <span>{{ line.text }}</span>
+      </div>
     </code></pre>
     <pre v-else>
       <code class="has-text-danger" v-if="error">{{ error }}</code>
