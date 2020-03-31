@@ -31,13 +31,13 @@ module.exports = class FrontendController extends Controller {
    */
   index(req, res) {
     if (req.isAuthenticated()) {
-      res.render('overview', {
+      this.render(res, 'overview.html', {
         title: `${this.title} | overview`,
         user: req.user,
         wsUrl: this.getWebsocketUrl(req)
       });
     } else {
-      res.render('login', {
+      this.render(res, 'login.html', {
         title: `${this.title} | login`,
         error: req.flash('error')
       });
@@ -52,7 +52,7 @@ module.exports = class FrontendController extends Controller {
    */
   admin(req, res) {
     if (req.user.role === 'admin') {
-      res.render('administration', {
+      this.render(res, 'administration.html', {
         title: `${this.title} | administration`,
         user: req.user
       });
@@ -68,7 +68,7 @@ module.exports = class FrontendController extends Controller {
    * @param {Express.Response} res
    */
   about(req, res) {
-    res.render('about', {
+    this.render(res, 'about.html', {
       title: `${this.title} | about`,
       version: this.version
     });
