@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+  <div class="flex" id="fader">
+    <p class="title is-2 has-text-white">
+      Loading...
+    </p>
+  </div>
+
+  <div id="app">
+
+    <div id="sidebar">
+      <section class="section">
+        <div class="container">
+          {% include "partials/nav.html" %}
+        </div>
+      </section>
+      <hr class="bottom">
+      <user-list @ready="ready()" ref="userList"></user-list>
+    </div> <!-- end #sidebar -->
+
+    <user-editor :user="theUser" ref="userEditor"></user-editor>
+
+  </div> <!-- end #app -->
+{% endblock %}
+
+{% block js %}
+  {% include "partials/vendor_scripts.html" %}
+  <script src="{{ path('js/logic_administration.js') }}"></script>
+{% endblock %}

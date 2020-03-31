@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="X-UA-Compatible" value="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="wog. A web interface for viewing logs. See https://github.com/axelrindle/wog">
+
+    {% if wsUrl %}
+      <meta name="socket" value="{{ wsUrl }}">
+    {% endif %}
+
+    <base href="{{ url }}">
+    <link rel="icon" href="{{ path('img/favicon.png') }}">
+    <title>{{ title }}</title>
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="{{ path('css/style.min.css') }}">
+    <link rel="stylesheet" href="{{ path('vendor/fontawesome-free-5.11.2-web/css/all.min.css') }}">
+  </head>
+  <body style="background-image: url('{{ path('img/login_pattern.png') }}')">
+    {% block content %}
+      <p>Hello World</p>
+    {% endblock %}
+
+    <!-- JS files -->
+    {% block js %}
+      <!-- Empty by default :) -->
+    {% endblock %}
+  </body>
+</html>

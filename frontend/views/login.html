@@ -1,0 +1,64 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+  <div class="flex no-justify" id="app">
+    <img src="{{ path('img/header.png') }}" width="600px">
+
+    <!-- Login card -->
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">Login</p>
+      </header>
+
+      <form action="{{ path('login') }}" method="POST">
+
+        <!-- Input items -->
+        <div class="card-content">
+
+          <!-- Username -->
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left">
+              <input class="input" type="text" name="username" placeholder="Username"
+                     v-model="username" required
+                     value="{{ messages.username[0] or '' }}">
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+            </div>
+          </div> <!-- end .field -->
+
+          <!-- Password -->
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left">
+              <input class="input" type="password" name="password" placeholder="Password" v-model="username" required>
+              <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+              </span>
+            </div>
+          </div> <!-- end .field -->
+
+          {% if error %}
+            <p class="has-text-danger">{{ error }}</p>
+          {% endif %}
+
+        </div> <!-- end .card-content -->
+
+        <footer class="card-footer">
+          <input class="card-footer-item has-background-success has-text-white pointer"
+                 type="submit" value="Login">
+        </footer>
+
+      </form>
+    </div> <!-- end .card -->
+  </div> <!-- end .flex -->
+{% endblock %}
+{#
+
+          if error
+            p.has-text-danger= error
+
+        // Buttons
+        footer.card-footer
+          input.card-footer-item.has-background-success.has-text-white.pointer(type="submit", value="Login") #}

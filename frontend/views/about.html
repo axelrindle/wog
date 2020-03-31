@@ -1,0 +1,23 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+  <div class="about">
+    <a class="back" href="{{ url }}">
+      <i class="fas fa-arrow-left">
+        &nbsp; Back
+      </i>
+    </a>
+
+    <h1>
+      wog
+      <span class="subtitle is-3">v{{ version }}</span>
+    </h1>
+    <h3>A web interface for viewing logs.</h3>
+
+    <div class="links">
+      <a href="https://github.com/axelrindle/wog">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </div>
+{% endblock %}

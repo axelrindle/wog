@@ -1,0 +1,31 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+  <div class="flex" id="fader">
+    <p class="title is-2 has-text-white">
+      Loading...
+    </p>
+  </div>
+
+  <div id="app">
+
+    <div id="sidebar">
+      <section class="section">
+        <div class="container">
+          {% include "partials/nav.html" %}
+        </div>
+      </section>
+      <hr class="bottom">
+      <file-list @ready="ready()" :socket="socket" ref="fileList"></file-list>
+    </div> <!-- end #sidebar -->
+
+    <!-- Log content -->
+    <log-viewer ref="logViewer" :adapter="theAdapter" :entry="theEntry"></log-viewer>
+
+  </div> <!-- end #app -->
+{% endblock %}
+
+{% block js %}
+  {% include "partials/vendor_scripts.html" %}
+  <script src="{{ path('js/logic.js') }}"></script>
+{% endblock %}

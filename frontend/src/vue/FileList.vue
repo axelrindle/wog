@@ -1,44 +1,78 @@
-<template lang="pug">
-  div
-    // filter
-    section.section
-      .container
-        p.title Search
-        p.subtitle Find a logfile
-        .field.has-addons
-          .control
-            input.input(type='text', placeholder='boot.log' v-model="filter")
-          .control
-            a.button.is-danger(@click="filter = ''")
-              span.icon
-                i.fas.fa-trash-alt
+<template>
+  <div>
+    <!-- filter-->
+    <section class="section">
+      <div class="container">
+        <p class="title">Search</p>
+        <p class="subtitle">Find a logfile</p>
+        <div class="field has-addons">
+          <div class="control">
+            <input class="input" type="text" placeholder="boot.log" v-model="filter" />
+          </div>
+          <div class="control">
+            <a class="button is-danger" @click="filter = ''">
+              <span class="icon">
+                <i class="fas fa-trash-alt"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    hr
+    <hr>
 
-    // file tree
-    section.section
-      .container
-        p.title Logfiles
-          a(v-on:click="refresh()" v-if="selected.adapter").button.is-primary.is-rounded.is-pulled-right
-            span.icon
-              i.fas.fa-sync-alt
+    <!-- file tree-->
+    <section class="section">
+      <div class="container">
+        <p class="title">
+          Logfiles
+          <a class="button is-primary is-rounded is-pulled-right"
+             @click="refresh()" v-if="selected.adapter">
+            <span class="icon">
+               <i class="fas fa-sync-alt"></i>
+            </span>
+          </a>
+        </p>
+        <p class="subtitle" v-if="allShown">
+          Loaded {{ shown }} files
+        </p>
+        <p class="subtitle" v-else>
+          Showing {{ shown }} / {{ files.length }} files
+        </p>
 
-        p(v-if="allShown").subtitle Loaded {{ shown }} files
-        p(v-else).subtitle Showing {{ shown }} / {{ files.length }} files
-        .field.is-horizontal
-          .field-label.is-normal
-            label.label Adapter
-          .field-body
-            .field
-              .control
-                .select
-                  select(v-model="selected.adapter" :disabled="loading")
-                    option(v-for="adapter in adapters" :value="adapter") {{ adapter }}
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Adapter</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <div class="select">
+                  <select v-model="selected.adapter" :disabled="loading">
+                    <option v-for="adapter in adapters" :value="adapter" :key="adapter">
+                      {{ adapter }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- end .field -->
 
-        hr
-        ul.button-list
-          li(v-for="(file, index) in filesFiltered")
-            a.button(@click="select(index)" :title="file.path" :class="{ 'is-link': selected.file === index }") {{ file.name }}
+        <hr>
+
+        <ul class="button-list">
+          <li v-for="(file, index) in filesFiltered" :key="file.id">
+            <a class="button" @click="select(index)" :title="file.path"
+               :class="{ 'is-link': selected.file === index }">
+              {{ file.name }}
+            </a>
+          </li>
+        </ul>
+      </div> <!-- end .container -->
+    </section> <!-- end .section -->
+  </div> <!-- end wrapper -->
 </template>
 
 <script>

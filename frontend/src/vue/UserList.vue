@@ -1,34 +1,60 @@
-<template lang="pug">
-  div
-    // filter
-    section.section
-      .container
-        p.title Search
-        p.subtitle Find a user
-        .field.has-addons
-          .control
-            input.input(type='text', placeholder='johndoe' v-model="filter")
-          .control
-            a.button.is-danger(@click="filter = ''")
-              span.icon
-                i.fas.fa-trash-alt
+<template>
+  <div>
 
-    hr
+    <!-- filter-->
+    <section class="section">
+      <div class="container">
+        <p class="title">Search</p>
+        <p class="subtitle">Find a user</p>
+        <div class="field has-addons">
+          <div class="control">
+            <input class="input" type="text" placeholder="johndoe" v-model="filter">
+          </div>
+          <div class="control">
+            <a class="button is-danger" @click="filter = ''">
+              <span class="icon">
+                <i class="fas fa-trash-alt"></i>
+              </span>
+            </a>
+          </div>
+        </div> <!-- end .field -->
+      </div> <!-- end .container -->
+    </section> <!-- end .section -->
 
-    // file tree
-    section.section
-      .container
-        p.title Users
-          a(v-on:click="refresh()" v-if="selected.adapter").button.is-primary.is-rounded.is-pulled-right
-            span.icon
-              i.fas.fa-sync-alt
+    <hr>
 
-        p(v-if="allShown").subtitle Loaded {{ shown }} users
-        p(v-else).subtitle Showing {{ shown }} / {{ users.length }} users
-        hr
-        ul.button-list
-          li(v-for="(user, index) in usersFiltered")
-            a.button(@click="selected = index" :class="{ 'is-link': selected === index }") {{ user.username }}
+    <!-- file tree-->
+    <section class="section">
+      <div class="container">
+        <p class="title">
+          Users
+          <a class="button is-primary is-rounded is-pulled-right"
+             @click="refresh()" v-if="selected.adapter">
+            <span class="icon">
+              <i class="fas fa-sync-alt"></i>
+            </span>
+          </a>
+        </p> <!-- end .title -->
+        <p class="subtitle" v-if="allShown">
+          Loaded {{ shown }} users
+        </p>
+        <p class="subtitle" v-else>
+          Showing {{ shown }} / {{ users.length }} users
+        </p>
+
+        <hr>
+
+        <ul class="button-list">
+          <li v-for="(user, index) in usersFiltered" :key="user.id">
+            <a class="button" @click="selected = index" :class="{ 'is-link': selected === index }">
+              {{ user.username }}
+            </a>
+          </li>
+        </ul>
+      </div> <!-- end .container -->
+    </section> <!-- end .section -->
+
+  </div> <!-- end wrapper -->
 </template>
 
 <script>
