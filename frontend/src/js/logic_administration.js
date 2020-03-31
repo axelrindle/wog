@@ -1,30 +1,41 @@
 // Require dependencies
 require('./util/bootstrap');
-const UserList = require('../vue/UserList');
-const UserEditor = require('../vue/UserEditor');
 const isMounted = require('vue-is-mounted');
 
 // create vue app
 new Vue({
-  name: 'Overview',
+  name: 'Administration',
   el: '#app',
-  components: { UserList, UserEditor },
   mixins: [ isMounted ],
 
   data: {
-    error: null,
-    isLoading: false
+    components: [
+      {
+        name: 'Users',
+        description: 'Create, edit or delete users.',
+        icon: 'fas fa-users',
+        component: require('../vue/admin/users/List.vue')
+      },
+      {
+        name: 'Config',
+        description: 'Inspect configuration values.',
+        icon: 'fas fa-cog',
+      },
+      {
+        name: 'Statistics',
+        description: 'View some general application statistics.',
+        icon: 'fas fa-chart-bar',
+      }
+    ],
+    selected: 0
   },
   computed: {
-    theUser() {
-      if(!this.isMounted) return null;
-      return this.$refs.userList.theEntry;
+    theComponent() {
+      return this.components[this.selected];
     }
   },
 
-  methods: {
-    ready() {
-      $('#fader').fadeOut(500, () => $('#fader').remove());
-    }
+  mounted() {
+    $('.fader').fadeOut(500, () => $(this).remove());
   }
 });
