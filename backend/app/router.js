@@ -5,7 +5,7 @@ const { Router } = require('express');
 const pkg = require('@root/package.json');
 
 const myLogger = logger.scope('router');
-const middleware = require('./middleware')(myLogger);
+const middleware = require('./middleware');
 
 // Export setup function
 module.exports = app => {
