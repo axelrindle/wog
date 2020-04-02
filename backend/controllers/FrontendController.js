@@ -1,6 +1,5 @@
 // Require modules
 const Controller = require('./Controller');
-const { getPath } = require('../util');
 
 /**
  * The FrontendController is responsible for rendering the HTML pages.
@@ -24,41 +23,30 @@ module.exports = class FrontendController extends Controller {
   }
 
   /**
-   * Shows the log interface. If the user is not authenticated, the login page is shown instead.
+   * Shows the log interface.
    *
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
   index(req, res) {
-    if (req.isAuthenticated()) {
-      this.render(res, 'overview.html', {
-        title: `${this.title} | overview`,
-        user: req.user,
-        wsUrl: this.getWebsocketUrl(req)
-      });
-    } else {
-      this.render(res, 'login.html', {
-        title: `${this.title} | login`,
-        error: req.flash('error')
-      });
-    }
+    this.render(res, 'overview.html', {
+      title: `${this.title} | overview`,
+      user: req.user,
+      wsUrl: this.getWebsocketUrl(req)
+    });
   }
 
   /**
-   * Shows the administration page for admin users.
+   * Show the login form.
    *
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
-  admin(req, res) {
-    if (req.user.role === 'admin') {
-      this.render(res, 'administration.html', {
-        title: `${this.title} | administration`,
-        user: req.user
-      });
-    } else {
-      res.redirect(getPath());
-    }
+  login(req, res) {
+    this.render(res, 'login.html', {
+      title: `${this.title} | login`,
+      error: req.flash('error')
+    });
   }
 
   /**

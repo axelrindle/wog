@@ -37,19 +37,4 @@ module.exports = class ListController extends Controller {
     }
   }
 
-  /**
-   * Sends a list of all users.
-   *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
-   */
-  users(req, res) {
-    accounts.all()
-      .then(result => res.json(result))
-      .catch(err => {
-        this.logger.error(err);
-        res.status(500).json({ type: 'error', data: err.toString() });
-      })
-  }
-
 };
