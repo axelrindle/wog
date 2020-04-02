@@ -27,6 +27,12 @@ exports.env = (key, _default) => {
   return process.env[key] || _default;
 };
 
+/**
+ * Formats an url path relative to the configured application url.
+ *
+ * @param {string} path The relative path component.
+ * @returns {string} The absolute url.
+ */
 exports.getPath = path => {
   let url = config.app.url;
   if (!url.endsWith('/'))
