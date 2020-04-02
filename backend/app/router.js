@@ -1,16 +1,11 @@
 // Require modules
-const express = require('express');
+const path = require('path');
+const glob = require('glob');
+const { Router } = require('express');
 const pkg = require('@root/package.json');
 
 const myLogger = logger.scope('router');
 const middleware = require('./middleware')(myLogger);
-const AuthController = require('../controllers/AuthController');
-
-const routes = {
-  frontend: require('../routes/frontend'),
-  all: require('../routes/all'),
-  entry: require('../routes/entry')
-};
 
 // Export setup function
 module.exports = app => {
@@ -26,25 +21,32 @@ module.exports = app => {
     next();
   });
 
-  // setup passport routes
-  const myAuthController = new AuthController(app);
-  app.post('/login', myAuthController.login());
-  app.get('/logout', middleware.checkAuthenticated, myAuthController.logout.bind(myAuthController));
+  // load route definitions
+  const dir = path.join(__dirname, '../routes/*.js');
+  const files = glob.sync(dir);
 
-  // register frontend routes
-  routes.frontend(app);
+  // require each file and execute it's init function
+  files.forEach(file => {
+    const routeInit = require(file);
 
-  // register api routes
-  const allRouter = new express.Router({
-    mergeParams: true
+    // function wants app and a new router
+    if (routeInit.length === 2) {
+      const myRouter = new Router({
+        mergeParams: true
+      });
+      routeInit(app, myRouter);
+    }
+
+    // function only wants app
+    else if (routeInit.length === 1) {
+      routeInit(app);
+    }
+
+    // illegal
+    else {
+      throw new Error(`Invalid parameter count in router function: ${routeInit.length}! Must be 1 or 2!`)
+    }
   });
-  routes.all(app, allRouter);
-  app.use('/all', allRouter);
 
-  // register entry routes
-  const entryRouter = new express.Router({
-    mergeParams: true
-  });
-  routes.entry(app, entryRouter);
-  app.use('/entry', entryRouter);
+  myLogger.info(`Loaded ${files.length} route definitions.`);
 };
