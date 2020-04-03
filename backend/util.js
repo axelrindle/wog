@@ -43,3 +43,11 @@ exports.getPath = path => {
 
   return path ? url + path : url;
 };
+
+/**
+ * Tests whether an object is empty.
+ *
+ * @param {Object} obj
+ * @returns {boolean} Whether the object is empty.
+ */
+exports.isEmptyObject = obj => Object.keys(obj).length === 0 && obj.constructor === Object;
