@@ -4,6 +4,10 @@ const { getPath } = require('../util');
 
 module.exports = class AdminController extends Controller {
 
+  init() {
+    this.title = this.app.get('title');
+  }
+
   /**
    * Shows the administration page for admin users.
    *
