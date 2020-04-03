@@ -27,6 +27,24 @@
           {% endraw %}
         </div>
       </section>
+
+      <hr>
+
+      <!-- Section actions (if any) -->
+      <section class="section">
+        <div class="buttons">
+          {% raw %}
+            <button class="button is-fullwidth is-info"
+                    v-for="(action, index) in theActions" :key="index"
+                    :title="action.description" @click="handleAction(index)">
+              <span class="icon is-small" v-if="action.icon">
+                <i :class="component.icon"></i>
+              </span>
+              <span>{{ action.name }}</span>
+            </button>
+          {% endraw %}
+        </div>
+      </section>
     </div> <!-- end #sidebar -->
 
     <div class="content">
@@ -44,7 +62,7 @@
 
             <div class="card-content">
               <keep-alive>
-                <component :is="theComponent.component"></component>
+                <component :is="theComponent.component" ref="theComponent"></component>
               </keep-alive>
             </div> <!-- end .card-content -->
 

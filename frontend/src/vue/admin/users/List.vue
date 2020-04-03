@@ -61,7 +61,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in usersFiltered" :key="user.id" @click="selected = index">
+            <tr v-for="user in usersFiltered" :key="user.id" @click="$emit('select', user.id)">
               <td>{{ user.id }}</td>
               <td>{{ user.username }}</td>
               <td>{{ user.role }}</td>
@@ -77,10 +77,15 @@
 <script>
 module.exports = {
   name: 'UserList',
+
+  props: {
+    users: {
+      type: Array,
+      default: []
+    }
+  },
   data() {
     return {
-      loading: true,
-      users: [],
       filter: {
         username: '',
         role: 'all'
@@ -112,24 +117,6 @@ module.exports = {
       return this.users[this.selected];
     }
   },
-  methods: {
-    refresh() {
-      this.$root.error = null;
-      this.loading = true;
-      this.selected = -1;
-      this.users = [];
-      axios.post('/all/users')
-        .then(response => {
-          this.users = response.data;
-        }).catch(err => {
-          this.$root.error = err.message;
-        })
-        .then(() => {
-          this.loading = false;
-          this.$emit('ready');
-        });
-    }
-  },
   watch: {
     filter() {
       if (this.selected !== -1 &&
@@ -140,10 +127,6 @@ module.exports = {
     'selected': function() {
       localStorage.setItem('selectedUser', this.selected);
     }
-  },
-
-  mounted() {
-    this.refresh();
   }
 };
 </script>

@@ -1,12 +1,10 @@
 // Require dependencies
 require('./util/bootstrap');
-const isMounted = require('vue-is-mounted');
 
 // create vue app
 new Vue({
   name: 'Administration',
   el: '#app',
-  mixins: [ isMounted ],
 
   data: {
     components: [
@@ -14,7 +12,22 @@ new Vue({
         name: 'Users',
         description: 'Create, edit or delete users.',
         icon: 'fas fa-users',
-        component: require('../vue/admin/users/List.vue')
+        component: require('../vue/admin/users/'),
+        actions: [
+          {
+            name: 'Refresh',
+            description: 'Reload the user list.',
+            handler() {
+              this.refresh();
+            }
+          },
+          {
+            name: 'Create a User',
+            handler() {
+              this.create = true;
+            }
+          }
+        ]
       },
       {
         name: 'Config',
@@ -32,6 +45,15 @@ new Vue({
   computed: {
     theComponent() {
       return this.components[this.selected];
+    },
+    theActions() {
+      return this.theComponent.actions || [];
+    }
+  },
+
+  methods: {
+    handleAction(index) {
+      this.theActions[index].handler.call(this.$refs.theComponent);
     }
   },
 
