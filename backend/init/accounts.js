@@ -16,7 +16,7 @@ const queries = {
       role TEXT NOT NULL DEFAULT 'user'
     )
   `,
-  seed: 'INSERT INTO accounts VALUES (NULL, ?, ?, ?);',
+  insert: 'INSERT INTO accounts VALUES (NULL, ?, ?, ?);',
   selectAll: 'SELECT id, username, role FROM accounts',
   selectFindById: 'SELECT * FROM accounts WHERE id = ?',
   selectFindByUsername: 'SELECT * FROM accounts WHERE username = ?'
@@ -72,7 +72,7 @@ class Accounts {
       })
       .then(hash => new Promise((resolve, reject) => {
         const params = ['wog', hash, 'admin'];
-        this.db.run(queries.seed, params, err => {
+        this.db.run(queries.insert, params, err => {
           if (err) reject(err);
           else {
             this.logger.info('Initial user account created.');
@@ -134,6 +134,26 @@ class Accounts {
         else resolve(rows);
       });
     });
+  }
+
+  /**
+   * Insert a new user account into the database.
+   *
+   * @param {Object} user The user to insert.
+   * @returns {Promise<Void>} A Promise that resolves when the user has been created.
+   */
+  create(user) {
+    return this.hashPassword(user.password)
+      .then(hash => new Promise((resolve, reject) => {
+        const params = [user.username, hash, user.role];
+        this.db.run(queries.insert, params, err => {
+          if (err) reject(err);
+          else {
+            this.logger.info(`A new user ${user.username} has been created.`);
+            resolve();
+          }
+        });
+      }));
   }
 
   /**

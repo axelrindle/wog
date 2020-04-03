@@ -40,4 +40,20 @@ module.exports = class AdminController extends Controller {
       })
   }
 
+  /**
+   * Creates a new user.
+   *
+   * @param {Express.Request} req
+   * @param {Express.Response} res
+   */
+  createUser(req, res) {
+    accounts.create(req.body)
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      })
+  }
+
 };
