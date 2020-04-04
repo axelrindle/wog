@@ -64,8 +64,8 @@ module.exports = class Validator {
     }
 
     // check for errors
-    this.myLogger.debug('Validation errors: ' + JSON.stringify(errors));
     if (!isEmptyObject(errors)) {
+      this.myLogger.debug('Validation errors: ' + JSON.stringify(errors));
       res.status(422).json({ errors });
     } else {
       next();
