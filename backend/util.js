@@ -51,3 +51,11 @@ exports.getPath = path => {
  * @returns {boolean} Whether the object is empty.
  */
 exports.isEmptyObject = obj => Object.keys(obj).length === 0 && obj.constructor === Object;
+
+/**
+ * Shortcut for binding a function to it's parent object. Useful for use with classes.
+ *
+ * @param {Object} obj The object to bind to.
+ * @param {String} func The name of the function to bind.
+ */
+exports.bind = (obj, func) => obj[func].bind(obj);

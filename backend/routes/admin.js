@@ -1,4 +1,5 @@
 // Require modules
+const { bind } = require('../util');
 const AdminController = require('../controllers/AdminController');
 const { CreateUserValidator } = require('../validation/AdminValidators');
 
@@ -9,9 +10,9 @@ module.exports = (app, myRouter) => {
 
   myRouter.use(isAdmin);
 
-  myRouter.get('/', myController.index.bind(myController));
-  myRouter.post('/user/list', myController.listUsers.bind(myController));
-  myRouter.put('/user/create', CreateUserValidator.validate.bind(CreateUserValidator), myController.createUser.bind(myController));
+  myRouter.get('/', bind(myController, "index"));
+  myRouter.post('/user/list', bind(myController, "listUsers"));
+  myRouter.put('/user/create', bind(CreateUserValidator, "validate"), bind(myController, "createUser"));
 
   app.use('/admin', myRouter);
 };
