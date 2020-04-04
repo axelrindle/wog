@@ -17,7 +17,7 @@ module.exports.id = value => isNumeric(value, { no_symbols: true });
  * Checks that the given username does not exist.
  */
 module.exports.username = (value, cb) => {
-  return accounts.findByUsername(value)
+  accounts.findByUsername(value)
     .then(user => {
       if (user) {
         cb('Username already in use!');
