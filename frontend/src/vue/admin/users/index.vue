@@ -21,6 +21,9 @@ module.exports = {
     selected: -1
   }),
   computed: {
+    showActions() {
+      return !this.loading && !this.create && this.selected === -1;
+    },
     selectedUser() {
       return this.users.find(el => el.id === this.selected);
     }

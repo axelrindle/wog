@@ -1,10 +1,12 @@
 // Require dependencies
 require('./util/bootstrap');
+const isMounted = require('vue-is-mounted');
 
 // create vue app
 new Vue({
   name: 'Administration',
   el: '#app',
+  mixins: [ isMounted ],
 
   data: {
     components: [
@@ -50,14 +52,19 @@ new Vue({
       return this.theComponent.actions || [];
     }
   },
-
-  methods: {
-    handleAction(index) {
-      this.theActions[index].handler.call(this.$refs.theComponent);
+  watch: {
+    isMounted(val) {
+      if (val) $('.fader').fadeOut(500, () => $(this).remove());
     }
   },
 
-  mounted() {
-    $('.fader').fadeOut(500, () => $(this).remove());
+  methods: {
+    showActions() {
+      if (!this.isMounted) return false;
+      return this.$refs.theComponent.showActions;
+    },
+    handleAction(index) {
+      this.theActions[index].handler.call(this.$refs.theComponent);
+    }
   }
 });
