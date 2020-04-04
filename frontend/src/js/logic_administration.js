@@ -61,6 +61,7 @@ new Vue({
   methods: {
     showActions() {
       if (!this.isMounted) return false;
+      if (!this.$refs.theComponent) return false;
       return this.$refs.theComponent.showActions;
     },
     handleAction(index) {
