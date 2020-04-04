@@ -41,6 +41,9 @@ module.exports = class Validator {
         errors[property] = `Missing required property ${property}!`;
         continue;
       }
+      else if (optional && !body[property]) {
+        continue;
+      }
 
       // run each validation function and pass the value from the request
       const functions = rules[property].filter(el => el !== 'optional');
