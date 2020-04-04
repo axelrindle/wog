@@ -1,6 +1,5 @@
 // Require modules
 const { isEmptyObject } = require('../util');
-const asyncForEach = require('@axelrindle/async-for-each');
 
 /**
  * The Validator is responsible for validating data from requests.
