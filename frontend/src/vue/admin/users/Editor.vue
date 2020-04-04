@@ -107,6 +107,7 @@ module.exports = {
       return this.errors && this.errors[property];
     },
     cancel() {
+      if (this.loading) return;
       this.$emit('finish');
     },
     filterUser() {
