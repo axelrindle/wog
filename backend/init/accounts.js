@@ -40,6 +40,9 @@ class Accounts {
         if (err) reject(err);
         else {
           this.logger.info('SQLite database opened.');
+          this.db.on('trace', sql => {
+            this.logger.debug('Executing SQL: ' + sql);
+          });
           resolve(this._createTable());
         }
       });
