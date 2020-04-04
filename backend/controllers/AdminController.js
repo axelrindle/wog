@@ -53,7 +53,24 @@ module.exports = class AdminController extends Controller {
       })
       .catch(err => {
         res.status(500).json(err);
+      });
+  }
+
+  /**
+   * Updates an existing user.
+   *
+   * @param {Express.Request} req
+   * @param {Express.Response} res
+   */
+  editUser(req, res) {
+    accounts.update(req.body)
+      .then(() => {
+        res.sendStatus(200);
       })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   }
 
 };

@@ -17,6 +17,7 @@ const queries = {
     )
   `,
   insert: 'INSERT INTO accounts VALUES (NULL, ?, ?, ?);',
+  update: 'UPDATE accounts SET %%columns%% WHERE id = ?',
   selectAll: 'SELECT id, username, role FROM accounts',
   selectFindById: 'SELECT * FROM accounts WHERE id = ?',
   selectFindByUsername: 'SELECT * FROM accounts WHERE username = ?'
@@ -152,6 +153,40 @@ class Accounts {
             this.logger.info(`A new user ${user.username} has been created.`);
             resolve();
           }
+        });
+      }));
+  }
+
+  update(user) {
+    let promise;
+    if (user.password) {
+      promise = this.hashPassword(user.password)
+        .then(hash => {
+          user.password = hash;
+          return Promise.resolve(user);
+        });
+    }
+    else {
+      promise = Promise.resolve(user);
+    }
+
+    return promise
+      .then(user => {
+        const records = [];
+        const params = [];
+        for (const key in user) {
+          if (key === 'id') continue;
+          records.push(`${key} = ?`);
+          params.push(user[key]);
+        }
+        const query = queries.update.replace('%%columns%%', records.join(', '));
+        params.push(user.id);
+        return Promise.resolve({ query, params });
+      })
+      .then(result => new Promise((resolve, reject) => {
+        this.db.run(result.query, result.params, err => {
+          if (err) reject(err);
+          else resolve();
         });
       }));
   }

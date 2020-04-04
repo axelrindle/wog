@@ -1,5 +1,5 @@
 // Require modules
-const { isIn } = require('validator');
+const { isIn, isNumeric } = require('validator');
 const PasswordValidator = require('password-validator');
 
 const passwordSchema = new PasswordValidator()
@@ -7,6 +7,11 @@ const passwordSchema = new PasswordValidator()
   .is().max(32)
   .has().letters()
   .has().digits();
+
+/**
+ * Checks that the given value is an ID number (positive, starting from zero).
+ */
+module.exports.id = value => isNumeric(value, { no_symbols: true });
 
 /**
  * Checks that the given username does not exist.
@@ -38,4 +43,18 @@ module.exports.isIn = values => {
       return `Value '${value} is not allowed!'`;
     }
   };
+};
+
+/**
+ * Checks whether a user with the given ID does not exist.
+ */
+module.exports.existsById = (value, cb) => {
+  accounts.findById(value)
+    .then(user => {
+      if (!user) {
+        cb(`No user found with ID ${value}!`);
+      } else {
+        cb(null);
+      }
+    });
 };

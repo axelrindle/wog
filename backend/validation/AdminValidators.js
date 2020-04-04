@@ -15,7 +15,23 @@ class CreateUserValidator extends Validator {
 
 }
 
+class UpdateUserValidator extends Validator {
+
+  rules() {
+    // make all optional, so only changed values are updated
+    // TODO: Check for changes in the frontend? Or better in the backend?
+    return {
+      id: [ customRules.id, customRules.existsById ],
+      username: [ 'optional', isSlug, customRules.username ],
+      password: [ 'optional', customRules.password ],
+      role: [ 'optional', customRules.isIn(['user', 'admin']) ]
+    };
+  }
+
+}
+
 // export an instance of each class
 module.exports = {
-  CreateUserValidator: new CreateUserValidator()
+  CreateUserValidator: new CreateUserValidator(),
+  UpdateUserValidator: new UpdateUserValidator()
 };

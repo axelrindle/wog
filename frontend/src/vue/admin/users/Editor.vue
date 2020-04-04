@@ -54,8 +54,7 @@
         <div class="field-body">
           <div class="field">
             <div class="control is-expanded has-icons-left">
-              <input class="input" type="password" v-if="!create">
-              <input class="input" type="password" v-model="user.password" :disabled="loading" v-else>
+              <input class="input" type="password" v-model="user.password" :disabled="loading">
               <span class="icon is-small is-left">
                 <i class="fas fa-key"></i>
               </span>
@@ -68,8 +67,8 @@
       <hr>
 
       <div class="buttons is-right">
-        <span class="button" @click="cancel">Cancel</span>
-        <span class="button is-success" @click="save">{{ create ? 'Create' : 'Save' }}</span>
+        <span class="button" @click="cancel" :disabled="loading">Cancel</span>
+        <span class="button is-success" @click="save" :disabled="loading">{{ create ? 'Create' : 'Save' }}</span>
       </div>
     </div> <!-- end .card-content -->
 
@@ -110,8 +109,24 @@ module.exports = {
     cancel() {
       this.$emit('finish');
     },
+    filterUser() {
+      const copy = this.user;
+      delete copy.username;
+      for (let property in this.user) {
+        if (!copy[property]) {
+          delete copy[property];
+        }
+      }
+      return copy;
+    },
     save() {
-      axios.put('/admin/user/create', this.user)
+      if (this.loading) return;
+
+      this.loading = true;
+      const method = this.create ? 'put' : 'patch';
+      const action = this.create ? 'create' : 'edit';
+      const data = this.create ? this.user : this.filterUser();
+      axios[method]('/admin/user/' + action, data)
         .then(response => {
           console.log(response);
           this.errors = null;
@@ -128,6 +143,9 @@ module.exports = {
               alert(err);
               break;
           }
+        })
+        .then(() => {
+          this.loading = false;
         });
     }
   }
