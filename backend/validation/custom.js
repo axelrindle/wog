@@ -11,7 +11,7 @@ const passwordSchema = new PasswordValidator()
 /**
  * Checks that the given value is an ID number (positive, starting from zero).
  */
-module.exports.id = value => isNumeric(value, { no_symbols: true });
+module.exports.id = value => isNumeric(value.toString(), { no_symbols: true });
 
 /**
  * Checks that the given username does not exist.

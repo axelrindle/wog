@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-if="!loading">
+    <!-- Editor -->
+    <div v-if="showEditor">
 
       <!-- Username-->
       <div class="field is-horizontal">
@@ -69,9 +70,14 @@
       <div class="buttons is-right">
         <span class="button" @click="cancel" :disabled="loading">Cancel</span>
         <span class="button is-success" @click="save" :disabled="loading">{{ create ? 'Create' : 'Save' }}</span>
+        <span class="button is-danger" @click="deleteUser = true" :disabled="loading" v-if="!create">Delete</span>
       </div>
-    </div> <!-- end .card-content -->
+    </div>
 
+    <!-- Delete User -->
+    <delete :user="user" @cancel="deleteUser = false" @finish="onDeleted" v-else-if="showDelete"></delete>
+
+    <!-- Loading indicator -->
     <div class="loading" v-else>
       <span style="margin-right: 10px;">Loading...</span>
       <i class="fas fa-sync-alt fa-spin fa-lg"></i>
@@ -81,8 +87,12 @@
 </template>
 
 <script>
+// Require components
+const Delete = require('./Delete');
+
 module.exports = {
   name: 'UserEditor',
+  components: { Delete },
 
   props: {
     user: {
@@ -98,7 +108,16 @@ module.exports = {
   data() {
     return {
       loading: false,
-      errors: null
+      errors: null,
+      deleteUser: false
+    }
+  },
+  computed: {
+    showEditor() {
+      return !this.loading && !this.deleteUser;
+    },
+    showDelete() {
+      return !this.loading && this.deleteUser;
     }
   },
 
@@ -129,6 +148,7 @@ module.exports = {
       const data = this.create ? this.user : this.filterUser();
       axios[method]('/admin/user/' + action, data)
         .then(response => {
+          alert(`The User has been ${this.create ? 'created' : 'updated'}.`);
           console.log(response);
           this.errors = null;
           this.$parent.refresh();
@@ -148,6 +168,10 @@ module.exports = {
         .then(() => {
           this.loading = false;
         });
+    },
+    onDeleted() {
+      this.$parent.refresh();
+      this.cancel();
     }
   }
 };

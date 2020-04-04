@@ -18,6 +18,7 @@ const queries = {
   `,
   insert: 'INSERT INTO accounts VALUES (NULL, ?, ?, ?);',
   update: 'UPDATE accounts SET %%columns%% WHERE id = ?',
+  deleteUser: 'DELETE FROM accounts WHERE id = ?',
   selectAll: 'SELECT id, username, role FROM accounts',
   selectFindById: 'SELECT * FROM accounts WHERE id = ?',
   selectFindByUsername: 'SELECT * FROM accounts WHERE username = ?'
@@ -189,6 +190,21 @@ class Accounts {
           else resolve();
         });
       }));
+  }
+
+  /**
+   * Delete a user.
+   *
+   * @param {Number} id
+   * @returns {Promise<Void>} A Promise that resolves when the user has been deleted.
+   */
+  deleteUser(id) {
+    return new Promise((resolve, reject) => {
+      this.db.run(queries.deleteUser, id, err => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
   }
 
   /**

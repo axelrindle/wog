@@ -68,7 +68,28 @@ module.exports = class AdminController extends Controller {
         res.sendStatus(200);
       })
       .catch(err => {
-        console.log(err);
+        this.logger.error(err);
+        res.status(500).json(err);
+      });
+  }
+
+  /**
+   * Delete a user. Fails if the user to be deleted is the logged in user.
+   *
+   * @param {Express.Request} req
+   * @param {Express.Response} res
+   */
+  deleteUser(req, res) {
+    if (req.user.id === req.body.id) {
+      return res.status(403).send('You\'re not allowed to delete your own account!');
+    }
+
+    accounts.deleteUser(req.body.id)
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch(err => {
+        this.logger.error(err);
         res.status(500).json(err);
       });
   }

@@ -30,8 +30,19 @@ class UpdateUserValidator extends Validator {
 
 }
 
+class DeleteUserValidator extends Validator {
+
+  rules() {
+    return {
+      id: [ customRules.id, customRules.existsById ]
+    };
+  }
+
+}
+
 // export an instance of each class
 module.exports = {
   CreateUserValidator: new CreateUserValidator(),
-  UpdateUserValidator: new UpdateUserValidator()
+  UpdateUserValidator: new UpdateUserValidator(),
+  DeleteUserValidator: new DeleteUserValidator()
 };
