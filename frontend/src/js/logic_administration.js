@@ -74,7 +74,15 @@ new Vue({
   },
   watch: {
     isMounted(val) {
-      if (val) $('.fader').fadeOut(500, () => $(this).remove());
+      if (val) {
+        $('.fader').fadeOut(500, () => $(this).remove());
+
+        const selected = localStorage.getItem('wog_administration_selected');
+        if (selected) this.selected = parseInt(selected);
+      }
+    },
+    selected(val) {
+      localStorage.setItem('wog_administration_selected', val);
     }
   },
 
