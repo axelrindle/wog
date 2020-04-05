@@ -24,7 +24,7 @@ app.set('view engine', 'nunjucks');
 app.set('views', 'frontend/views');
 if (!DEBUG) {
   app.enable('view cache');
-  app.set('trust proxy', config.app.isProxy);
+  if (config.app.isProxy) app.enable('trust proxy');
 }
 app.use(express.static('frontend/static'));
 app.use(bodyParser.json());
