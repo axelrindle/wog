@@ -4,10 +4,10 @@
   <u>{{ user.username }}</u>
 </p>
 <div class="buttons is-centered">
-  <a class="button is-info" href="{{ path() }}">Home</a>
+  <a class="button {{ 'is-link' if isPath('/') }}" href="{{ path() }}">Home</a>
   {% if user.role === 'admin' %}
-    <a class="button is-info" href="{{ path('admin') }}">Administration</a>
+    <a class="button {{ 'is-link' if isPath('/admin') }}" href="{{ path('admin') }}">Administration</a>
   {% endif %}
   <a class="button" href="{{ path('about') }}">About</a>
-  <a class="button is-danger" href="{{ path('logout') }}">Logout</a>
+  <a class="button" href="{{ path('logout') }}">Logout</a>
 </div>
