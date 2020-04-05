@@ -1,5 +1,7 @@
 // Require modules
 const { isEmptyObject } = require('../util');
+const owWrapper = require('./ow-wrapper');
+const { ArgumentError } = require('ow');
 
 /**
  * The Validator is responsible for validating data from requests.
@@ -46,19 +48,16 @@ module.exports = class Validator {
 
       // run each validation function and pass the value from the request
       const functions = rules[property].filter(el => el !== 'optional');
-      for (let func of functions) {
-        const value = req.body[property];
-
-        try {
-          const result = await this._runValidatorFunction(func, value);
-
-          // attach error message if given
-          if (typeof result === 'string') {
-            errors[property] = result;
-            break;
-          }
-        } catch(err) {
-          this.myLogger.error(err);
+      const wrapped = owWrapper(functions);
+      const value = req.body[property];
+      try {
+        await wrapped(value);
+      } catch (error) {
+        if (typeof error === 'string') {
+          errors[property] = error;
+        }
+        else if (error instanceof ArgumentError) {
+          errors[property] = error.message;
         }
       }
     }
@@ -70,22 +69,5 @@ module.exports = class Validator {
     } else {
       next();
     }
-  }
-
-  _runValidatorFunction(func, value) {
-    return new Promise((resolve, reject) => {
-      switch (func.length) {
-        case 1: // sync
-          resolve(func(value));
-          break;
-        case 2: // async
-          func(value, resolve);
-          break;
-        default: // illegal
-          this.myLogger.debug(`A validator function ('${func.name}') of property ${property} is invalid!`);
-          reject(`Validator function must have only 1 or 2 parameters!`);
-          break;
-      }
-    });
   }
 }

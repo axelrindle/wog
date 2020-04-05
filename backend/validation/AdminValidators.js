@@ -1,40 +1,46 @@
 // Require modules
 const Validator = require('./Validator');
-const { isSlug } = require('validator');
-const customRules = require('./custom');
+const rules = require('./rules/');
 
+/**
+ * Validates request for creating users.
+ */
 class CreateUserValidator extends Validator {
 
   rules() {
     return {
-      username: [ isSlug, customRules.username ],
-      password: [ customRules.password ],
-      role: [ customRules.isIn(['user', 'admin']) ]
+      username: [ rules.usernameExistsNot, rules.alphaDash(4) ],
+      password: [ rules.password ],
+      role: [ rules.role ]
     };
   }
 
 }
 
+/**
+ * Validates request for updating users.
+ */
 class UpdateUserValidator extends Validator {
 
   rules() {
-    // make all optional, so only changed values are updated
-    // TODO: Check for changes in the frontend? Or better in the backend?
     return {
-      id: [ customRules.id, customRules.existsById ],
-      username: [ 'optional', isSlug, customRules.username ],
-      password: [ 'optional', customRules.password ],
-      role: [ 'optional', customRules.isIn(['user', 'admin']) ]
+      id: rules.id,
+      username: [ 'optional', rules.usernameExistsNot ],
+      password: [ 'optional', rules.password ],
+      role: [ 'optional', rules.role ]
     };
   }
 
 }
 
+/**
+ * Validates request for deleting users.
+ */
 class DeleteUserValidator extends Validator {
 
   rules() {
     return {
-      id: [ customRules.id, customRules.existsById ]
+      id: rules.id
     };
   }
 
