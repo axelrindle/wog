@@ -60,7 +60,7 @@
               <th>Role</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody> <!-- TODO: Use pagination -->
             <tr v-for="user in usersFiltered" :key="user.id" @click="$emit('select', user.id)">
               <td>{{ user.id }}</td>
               <td>{{ user.username }}</td>
