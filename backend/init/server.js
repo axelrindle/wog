@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.secure.secret));
 app.use(flash());
 app.use(helmet());
-require('../app/locals')(app);
+app.use(require('../app/locals'));
 
 // Install central error handler
 const handleError = (err, req, res, next) => {

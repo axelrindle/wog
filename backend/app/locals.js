@@ -2,13 +2,16 @@
 const { getPath } = require('../util');
 
 /**
- * Global locals attached to the express app.
+ * Returns a middleware function which attaches locals to every request.
  */
-module.exports = app => {
-  app.locals = {
+module.exports = (req, res, next) => {
+  res.locals = {
+    // properties
     url: config.app.url,
     _debug: DEBUG,
 
-    path: getPath
+    // helpers
+    path: getPath,
   };
+  next();
 };
