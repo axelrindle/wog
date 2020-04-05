@@ -25,6 +25,8 @@ module.exports = class AdminController extends Controller {
     }
   }
 
+  //#region Users
+
   /**
    * Sends a list of all users.
    *
@@ -93,5 +95,36 @@ module.exports = class AdminController extends Controller {
         res.status(500).json(err);
       });
   }
+
+  //#endregion
+
+
+  //#region Config
+
+  /**
+   * Sends a list of non-critical config entries.
+   *
+   * @param {Express.Request} req
+   * @param {Express.Response} res
+   */
+  listConfig(req, res) { // TODO: Pretty empty now, but reserved for future use
+    const allowedTypes = ['undefined', 'boolean', 'number', 'string'];
+    const data = {};
+    for (const key in config) {
+      if (key === 'secure') continue;
+      data[key] = {};
+      for (const entry in config[key]) {
+        if (allowedTypes.indexOf(typeof config[key][entry]) !== -1) {
+          data[key][entry] = {
+            key: entry,
+            value: config[key][entry]
+          };
+        }
+      }
+    }
+    res.json(data);
+  }
+
+  //#endregion
 
 };

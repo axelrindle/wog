@@ -35,6 +35,16 @@ new Vue({
         name: 'Config',
         description: 'Inspect configuration values.',
         icon: 'fas fa-cog',
+        component: require('../vue/admin/config/'),
+        actions: [
+          {
+            name: 'Refresh',
+            description: 'Reload the config values.',
+            handler() {
+              this.refresh();
+            }
+          }
+        ]
       },
       {
         name: 'Statistics',

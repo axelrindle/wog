@@ -11,10 +11,13 @@ module.exports = (app, myRouter) => {
   myRouter.use(isAdmin);
 
   myRouter.get('/', bind(myController, "index"));
+
   myRouter.post('/user/list', bind(myController, "listUsers"));
   myRouter.put('/user/create', bind(CreateUserValidator, "validate"), bind(myController, "createUser"));
   myRouter.patch('/user/edit', bind(UpdateUserValidator, "validate"), bind(myController, "editUser"));
   myRouter.post('/user/delete', bind(DeleteUserValidator, "validate"), bind(myController, "deleteUser"));
+
+  myRouter.post('/config/list', bind(myController, "listConfig"));
 
   app.use('/admin', myRouter);
 };
