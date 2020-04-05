@@ -83,6 +83,17 @@ class AdapterManager {
   }
 
   /**
+   * Counts the total amount of adapters and loaded entries.
+   */
+  count() {
+    const data = {};
+    this.list().forEach(el => {
+      data[el] = this.getAdapter(el).entries.length;
+    });
+    return data;
+  }
+
+  /**
    * Returns the currently selected adapter instance.
    *
    * @param string key The adapter to select.

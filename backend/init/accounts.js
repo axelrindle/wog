@@ -21,7 +21,8 @@ const queries = {
   deleteUser: 'DELETE FROM accounts WHERE id = ?',
   selectAll: 'SELECT id, username, role FROM accounts',
   selectFindById: 'SELECT * FROM accounts WHERE id = ?',
-  selectFindByUsername: 'SELECT * FROM accounts WHERE username = ?'
+  selectFindByUsername: 'SELECT * FROM accounts WHERE username = ?',
+  count: 'SELECT COUNT(*) FROM accounts'
 };
 
 /**
@@ -137,6 +138,20 @@ class Accounts {
       this.db.all(queries.selectAll, (err, rows) => {
         if (err) reject(err);
         else resolve(rows);
+      });
+    });
+  }
+
+  /**
+   * Count the total number of users.
+   *
+   * @returns {Promise<Array>} A Promise that resolves with the result row.
+   */
+  count() {
+    return new Promise((resolve, reject) => {
+      this.db.get(queries.count, (err, row) => {
+        if (err) reject(err);
+        else resolve(row['COUNT(*)']);
       });
     });
   }

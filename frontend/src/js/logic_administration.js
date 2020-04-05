@@ -50,6 +50,16 @@ new Vue({
         name: 'Statistics',
         description: 'View some general application statistics.',
         icon: 'fas fa-chart-bar',
+        component: require('../vue/admin/statistics/'),
+        actions: [
+          {
+            name: 'Refresh',
+            description: 'Reload the statistics.',
+            handler() {
+              this.refresh();
+            }
+          }
+        ]
       }
     ],
     selected: 0

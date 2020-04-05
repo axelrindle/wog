@@ -18,6 +18,7 @@ module.exports = (app, myRouter) => {
   myRouter.post('/user/delete', bind(DeleteUserValidator, "validate"), bind(myController, "deleteUser"));
 
   myRouter.post('/config/list', bind(myController, "listConfig"));
+  myRouter.post('/statistics/list', bind(myController, "listStatistics"));
 
   app.use('/admin', myRouter);
 };

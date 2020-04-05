@@ -127,4 +127,26 @@ module.exports = class AdminController extends Controller {
 
   //#endregion
 
+  //#region Statistics
+
+  listStatistics(req, res) {
+    const data = {};
+
+    accounts.count()
+      .then(userAmount => {
+        data.users = userAmount;
+        return Promise.resolve(adapters.count());
+      })
+      .then(adapterAmount => {
+        data.adapters = adapterAmount;
+        return Promise.resolve();
+      })
+      .catch(err => {
+        this.logger.error(err.stack);
+      })
+      .then(() => res.json(data));
+  }
+
+  //#endregion
+
 };
