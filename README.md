@@ -24,7 +24,9 @@ I was tired of always SSHing into my local server and looking through a log file
 ## Install
 1. [Download and unpack the latest release](https://github.com/axelrindle/wog/releases)
 ```bash
-$ tar xzvf wog-0.3.0.tar.gz -C wog
+$ mkdir wog
+$ tar xzvf wog-<LATEST>.tar.gz -C wog
+$ tar xzvf assets.tar.gz -C wog
 ```
 
 2. Install dependencies
@@ -42,12 +44,6 @@ $ nano .env
 ```bash
 $ node backend/main.js
 ```
-
-## Configuration
-[Look here](Configuration.md)
-
-## ToDo
-[Moved here](https://github.com/axelrindle/wog/projects/1)
 
 ## License
 [MIT](LICENSE)
