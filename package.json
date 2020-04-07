@@ -41,7 +41,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
     "express-ws": "^4.0.0",
-    "glob-all": "^3.1.0",
+    "glob-all": "^3.2.1",
     "helmet": "^3.15.0",
     "is-directory": "^0.3.1",
     "is-file": "^1.0.0",
@@ -63,7 +63,7 @@
     "@vue/component-compiler-utils": "^3.0.0",
     "bulma": "^0.7.1",
     "eslint": "^5.16.0",
-    "parcel-bundler": "^1.12.3",
+    "parcel-bundler": "^1.12.4",
     "sass": "^1.15.2",
     "vue-template-compiler": "^2.6.10"
   },
