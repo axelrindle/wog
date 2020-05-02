@@ -10,8 +10,6 @@ Object.keys(paths).forEach(el => {
 });
 moduleAlias.addAliases(aliases);
 
-const { fail } = require('./util');
-
 // Define global variables
 global.DEBUG = process.env.DEBUG || false;
 global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
@@ -25,9 +23,13 @@ global.accounts = require('./init/accounts');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
+const { fail } = require('./util');
+const checkForUpdates = require('./updater');
+
 // call init functions in an async scope
 (async () => {
   try {
+    await checkForUpdates();
     await storage.init();
     await adapters.init();
     await accounts.init();
