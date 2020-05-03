@@ -41,24 +41,40 @@
           Showing {{ shown }} / {{ files.length }} files
         </p>
 
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Adapter</label>
-          </div>
-          <div class="field-body">
+        <div class="columns">
+
+          <!-- Adapter selection -->
+          <div class="column">
             <div class="field">
+              <label class="label">Adapter</label>
               <div class="control">
-                <div class="select">
+                <div class="select is-fullwidth">
                   <select v-model="selected.adapter" :disabled="loading">
                     <option v-for="adapter in adapters" :value="adapter" :key="adapter">
                       {{ adapter }}
                     </option>
                   </select>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div> <!-- end .field -->
+              </div> <!-- end .control -->
+            </div> <!-- end .field -->
+          </div> <!-- end .column -->
+
+          <!-- Group selection -->
+          <div class="column">
+            <div class="field">
+              <label class="label">Group</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select v-model="selected.group" :disabled="loading">
+                    <option v-for="group in groups" :value="group" :key="group">
+                      {{ group }}
+                    </option>
+                  </select>
+                </div>
+              </div> <!-- end .control -->
+            </div> <!-- end .field -->
+          </div> <!-- end .column -->
+        </div>
 
         <hr>
 
@@ -85,10 +101,12 @@ module.exports = {
     return {
       loading: true,
       adapters: [],
+      groups: [],
       files: [],
       filter: '',
       selected: {
         adapter: null,
+        group: null,
         file: -1
       }
     };
@@ -108,15 +126,43 @@ module.exports = {
     }
   },
   methods: {
-    refresh() {
+    load(what, data) {
+      return new Promise((resolve, reject) => {
+        axios.post('/all/' + what, data)
+          .then(response => {
+            resolve(response.data);
+          })
+          .catch(err => reject(err));
+      });
+    },
+    refreshGroups() {
+      this.$root.error = null;
+      this.loading = true;
+      this.groups = [];
+
+      this.load('groups', { adapter: this.selected.adapter })
+        .then(groups => {
+          this.groups = groups;
+          this.selected.group = groups[0]; // this will trigger entries refresh
+        })
+        .catch(err => {
+          this.$root.error = err.message;
+        })
+        .then(() => {
+          this.loading = false;
+        });
+    },
+    refreshEntries() {
       this.$root.error = null;
       this.loading = true;
       this.selected.file = -1;
       this.files = [];
-      axios.post('/all/objects', { type: 'entries', adapter: this.selected.adapter })
-        .then(response => {
-          this.files = response.data;
-        }).catch(err => {
+
+      this.load('entries', { adapter: this.selected.adapter, group: this.selected.group })
+        .then(entries => {
+          this.files = entries;
+        })
+        .catch(err => {
           this.$root.error = err.message;
         })
         .then(() => {
@@ -139,20 +185,26 @@ module.exports = {
     'selected.adapter': function() {
       localStorage.setItem('selectedAdapter', this.selected.adapter);
       if (this.socket) this.socket.send(JSON.stringify({ event: 'changeAdapter', adapter: this.selected.adapter }));
-      this.refresh();
+      this.refreshGroups();
+    },
+    'selected.group': function() {
+      localStorage.setItem('selectedGroup', this.selected.group);
+      this.refreshEntries();
     }
   },
 
   mounted() {
     // load adapters
-    axios.post('/all/objects', { type: 'adapters' })
-      .then(response => {
-        this.adapters = response.data;
+    this.load('adapters')
+      .then(adapters => {
+        this.adapters = adapters;
 
         // select saved adapter
         const previous = localStorage.getItem('selectedAdapter');
         if (this.adapters.indexOf(previous) > -1) {
           this.selected.adapter = previous;
+        } else {
+          this.selected.adapter = adapters[0];
         }
       }).catch(err => {
         this.$root.error = err.message;

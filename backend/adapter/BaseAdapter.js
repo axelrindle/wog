@@ -15,8 +15,6 @@ const unimplemented = () => {
 
 /**
  * Describes an adapter for retrieving log entries.
- *
- * @extends EventEmitter
  */
 class BaseAdapter extends EventEmitter {
 
@@ -73,10 +71,19 @@ class BaseAdapter extends EventEmitter {
   }
 
   /**
-   * Returns an array containing all the files/objects which contain logs.
-   * @return {array} An array with all log files/objects/etc.
+   * Returns a list of all loaded file groups.
+   * @return {array} An array with the names of all file groups.
    */
-  get entries() {
+  getGroups() {
+    unimplemented();
+  }
+
+  /**
+   * Returns a list of file entries for a given group.
+   * @param {string} group The group name.
+   * @returns {array} An array with all file entries associated with the given group.
+   */
+  getEntries(group) {
     unimplemented();
   }
 

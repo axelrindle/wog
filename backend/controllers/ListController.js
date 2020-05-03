@@ -11,30 +11,52 @@ module.exports = class ListController extends Controller {
   }
 
   /**
-   * Sends a list of adapters or entries.
+   * Sends a list of adapters.
    *
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
-  objects(req, res) {
-    const type = req.body.type;
-    switch (type) {
-      case 'adapters':
-        res.json(adapters.list());
-        break;
-      case 'entries': {
-        const selectedAdapter = req.body.adapter;
-        if (!selectedAdapter) {
-          res.status(400).json({ type: 'error', data: 'No adapter selected!' });
-        } else {
-          res.json(adapters.getAdapter(selectedAdapter).entries);
-        }
-        break;
-      }
-      default:
-        res.status(400).json({ type: 'error', data: `Unknown type ${type}!` });
-        break;
+  adapters(req, res) {
+    res.json(adapters.list());
+  }
+
+  /**
+   * Sends a list of groups for an adapter.
+   *
+   * @param {Express.Request} req
+   * @param {Express.Response} res
+   */
+  groups(req, res) {
+    const adapter = req.body.adapter;
+
+    if (!adapter) {
+      res.status(400).json({ type: 'error', data: 'No adapter selected!' });
+      return;
     }
+
+    res.json(adapters.getAdapter(adapter).getGroups());
+  }
+
+  /**
+   * Sends a list of entries in a group of an adapter.
+   *
+   * @param {Express.Request} req
+   * @param {Express.Response} res
+   */
+  entries(req, res) {
+    const adapter = req.body.adapter;
+    const group = req.body.group;
+
+    if (!adapter) {
+      res.status(400).json({ type: 'error', data: 'No adapter selected!' });
+      return;
+    }
+    else if (!group) {
+      res.status(400).json({ type: 'error', data: 'No group selected!' });
+      return;
+    }
+
+    res.json(adapters.getAdapter(adapter).getEntries(group));
   }
 
 };

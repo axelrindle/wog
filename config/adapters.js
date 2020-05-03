@@ -24,16 +24,23 @@ module.exports = {
        *
        * Read more here: https://www.npmjs.com/package/glob
        */
-      glob: [
-        // included
-        '/var/log/**',
-
-        // excluded
-        '!/var/log/**/*.*gz',
-        '!/var/log/**/*.*xz',
-        '!/var/log/**/*.*journal',
-        '!/var/log/**/*.*journal~',
-      ]
+      groups: {
+        'Apache': [
+          '/var/log/apache2/*.log'
+        ],
+        'Samba': [
+          '/var/log/samba/log.*',
+          '!/var/log/samba/log.*.gz'
+        ],
+        'Syslogs': [
+          '/var/log/*.log',
+          '/var/log/*log',
+          '!/var/log/*gz'
+        ],
+        'Test': [
+          '/home/axel/opt/test.txt'
+        ]
+      }
     },
 
     redis: {

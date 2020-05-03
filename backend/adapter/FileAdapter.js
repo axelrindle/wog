@@ -12,12 +12,12 @@ const globPromisified = util.promisify(glob);
 
 /**
  * The FileAdapter reads and watches files on the local disk.
- *
- * @extends BaseAdapter
  */
 class FileAdapter extends BaseAdapter {
+
   init() {
     this.logger.info(`Loading files...`);
+    this.files = {};
     return this.loadFiles();
   }
 
@@ -27,24 +27,43 @@ class FileAdapter extends BaseAdapter {
   }
 
   loadFiles() {
-    // glob all files specified by the given patterns
-    return globPromisified(this.options.glob, { silent: true })
-      .then(files => {
-        this.files = files
-          .filter(el => isFile(el)) // make sure we only have files
-          .map(el => ({
-            id: this.generateId(), // an id for easy access
-            name: path.basename(el),
-            path: el
-          }));
+    const promises = [];
+    let counter = 0;
+    let groups = this.options.groups;
 
-        this.createFileWatcher();
-        this.logger.info(`Initially loaded ${this.files.length} files.`);
-      });
+    Object.keys(groups).forEach(group => {
+      promises.push(
+        globPromisified(groups[group], { silent: true })
+          .then(files => {
+            this.files[group] = files
+              .filter(el => isFile(el)) // make sure we only have files
+              .map(el => ({
+                id: this.generateId(), // an id for easy access
+                name: path.basename(el),
+                path: el
+              }));
+
+              counter += this.files[group].length;
+          })
+      );
+    });
+
+    return Promise.all(promises).then(() => {
+      this.createFileWatcher();
+      this.logger.info(`Initially loaded ${counter} files.`);
+    });
   }
 
   createFileWatcher() {
-    const findByPath = path => this.files.find(el => el.path === path);
+    const findByPath = path => {
+      for (const group of this.getGroups()) {
+        const found = this.files[group].find(el => el.path === path);
+        if (found) return found;
+      }
+
+      return null;
+    };
+
     this.watcher = new FSWatcher()
       //.on('add', path => this.handleFileEvent('add', path))
       .on('change', path => {
@@ -64,12 +83,21 @@ class FileAdapter extends BaseAdapter {
     this.logger.info('File watching initialized.');
   }
 
-  get entries() {
-    return this.files;
+  getGroups() {
+    return Object.keys(this.files);
+  }
+
+  getEntries(group) {
+    return this.files[group];
   }
 
   getEntry(id) {
-    return this.files.find(el => el.id === id);
+    for (const group of this.getGroups()) {
+      const found = this.files[group].find(el => el.id === id);
+      if (found) return found;
+    }
+
+    return null;
   }
 
   getContents(id) {

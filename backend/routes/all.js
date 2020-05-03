@@ -8,7 +8,9 @@ module.exports = (app, myRouter) => {
 
   myRouter.use(checkAuth.is);
 
-  myRouter.post('/objects', myController.objects.bind(myController));
+  myRouter.post('/adapters', myController.adapters.bind(myController));
+  myRouter.post('/groups', myController.groups.bind(myController));
+  myRouter.post('/entries', myController.entries.bind(myController));
 
   app.use('/all', myRouter);
 

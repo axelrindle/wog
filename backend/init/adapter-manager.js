@@ -88,7 +88,13 @@ class AdapterManager {
   count() {
     const data = {};
     this.list().forEach(el => {
-      data[el] = this.getAdapter(el).entries.length;
+      let counter = 0;
+      const adapter = this.getAdapter(el);
+      const groups = adapter.getGroups();
+      for (let group of groups) {
+        counter += adapter.getEntries(group).length;
+      }
+      data[el] = counter;
     });
     return data;
   }
