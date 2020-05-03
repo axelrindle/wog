@@ -1,6 +1,6 @@
 #!/bin/sh
 
-archiveName=$(cat package.json | jq '.name,.version' -r | paste - - | xargs | sed "s/ /-/g" | sed "s/$/.tar.gz/")
+archiveName=$(cat package.json | jq '.name,.version' -r | xargs | sed "s/ /-/g" | sed "s/$/.tar.gz/")
 commitSha=$(git rev-parse HEAD)
 
 # Create archive from latest commit
