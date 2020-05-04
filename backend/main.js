@@ -23,12 +23,21 @@ global.accounts = require('./init/accounts');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
+const isElevated = require('is-elevated');
+const chalk = require('chalk');
 const { fail } = require('./util');
 const checkForUpdates = require('./updater');
 
 // call init functions in an async scope
 (async () => {
   try {
+    // Check for elevation and print a warning when
+    // running with administrative privileges
+    if (await isElevated()) {
+      logger.warn(chalk.bold('You\'re running with elevated permissions! ' +
+        'You should avoid running as root or Administrator and tweak file permissions accordingly.'));
+    }
+
     await checkForUpdates();
     await storage.init();
     await adapters.init();
