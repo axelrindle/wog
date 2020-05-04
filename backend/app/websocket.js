@@ -71,19 +71,22 @@ const handler = ws => {
  * Initialize a WebSocket server.
  */
 module.exports = app => {
+  let server;
 
   // based on whether we are running behind a proxy, deploy the /socket route
   // or create my own WebSocket server instance
   if (!config.app.isProxy) {
-    expressWs(app);
+    server = expressWs(app).getWss();
     app.ws('/socket', handler);
   } else {
-    const wss = new WebSocket.Server({ port: config.app.socketPort });
-    wss.on('connection', handler);
-    wss.on('error', error => {
+    server = new WebSocket.Server({ port: config.app.socketPort });
+    server.on('connection', handler);
+    server.on('error', error => {
       myLogger.error(error);
     });
   }
 
   myLogger.info(`WebSocket server accessible via ${config.app.isProxy ? 'port ' + config.app.socketPort : '/socket endpoint'}.`);
+
+  return server;
 };
