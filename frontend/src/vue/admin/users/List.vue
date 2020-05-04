@@ -57,6 +57,7 @@
             <tr>
               <th>ID</th>
               <th>Username</th>
+              <th>Email</th>
               <th>Role</th>
             </tr>
           </thead>
@@ -64,6 +65,7 @@
             <tr v-for="user in usersFiltered" :key="user.id" @click="$emit('select', user.id)">
               <td>{{ user.id }}</td>
               <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
               <td>{{ user.role }}</td>
             </tr>
           </tbody>

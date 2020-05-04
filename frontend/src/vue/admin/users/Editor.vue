@@ -22,6 +22,24 @@
         </div>
       </div>
 
+      <!-- Email-->
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Email</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control is-expanded has-icons-left">
+              <input class="input" type="email" v-model="user.email" :disabled="loading">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+            </div>
+            <p class="help is-danger" v-if="hasError('email')">{{ errors.email }}</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Role-->
       <div class="field is-horizontal">
         <div class="field-label is-normal">

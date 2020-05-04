@@ -12,16 +12,18 @@ const queries = {
     CREATE TABLE accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL UNIQUE,
+      email	TEXT DEFAULT null UNIQUE,
       password TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'user'
     )
   `,
-  insert: 'INSERT INTO accounts VALUES (NULL, ?, ?, ?);',
+  insert: 'INSERT INTO accounts VALUES (NULL, ?, ?, ?, ?);',
   update: 'UPDATE accounts SET %%columns%% WHERE id = ?',
   deleteUser: 'DELETE FROM accounts WHERE id = ?',
-  selectAll: 'SELECT id, username, role FROM accounts',
+  selectAll: 'SELECT id, username, email, role FROM accounts',
   selectFindById: 'SELECT * FROM accounts WHERE id = ?',
   selectFindByUsername: 'SELECT * FROM accounts WHERE username = ?',
+  selectFindByEmail: 'SELECT * FROM accounts WHERE email = ?',
   count: 'SELECT COUNT(*) FROM accounts'
 };
 
@@ -77,7 +79,7 @@ class Accounts {
         return this.hashPassword(rawPassword);
       })
       .then(hash => new Promise((resolve, reject) => {
-        const params = ['wog', hash, 'admin'];
+        const params = ['wog', 'wog@localhost', hash, 'admin'];
         this.db.run(queries.insert, params, err => {
           if (err) reject(err);
           else {
