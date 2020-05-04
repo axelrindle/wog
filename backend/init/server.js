@@ -35,6 +35,7 @@ app.use(helmet());
 app.use(require('../app/locals'));
 
 // Install central error handler
+// eslint-disable-next-line no-unused-vars
 const handleError = (err, req, res, next) => {
   myLogger.error(err.stack);
   res.set('Content-Type', 'text/plain');
@@ -44,7 +45,7 @@ app.use(handleError);
 app.set('error handler', handleError);
 
 // Init websocket
-require('../app/websocket')(app);
+const websocket = require('../app/websocket')(app);
 
 // Setup routes
 require('../app/auth')(app);
@@ -52,4 +53,27 @@ require('../app/router')(app);
 
 // Start server
 const port = config.app.port;
-app.listen(port, () => myLogger.info(`Listening on port ${port}.`));
+const server = app.listen(port, () => myLogger.info(`Listening on port ${port}.`));
+
+// Register graceful shutdown hook
+const gracefulShutdownHandler = () => {
+  logger.info('Shutting down...');
+
+  websocket.close(err => {
+    if (err) logger.error(err);
+    logger.info('Websocket closed.');
+
+    server.close(err2 => {
+      if (err) logger.error(err2);
+      logger.info('Server closed.');
+
+      adapters.dispose();
+      logger.info('Adapters disposed.');
+
+      logger.info('Goodbye :)');
+      process.exit(0);
+    });
+  })
+};
+process.on('SIGINT', gracefulShutdownHandler);
+process.on('SIGTERM', gracefulShutdownHandler);
