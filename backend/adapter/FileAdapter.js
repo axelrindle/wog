@@ -23,6 +23,7 @@ class FileAdapter extends BaseAdapter {
 
   dispose() {
     this.watcher.close();
+    this.files = {};
     this.logger.info('Disposed.');
   }
 
