@@ -4,6 +4,13 @@
   <div class="flex no-justify" id="app">
     <img src="{{ path('img/header.png') }}" width="600px">
 
+    {% if messages.status %}
+      <div class="notification {{ messages['status-class'] or 'is-info' }}">
+        <button class="delete"></button>
+        {{ messages.status }}
+      </div>
+    {% endif %}
+
     <!-- Login card -->
     <div class="card">
       <header class="card-header">
@@ -47,6 +54,9 @@
 
         <footer class="card-footer">
           <button class="card-footer-item" type="submit">Login</button>
+          <a href="{{ path('reset/password') }}" class="card-footer-item has-text-centered">
+            <span>Forgot password?</span>
+          </a>
         </footer>
 
       </form>

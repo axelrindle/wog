@@ -1,0 +1,58 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+  <div class="flex no-justify" id="app">
+    <img src="{{ path('img/header.png') }}" width="600px">
+
+    {% if messages.status %}
+      <div class="notification {{ messages['status-class'] or '' }}">
+        <button class="delete"></button>
+        {{ messages.status }}
+      </div>
+    {% endif %}
+
+    <!-- Login card -->
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Request a password reset
+        </p>
+      </header>
+
+      <form action="{{ path('reset/password') }}" method="POST">
+
+        <!-- Input items -->
+        <div class="card-content">
+
+          <p>
+            Enter your <b>email</b> or <b>username</b> below<br> to send a password reset request to that email.
+          </p>
+
+          <br>
+
+          <!-- Username -->
+          <div class="field">
+            <label class="label">Username or Email</label>
+            <div class="control has-icons-left">
+              <input class="input" type="text" name="username" value="{{ messages.username[0] or '' }}" required>
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+            </div>
+          </div> <!-- end .field -->
+
+        </div> <!-- end .card-content -->
+
+        <footer class="card-footer">
+          <a href="{{ path('/') }}" class="card-footer-item">
+            <span>Cancel</span>
+          </a>
+          <button class="card-footer-item" type="submit">
+            Send request
+          </button>
+        </footer>
+
+      </form>
+    </div> <!-- end .card -->
+  </div> <!-- end .flex -->
+{% endblock %}

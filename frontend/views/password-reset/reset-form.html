@@ -1,0 +1,69 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+  <div class="flex no-justify" id="app">
+    <img src="{{ path('img/header.png') }}" width="600px">
+
+    {% if messages.status %}
+      <div class="notification {{ messages['status-class'] or '' }}">
+        <button class="delete"></button>
+        {{ messages.status }}
+      </div>
+    {% endif %}
+
+    <!-- Login card -->
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Reset your password
+        </p>
+      </header>
+
+      <form action="{{ path('reset/password/' + token) }}" method="POST">
+
+        <!-- Input items -->
+        <div class="card-content">
+
+          <p>
+            Enter a new password below and confirm it to change your password.
+          </p>
+
+          <br>
+
+          <!-- Password -->
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left">
+              <input class="input" type="password" name="password" required>
+              <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+              </span>
+            </div>
+          </div> <!-- end .field -->
+
+          <!-- Confirm Password -->
+          <div class="field">
+            <label class="label">Confirm</label>
+            <div class="control has-icons-left">
+              <input class="input" type="password" name="password_confirm" required>
+              <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+              </span>
+            </div>
+          </div> <!-- end .field -->
+
+        </div> <!-- end .card-content -->
+
+        <footer class="card-footer">
+          <a href="{{ path('/') }}" class="card-footer-item">
+            <span>Cancel</span>
+          </a>
+          <button class="card-footer-item" type="submit">
+            Change password
+          </button>
+        </footer>
+
+      </form>
+    </div> <!-- end .card -->
+  </div> <!-- end .flex -->
+{% endblock %}
