@@ -1,0 +1,6 @@
+button.card-footer-item {
+  @extend a, .card-footer-item;
+  border: none;
+  background-color: transparent;
+  font-size: $size-6;
+}
