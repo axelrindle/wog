@@ -90,6 +90,17 @@ class Accounts {
   }
 
   /**
+   * Open the database connection.
+   *
+   * @returns {Promise<void>} A Promise that resolves when the database connection is established.
+   */
+  async init() {
+    await this._openConnection();
+    await this._createTable();
+    await this._seedDatabase();
+  }
+
+  /**
    * Generates a hashes password string.
    *
    * @param {string} password
@@ -118,17 +129,6 @@ class Accounts {
         else resolve(same);
       })
     });
-  }
-
-  /**
-   * Open the database connection.
-   *
-   * @returns {Promise<void>} A Promise that resolves when the database connection is established.
-   */
-  async init() {
-    await this._openConnection();
-    await this._createTable();
-    await this._seedDatabase();
   }
 
   /**
