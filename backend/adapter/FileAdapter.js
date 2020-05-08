@@ -1,12 +1,12 @@
 // Require modules
 const util = require('util');
-const fs = require('fs').promises;
 const path = require('path');
 const glob = require('glob-all');
 const isFile = require('is-file');
-const prettyBytes = require('pretty-bytes');
 const FSWatcher = require('chokidar').FSWatcher;
+
 const BaseAdapter = require('./BaseAdapter');
+const WorkerManager = require('../cluster/WorkerManager');
 
 const globPromisified = util.promisify(glob);
 
@@ -16,12 +16,16 @@ const globPromisified = util.promisify(glob);
 class FileAdapter extends BaseAdapter {
 
   init() {
+    const workerPath = path.join(ROOT_DIRECTORY, 'backend/cluster/FileAdapterWorker');
+    this.workerManager = new WorkerManager(this.logger, workerPath);
+
     this.logger.info(`Loading files...`);
     this.files = {};
     return this.loadFiles();
   }
 
   dispose() {
+    this.workerManager.dispose();
     this.watcher.close();
     this.files = {};
     this.logger.info('Disposed.');
@@ -103,20 +107,8 @@ class FileAdapter extends BaseAdapter {
 
   getContents(id) {
     const entry = this.getEntry(id);
-    const result = {};
-    return new Promise((resolve, reject) => {
-      if (!entry) reject(`No entry found with id ${id}!`);
-      resolve(fs.stat(entry.path));
-    })
-      .then(stats => {
-        result.size = prettyBytes(stats.size);
-        return fs.readFile(entry.path, { encoding: 'utf-8' });
-      })
-      .then(contents => {
-        const lines = contents.split('\n');
-        result.lines = lines;
-        return result;
-      });
+    if (!entry) return Promise.reject(`No entry found with id ${id}!`);
+    return this.workerManager.normPromise({ path: entry.path });
   }
 
   download(res, id) {
