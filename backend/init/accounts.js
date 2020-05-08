@@ -46,7 +46,7 @@ class Accounts {
           this.db.on('trace', sql => {
             this.logger.debug('Executing SQL: ' + sql);
           });
-          resolve(this._createTable());
+          resolve();
         }
       });
     });
@@ -64,30 +64,29 @@ class Accounts {
         }
         else {
           this.logger.info('Tables created.');
-          resolve(this._seedDatabase());
+          resolve();
         }
       })
     });
   }
 
-  _seedDatabase() {
+  async _seedDatabase() {
     const rawPassword = nanoid(NANOID_ALPHABET, 8);
     const file = 'initialPassword.txt';
-    return storage.writeFile(file, rawPassword)
-      .then(() => {
-        this.logger.info(`An initial user password has been written to storage/${file}.`);
-        return this.hashPassword(rawPassword);
-      })
-      .then(hash => new Promise((resolve, reject) => {
-        const params = ['wog', 'wog@localhost', hash, 'admin'];
-        this.db.run(queries.insert, params, err => {
-          if (err) reject(err);
-          else {
-            this.logger.info('Initial user account created.');
-            resolve();
-          }
-        });
-      }));
+    await storage.writeFile(file, rawPassword)
+    this.logger.info(`An initial user password has been written to storage/${file}.`);
+
+    const hash = await this.hashPassword(rawPassword);
+    return new Promise((resolve, reject) => {
+      const params = ['wog', 'wog@localhost', hash, 'admin'];
+      this.db.run(queries.insert, params, err => {
+        if (err) reject(err);
+        else {
+          this.logger.info('Initial user account created.');
+          resolve();
+        }
+      });
+    })
   }
 
   /**
@@ -126,8 +125,10 @@ class Accounts {
    *
    * @returns {Promise<void>} A Promise that resolves when the database connection is established.
    */
-  init() {
-    return this._openConnection();
+  async init() {
+    await this._openConnection();
+    await this._createTable();
+    await this._seedDatabase();
   }
 
   /**
