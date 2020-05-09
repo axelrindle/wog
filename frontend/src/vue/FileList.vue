@@ -143,7 +143,14 @@ module.exports = {
       this.load('groups', { adapter: this.selected.adapter })
         .then(groups => {
           this.groups = groups;
-          this.selected.group = groups[0]; // this will trigger entries refresh
+
+          // select saved groups
+          const previous = localStorage.getItem('selectedGroup');
+          if (this.groups.indexOf(previous) > -1) {
+            this.selected.group = previous;
+          } else {
+            this.selected.group = this.groups[0];
+          }
         })
         .catch(err => {
           this.$root.error = err.message;
