@@ -18,7 +18,8 @@
         "adapters": true,
         "storage": true,
         "Vue": true,
-        "axios": true
+        "axios": true,
+        "mailer": true
     },
     "parserOptions": {
         "ecmaVersion": 2018
