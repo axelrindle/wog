@@ -35,6 +35,7 @@ class Accounts {
   constructor() {
     this.logger = logger.scope('accounts');
     this.dbFile = storage.getPath('accounts.sqlite');
+    this.needsSeed = true;
   }
 
   _openConnection() {
@@ -57,6 +58,7 @@ class Accounts {
       this.db.run(queries.createTable, err => {
         if (err) {
           if (err.message.endsWith('table accounts already exists')) {
+            this.needsSeed = false;
             resolve();
           } else {
             reject(err);
@@ -71,6 +73,8 @@ class Accounts {
   }
 
   async _seedDatabase() {
+    if (!this.needsSeed) return;
+
     const rawPassword = nanoid(NANOID_ALPHABET, 8);
     const file = 'initialPassword.txt';
     await storage.writeFile(file, rawPassword)
