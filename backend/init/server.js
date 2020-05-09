@@ -1,4 +1,5 @@
 // Require modules
+const compression = require('compression');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const flash = require('express-flash');
@@ -27,6 +28,7 @@ if (!DEBUG) {
   if (config.app.isProxy) app.enable('trust proxy');
 }
 app.use(express.static('frontend/static'));
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.secure.secret));
