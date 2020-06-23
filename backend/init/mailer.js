@@ -47,6 +47,8 @@ class Mailer {
    * @returns {Promise}
    */
   async sendMail(to, subject, htmlText) {
+    if (!this.isConnected) return Promise.reject("Not connected!");
+
     const text = stripHtml(htmlText);
     const opts = config.email.message;
     const merged = Object.assign(opts, {
