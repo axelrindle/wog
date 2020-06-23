@@ -3,7 +3,6 @@ const util = require('util');
 const path = require('path');
 const glob = require('glob-all');
 const isFile = require('is-file');
-const FSWatcher = require('chokidar').FSWatcher;
 
 const BaseAdapter = require('./BaseAdapter');
 const WorkerManager = require('../cluster/WorkerManager');
@@ -26,7 +25,6 @@ class FileAdapter extends BaseAdapter {
 
   dispose() {
     this.workerManager.dispose();
-    this.watcher.close();
     this.files = {};
     this.logger.info('Disposed.');
   }
@@ -54,12 +52,14 @@ class FileAdapter extends BaseAdapter {
     });
 
     return Promise.all(promises).then(() => {
-      this.createFileWatcher();
+      this.initWatcherListener();
+      this.logger.info('File watching initialized.');
       this.logger.info(`Initially loaded ${counter} files.`);
     });
   }
 
-  createFileWatcher() {
+  initWatcherListener() {
+    // helper function for finding a file entry by it's path
     const findByPath = path => {
       for (const group of this.getGroups()) {
         const found = this.files[group].find(el => el.path === path);
@@ -69,23 +69,32 @@ class FileAdapter extends BaseAdapter {
       return null;
     };
 
-    this.watcher = new FSWatcher()
-      //.on('add', path => this.handleFileEvent('add', path))
-      .on('change', path => {
-        const entry = findByPath(path);
-        this.handleFileEvent('change', path, entry.id);
-      })
-      .on('unlink', path => {
-        const entry = findByPath(path);
-        const index = this.files.indexOf(entry);
-        if (index > -1) {
-          this.files.splice(index, 1);
-          this.logger.info(`The file at '${path}' has been deleted.`);
-          this.handleFileEvent('unlink', path, entry.id);
-        }
-      })
-      .on('error', error => this.handleFileEvent('error', error));
-    this.logger.info('File watching initialized.');
+    this.workerManager.worker.on('message', msg => {
+      // only listen for watcher related events
+      if (!msg.type.startsWith('watcher')) return;
+
+      switch (msg.type) {
+        case 'watcher-change':
+          const entry1 = findByPath(msg.path);
+          this.handleFileEvent('change', msg.path, entry1.id);
+          break;
+        case 'watcher-unlink':
+          const entry2 = findByPath(msg.path);
+          const index = this.files.indexOf(entry2);
+          if (index > -1) {
+            this.files.splice(index, 1);
+            this.logger.info(`The file at '${msg.path}' has been deleted.`);
+            this.handleFileEvent('unlink', msg.path, entry2.id);
+          }
+          break;
+        case 'watcher-error':
+          this.handleFileEvent('error', msg.error)
+          break;
+        default:
+          this.logger.warn(`Invalid watcher event ${msg.type}!`);
+          break;
+      }
+    });
   }
 
   getGroups() {
@@ -108,7 +117,10 @@ class FileAdapter extends BaseAdapter {
   getContents(id) {
     const entry = this.getEntry(id);
     if (!entry) return Promise.reject(`No entry found with id ${id}!`);
-    return this.workerManager.normPromise({ path: entry.path });
+    return this.workerManager.normPromise({
+      type: 'getContents',
+      path: entry.path
+    });
   }
 
   download(res, id) {
@@ -121,16 +133,31 @@ class FileAdapter extends BaseAdapter {
   }
 
   watchEntry(wsId, entryId) {
+    const promises = [];
+
     // remove previous file from watching, if any
     if (this.watchMap[wsId]) {
-      this.watcher.unwatch(this.getEntry(this.watchMap[wsId]).path);
+      promises.push(this.workerManager.normPromise({
+        type: 'watcher',
+        watch: false,
+        path: this.getEntry(this.watchMap[wsId]).path
+      }));
     }
-    super.watchEntry(wsId, entryId); // update map
-    this.watcher.add(this.getEntry(entryId).path);
+
+    promises.push(this.workerManager.normPromise({
+      type: 'watcher',
+      watch: true,
+      path: this.getEntry(entryId).path
+    }));
+
+    return Promise.all(promises)
+      .then(() => {
+        super.watchEntry(wsId, entryId); // update map
+      });
   }
 
   handleFileEvent(event, path, entryId) {
-    if (DEBUG) this.logger.debug(`${event}: ${path}`);
+    if (DEBUG) this.logger.debug(`watcher-${event}: ${path}`);
 
     // find associated socket(s)
     for (let wsId in this.watchMap) {

@@ -11,8 +11,15 @@ if (cluster.isMaster) {
 }
  */
 // TODO: Use clustering to balance the load onto multiple CPU cores
+const { sendMessage, sendNormMessage } = require('./utils');
 const fs = require('fs').promises;
 const prettyBytes = require('pretty-bytes');
+const FSWatcher = require('chokidar').FSWatcher;
+
+const watcher = new FSWatcher()
+  .on('change', path => sendMessage({ type: 'watcher-change', path }))
+  .on('unlink', path => sendMessage({ type: 'watcher-unlink', path }))
+  .on('error', error => sendMessage({ type: 'watcher-error', error}));
 
 /**
  * Reads a file's size and contents.
@@ -36,17 +43,20 @@ const readFile = async path => {
 };
 
 const handleMessage = msg => {
-  readFile(msg.path)
-    .then(result => {
-      process.send({ type: 'success', data: result, listenerId: msg.listenerId }, null, {}, err => {
-        if (err) console.error(err);
-      });
-    })
-    .catch(err => {
-      process.send({ type: 'error', data: err.message, listenerId: msg.listenerId }, null, {}, err => {
-        if (err) console.error(err);
-      });
-    });
+  switch (msg.type) {
+    case 'getContents':
+      readFile(msg.path)
+        .then(result => sendNormMessage('success', msg, result))
+        .catch(err => sendNormMessage('error', msg, err.message));
+      break;
+    case 'watcher':
+      watcher[msg.watch ? 'add' : 'unwatch'](msg.path);
+      sendNormMessage('success', msg, null);
+      break;
+    default:
+      sendNormMessage('error', msg, `Invalid handle type ${msg.type}!`);
+      break;
+  }
 };
 
 // The master process will send the file path to read
