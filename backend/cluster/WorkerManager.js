@@ -29,6 +29,8 @@ module.exports = class WorkerManager {
       serialization: 'advanced'
     });
     this.worker.on('message', msg => {
+      if (!msg.listenerId) return;
+
       // get listener by id, call it and delete it
       // the id *MUST* be sent back by the worker
       const listenerId = msg.listenerId;
