@@ -23,7 +23,16 @@ module.exports = {
      * Whether to make use of connection pooling.
      * Read more: https://nodemailer.com/smtp/pooled/
      */
-    pool: false
+    pool: false,
+
+    /**
+     * How many milliseconds to wait for the connection to establish.
+     * Should be generally as low as possible, as connecting blocks the
+     * startup process.
+     *
+     * Read more: https://nodemailer.com/smtp/#connection-options
+     */
+    connectionTimeout: 1000 * 10 // (10 seconds)
   },
 
   /**
