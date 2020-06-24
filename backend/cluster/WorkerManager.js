@@ -77,14 +77,14 @@ module.exports = class WorkerManager {
    */
   normPromise(msg) {
     return new Promise((resolve, reject) => {
-      const listenerId = this.listen(msg => {
-        switch (msg.type) {
+      const listenerId = this.listen(listenMsg => {
+        switch (listenMsg.type) {
           case 'success':
-            resolve(msg.data);
+            resolve(listenMsg.data);
             break;
           case 'error':
           default:
-            reject(msg.data);
+            reject(listenMsg.data);
             break;
         }
       });
