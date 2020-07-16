@@ -1,4 +1,5 @@
-# Changelog
+# Commitlog
+This changelog-similar file documents commits that happened inside the `backend/`, `frontend/` & `config/` directory.
 
 ## 0.4.0 `(07.04.2020)`
 Total changes in this version: 61
