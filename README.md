@@ -1,6 +1,17 @@
 ![header](header.png)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/43ca5dba403b4a75bdf6d285d6d8f994)](https://app.codacy.com/app/axel.rindle/wog?utm_source=github.com&utm_medium=referral&utm_content=axelrindle/wog&utm_campaign=badger)
+----
+
+<p align="center">
+  <a href="https://app.codacy.com/app/axel.rindle/wog?utm_source=github.com&utm_medium=referral&utm_content=axelrindle/wog&utm_campaign=badger">
+    <img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/43ca5dba403b4a75bdf6d285d6d8f994">
+  </a>
+  <a href="https://github.com/axelrindle/wog/releases">
+    <img alt="latest release" src="https://img.shields.io/github/v/release/axelrindle/wog?include_prereleases">
+  </a>
+</p>
+
+----
 
 # wog
 > :books: A web interface for viewing logs.
