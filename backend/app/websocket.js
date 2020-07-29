@@ -89,5 +89,21 @@ module.exports = app => {
 
   myLogger.info(`WebSocket server accessible via ${config.app.isProxy ? 'port ' + config.app.socketPort : '/socket endpoint'}.`);
 
-  return server;
+  return {
+    /**
+     * Closes the WebSocket Server and discards any open connection.
+     */
+    dispose() {
+      return new Promise((resolve, reject) => {
+        server.close(err => {
+          if (err) reject(err);
+          else {
+            myLogger.info('Disposed.');
+            resolve();
+          }
+        });
+      });
+    },
+    server
+  };
 };

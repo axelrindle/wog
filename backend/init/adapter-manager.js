@@ -71,11 +71,12 @@ class AdapterManager {
     });
   }
 
-  dispose() {
-    Object.keys(this.instances).forEach(el => {
-      this.instances[el].dispose();
+  async dispose() {
+    await asyncForEach(Object.keys(this.instances), async (el) => {
+      await this.instances[el].dispose();
     });
     this.instances = null;
+    this.logger.info('Disposed.');
   }
 
   list() {

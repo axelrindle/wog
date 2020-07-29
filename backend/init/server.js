@@ -6,6 +6,7 @@ const flash = require('express-flash');
 const express = require('express');
 const helmet = require('helmet');
 const nunjucks = require('nunjucks');
+const { createTerminus } = require('@godaddy/terminus');
 const { fail } = require('../util');
 
 const myLogger = logger.scope('server');
@@ -57,25 +58,30 @@ require('../app/router')(app);
 const port = config.app.port;
 const server = app.listen(port, () => myLogger.info(`Listening on port ${port}.`));
 
-// Register graceful shutdown hook
-const gracefulShutdownHandler = () => {
-  logger.info('Shutting down...');
+// Install terminus
+const onSignal = () => {
+  myLogger.info('Shutting down...');
 
-  websocket.close(err => {
-    if (err) logger.error(err);
-    logger.info('Websocket closed.');
-
-    server.close(err2 => {
-      if (err) logger.error(err2);
-      logger.info('Server closed.');
-
-      adapters.dispose();
-      logger.info('Adapters disposed.');
-
-      logger.info('Goodbye :)');
-      process.exit(0);
-    });
-  })
+  return Promise.all([
+    websocket.dispose(),
+    adapters.dispose(),
+    mailer.dispose(),
+    accounts.dispose()
+  ]);
 };
-process.on('SIGINT', gracefulShutdownHandler);
-process.on('SIGTERM', gracefulShutdownHandler);
+
+const onHealthCheck = () => {
+  // TODO: Implement service health checks
+};
+
+createTerminus(server, {
+  signals: ['SIGINT', 'SIGTERM'],
+  healthChecks: {
+    '/health': onHealthCheck
+  },
+  logger: (msg, err) => {
+    myLogger.error(msg);
+    console.error(err);
+  },
+  onSignal
+});

@@ -59,6 +59,8 @@ class Mailer {
 
   dispose() {
     this.transport.close();
+    this.logger.info('Disposed.');
+    return Promise.resolve();
   }
 }
 
