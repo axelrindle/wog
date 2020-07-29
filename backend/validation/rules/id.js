@@ -2,7 +2,7 @@
 const ow = require('ow');
 
 /**
- * Checks whether a user with the given ID does not exist.
+ * Checks whether a user with the given ID does exist.
  */
 const existsById = value => {
   return new Promise((resolve, reject) => {
