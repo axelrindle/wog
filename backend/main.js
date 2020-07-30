@@ -21,6 +21,7 @@ global.logger = require('./init/logger');
 global.adapters = require('./init/adapter-manager');
 global.accounts = require('./init/accounts');
 global.mailer = require('./init/mailer');
+global.redis = require('./init/redis');
 
 if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
@@ -44,6 +45,7 @@ const checkForUpdates = require('./updater');
     await adapters.init();
     await accounts.init();
     await mailer.init();
+    await redis.init();
 
     require('./init/server');
   } catch (error) {

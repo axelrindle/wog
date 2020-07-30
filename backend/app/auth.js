@@ -49,9 +49,7 @@ module.exports = app => {
     saveUninitialized: true,
     resave: false,
     unset: 'destroy',
-    store: new RedisStore(Object.assign({
-      prefix: 'wog_session:'
-    }, config.secure.redis)),
+    store: new RedisStore({ client: redis.client }),
     cookie: Object.assign({
       secure: theUrl.protocol === 'https'
     }, config.secure.cookie)

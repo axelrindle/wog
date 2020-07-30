@@ -59,6 +59,7 @@
     "passport-local": "^1.0.0",
     "password-validator": "^5.0.3",
     "pretty-bytes": "^5.1.0",
+    "redis": "^3.0.2",
     "sqlite3": "^4.1.1",
     "string-strip-html": "^4.4.0",
     "vue-is-mounted": "^1.0.0",

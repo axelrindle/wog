@@ -6,12 +6,16 @@ const { env } = require('../backend/util');
  */
 module.exports = {
 
-  /** Redis connection settings. */
+  /**
+   * Redis connection settings.
+   * See https://github.com/NodeRedis/node-redis#options-object-properties
+   */
   redis: {
     host: env('REDIS_HOST'),
     port: parseInt(env('REDIS_PORT', 6379)),
-    pass: env('REDIS_PASS'),
-    db: parseInt(env('REDIS_DB', 0))
+    password: env('REDIS_PASS'),
+    db: parseInt(env('REDIS_DB', 0)),
+    prefix: 'wog:'
   },
 
   /** A secret string used to encrypt session data. */

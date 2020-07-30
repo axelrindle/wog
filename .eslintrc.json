@@ -19,7 +19,8 @@
         "storage": true,
         "Vue": true,
         "axios": true,
-        "mailer": true
+        "mailer": true,
+        "redis": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 2018
