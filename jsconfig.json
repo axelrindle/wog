@@ -13,6 +13,7 @@
   },
   "include": [
     "backend/**/*",
-    "packages/**/*"
+    "packages/**/*",
+    "typings/**/*"
   ]
 }
