@@ -80,12 +80,16 @@ class FileAdapter extends BaseAdapter {
           break;
         case 'watcher-unlink':
           const entry2 = findByPath(msg.path);
-          const index = this.files.indexOf(entry2);
-          if (index > -1) {
-            this.files.splice(index, 1);
-            this.logger.info(`The file at '${msg.path}' has been deleted.`);
-            this.handleFileEvent('unlink', msg.path, entry2.id);
+
+          for (const group of this.getGroups()) {
+            const index = this.files[group].indexOf(entry2);
+            if (index > -1) {
+              this.files[group].splice(index, 1);
+            }
           }
+
+          this.logger.info(`The file at '${msg.path}' has been deleted.`);
+          this.handleFileEvent('unlink', msg.path, entry2.id);
           break;
         case 'watcher-error':
           this.handleFileEvent('error', msg.error)
