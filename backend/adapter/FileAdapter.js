@@ -29,7 +29,7 @@ class FileAdapter extends BaseAdapter {
     this.logger.info('Disposed.');
   }
 
-  loadFiles() {
+  async loadFiles() {
     const promises = [];
     let counter = 0;
     let groups = this.options.groups;
@@ -51,11 +51,10 @@ class FileAdapter extends BaseAdapter {
       );
     });
 
-    return Promise.all(promises).then(() => {
-      this.initWatcherListener();
-      this.logger.info('File watching initialized.');
-      this.logger.info(`Initially loaded ${counter} files.`);
-    });
+    await Promise.all(promises);
+    this.initWatcherListener();
+    this.logger.info('File watching initialized.');
+    this.logger.info(`Initially loaded ${counter} files.`);
   }
 
   initWatcherListener() {
@@ -132,7 +131,7 @@ class FileAdapter extends BaseAdapter {
     }
   }
 
-  watchEntry(wsId, entryId) {
+  async watchEntry(wsId, entryId) {
     const promises = [];
 
     // remove previous file from watching, if any
@@ -150,10 +149,8 @@ class FileAdapter extends BaseAdapter {
       path: this.getEntry(entryId).path
     }));
 
-    return Promise.all(promises)
-      .then(() => {
-        super.watchEntry(wsId, entryId); // update map
-      });
+    await Promise.all(promises);
+    super.watchEntry(wsId, entryId); // update map
   }
 
   handleFileEvent(event, path, entryId) {

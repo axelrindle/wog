@@ -169,21 +169,22 @@ class Accounts {
    * @param {Object} user The user to insert.
    * @returns {Promise<Void>} A Promise that resolves when the user has been created.
    */
-  create(user) {
-    return this.hashPassword(user.password)
-      .then(hash => new Promise((resolve, reject) => {
-        const params = [user.username, hash, user.role];
-        this.db.run(queries.insert, params, err => {
-          if (err) reject(err);
-          else {
-            this.logger.info(`A new user ${user.username} has been created.`);
-            resolve();
-          }
-        });
-      }));
+  async create(user) {
+    const hash = await this.hashPassword(user.password);
+    return new Promise((resolve, reject) => {
+      const params = [user.username, hash, user.role];
+      this.db.run(queries.insert, params, err => {
+        if (err)
+          reject(err);
+        else {
+          this.logger.info(`A new user ${user.username} has been created.`);
+          resolve();
+        }
+      });
+    });
   }
 
-  update(user) {
+  async update(user) {
     let promise;
     if (user.password) {
       promise = this.hashPassword(user.password)
@@ -196,25 +197,28 @@ class Accounts {
       promise = Promise.resolve(user);
     }
 
-    return promise
-      .then(user => {
-        const records = [];
-        const params = [];
-        for (const key in user) {
-          if (key === 'id') continue;
-          records.push(`${key} = ?`);
-          params.push(user[key]);
-        }
-        const query = queries.update.replace('%%columns%%', records.join(', '));
-        params.push(user.id);
-        return Promise.resolve({ query, params });
-      })
-      .then(result => new Promise((resolve, reject) => {
-        this.db.run(result.query, result.params, err => {
-          if (err) reject(err);
-          else resolve();
-        });
-      }));
+    const foundUser = await promise;
+    const records = [];
+    const params = [];
+    for (const key in foundUser) {
+      if (key === 'id')
+        continue;
+      records.push(`${key} = ?`);
+      params.push(foundUser[key]);
+    }
+
+    const query = queries.update.replace('%%columns%%', records.join(', '));
+    params.push(foundUser.id);
+    const result = await Promise.resolve({ query, params });
+
+    return new Promise((resolve, reject) => {
+      this.db.run(result.query, result.params, err => {
+        if (err)
+          reject(err);
+        else
+          resolve();
+      });
+    });
   }
 
   /**
@@ -269,14 +273,13 @@ class Accounts {
    * @param {string} password
    * @returns {Promise<boolean>} A Promise which resolves with the result.
    */
-  checkAuth(username, password) {
-    return this.findByUsername(username)
-      .then(user => {
-        if (!user) return false;
-        else {
-          return this.verifyPassword(password, user.password);
-        }
-      });
+  async checkAuth(username, password) {
+    const user = await this.findByUsername(username);
+    if (!user)
+      return false;
+    else {
+      return this.verifyPassword(password, user.password);
+    }
   }
 
   /**
