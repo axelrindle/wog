@@ -54,7 +54,7 @@ class Mailer {
     const merged = Object.assign(opts, {
       to, subject, text, htmlText
     });
-    return await this.transport.sendMail(merged);
+    return this.transport.sendMail(merged);
   }
 
   dispose() {
