@@ -15,5 +15,11 @@
     "backend/**/*",
     "packages/**/*",
     "typings/**/*"
-  ]
+  ],
+  "typeAcquisition": {
+    "enable": true,
+    "include": [
+      "jquery"
+    ]
+  }
 }
