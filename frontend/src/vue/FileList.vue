@@ -28,7 +28,7 @@
         <p class="title">
           Logfiles
           <a class="button is-primary is-rounded is-pulled-right"
-             @click="refresh()" v-if="selected.adapter">
+             @click="refreshGroups()" v-if="selected.adapter">
             <span class="icon">
                <i class="fas fa-sync-alt"></i>
             </span>

@@ -60,13 +60,13 @@ new Vue({
         const parsed = JSON.parse(msg.data);
         switch (parsed.type) {
           case 'add':
-            this.$refs.fileList.refresh();
+            this.$refs.fileList.refreshEntries();
             break;
           case 'change':
             this.$refs.logViewer.refresh();
             break;
           case 'unlink':
-            this.$refs.fileList.refresh();
+            this.$refs.fileList.refreshEntries();
             break;
           case 'error':
             this.error = parsed.msg;
