@@ -2,7 +2,7 @@ import { RedisClient } from 'redis'
 import { Logger as WinstonLogger } from 'node_modules/winston/index'
 import * as BaseAdapter from 'backend/adapter/BaseAdapter'
 
-export interface Storage {
+declare interface Storage {
 
   init(): Promise<void>
   register(name: string): string
@@ -12,7 +12,7 @@ export interface Storage {
 
 }
 
-export interface Logger extends WinstonLogger {
+declare interface Logger extends WinstonLogger {
 
   /**
    * Creates a new logger with the given name as it's label.
@@ -22,7 +22,7 @@ export interface Logger extends WinstonLogger {
 
 }
 
-export interface AdapterManager {
+declare interface AdapterManager {
 
   init(): Promise<void>
   dispose(): Promise<void>
@@ -35,7 +35,7 @@ export interface AdapterManager {
 
 }
 
-export interface User {
+declare interface User {
 
   readonly id: number
   username: string
@@ -45,7 +45,7 @@ export interface User {
 
 }
 
-export interface Accounts {
+declare interface Accounts {
 
   init(): Promise<void>
   dispose(): Promise<void>
@@ -67,7 +67,7 @@ export interface Accounts {
 
 }
 
-export interface Mailer {
+declare interface Mailer {
 
   readonly isConnected: boolean
 
@@ -78,7 +78,7 @@ export interface Mailer {
 
 }
 
-export interface RedisManager {
+declare interface RedisManager {
 
   readonly isConnected: boolean
   readonly client: RedisClient
