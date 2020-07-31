@@ -15,6 +15,9 @@ const { sendMessage, sendNormMessage } = require('./utils');
 const fs = require('fs').promises;
 const prettyBytes = require('pretty-bytes');
 const FSWatcher = require('chokidar').FSWatcher;
+const lineReader = require('line-reader');
+
+const MAX_LINE_AMOUNT = 500;
 
 const watcher = new FSWatcher()
   .on('change', path => sendMessage({ type: 'watcher-change', path }))
@@ -25,23 +28,47 @@ const watcher = new FSWatcher()
  * Reads a file's size and contents.
  *
  * @param {string} path The path to the file.
- * @returns {Promise} A Promise that resolves with the result object.
+ * @returns {Promise<FileResult>} A Promise that resolves with the result object.
  */
-const readFile = async path => {
-  const result = {};
+const readFile = async (path, page = 1) => {
+  /** @type {FileResult} */
+  const result = { page };
 
   // attach estimate file size
   const stats = await fs.stat(path);
   result.size = prettyBytes(stats.size);
 
   // read lines
-  const contents = await fs.readFile(path, { encoding: 'utf-8' });
-  const lines = contents.split('\n');
-  result.lines = lines;
+  result.lines = await new Promise((resolve, reject) => {
+    let lineCounter = 0;
+    const list = [];
+    lineReader.eachLine(path, line => {
+      lineCounter++;
+
+      // calculate range based on page
+      const pageStart = (page - 1) * MAX_LINE_AMOUNT;
+      const pageEnd = page * MAX_LINE_AMOUNT;
+
+      // collect lines until the limit is reached
+      if (lineCounter >= pageStart && lineCounter <= pageEnd) {
+        list.push(line);
+      }
+    }, err => {
+      if (err) reject(err);
+      else {
+        result.totalLines = lineCounter;
+        result.maxPage = Math.ceil(lineCounter / MAX_LINE_AMOUNT);
+        resolve(list);
+      }
+    });
+  });
 
   return result;
 };
 
+/**
+ * @param {FileWorkerMessageReceive} msg
+ */
 const handleMessage = msg => {
   switch (msg.type) {
     case 'getContents':
