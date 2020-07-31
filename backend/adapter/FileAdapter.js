@@ -48,6 +48,7 @@ class FileAdapter extends BaseAdapter {
 
               counter += this.files[group].length;
           })
+          .catch(err => this.logger.error(err))
       );
     });
 
