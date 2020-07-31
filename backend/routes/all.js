@@ -1,4 +1,5 @@
 // Require modules
+const { bind } = require('../util');
 const ListController = require('../controllers/ListController');
 
 module.exports = (app, myRouter) => {
@@ -8,9 +9,9 @@ module.exports = (app, myRouter) => {
 
   myRouter.use(checkAuth.is);
 
-  myRouter.post('/adapters', myController.adapters.bind(myController));
-  myRouter.post('/groups', myController.groups.bind(myController));
-  myRouter.post('/entries', myController.entries.bind(myController));
+  myRouter.post('/adapters', bind(myController, "adapters"));
+  myRouter.post('/groups', bind(myController, "groups"));
+  myRouter.post('/entries', bind(myController, "entries"));
 
   app.use('/all', myRouter);
 
