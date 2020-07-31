@@ -23,7 +23,7 @@ exports.NANOID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
  * @param  {any} _default An optional default value, if no value was found.
  * @return {any} The associated value, or undefined.
  */
-exports.env = (key, _default) => {
+exports.env = (key, _default = undefined) => {
   return process.env[key] || _default;
 };
 
