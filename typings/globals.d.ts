@@ -83,9 +83,9 @@ export interface RedisManager {
   readonly isConnected: boolean
   readonly client: RedisClient
 
-  init(): Promise<null>
+  init(): Promise<void>
   run(cmd: string, ...args: any[]): void
-  dispose(): Promise<null>
+  dispose(): Promise<void>
 
 }
 
