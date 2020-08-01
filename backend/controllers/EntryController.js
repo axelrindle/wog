@@ -15,8 +15,9 @@ module.exports = class EntryController extends Controller {
   contents(req, res) {
     const adapter = req.body.adapter;
     const entryId = req.body.id;
+    const page = req.body.page || 1;
     const theAdapter = adapters.getAdapter(adapter);
-    theAdapter.getContents(entryId)
+    theAdapter.getContents(entryId, page)
       .then(contents => {
         res.json(contents);
       })

@@ -118,12 +118,13 @@ class FileAdapter extends BaseAdapter {
     return null;
   }
 
-  getContents(id) {
+  getContents(id, page = 1) {
     const entry = this.getEntry(id);
     if (!entry) return Promise.reject(`No entry found with id ${id}!`);
     return this.workerManager.normPromise({
       type: 'getContents',
-      path: entry.path
+      path: entry.path,
+      page
     });
   }
 

@@ -100,10 +100,11 @@ class BaseAdapter extends EventEmitter {
   /**
    * Returns the contents for an entry.
    * @param  {string} id The unique id identifying an entry.
+   * @param  {number} page Specifies the page to read the corresponding lines.
    * @return {array|object} An array containing the log entries, where each element represents one line/log.
    *                        Also supported is an object with additional information (size, dates, etc.).
    */
-  getContents(id) {
+  getContents(id, page = 1) {
     unimplemented();
   }
 

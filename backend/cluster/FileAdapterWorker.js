@@ -32,7 +32,7 @@ const watcher = new FSWatcher()
  */
 const readFile = async (path, page = 1) => {
   /** @type {FileResult} */
-  const result = { page };
+  const result = { page, limit: MAX_LINE_AMOUNT };
 
   // attach estimate file size
   const stats = await fs.stat(path);
@@ -40,23 +40,27 @@ const readFile = async (path, page = 1) => {
 
   // read lines
   result.lines = await new Promise((resolve, reject) => {
-    let lineCounter = 0;
-    const list = [];
-    lineReader.eachLine(path, line => {
-      lineCounter++;
 
-      // calculate range based on page
-      const pageStart = (page - 1) * MAX_LINE_AMOUNT;
-      const pageEnd = page * MAX_LINE_AMOUNT;
+    // calculate range based on page
+    const pageStart = (page - 1) * MAX_LINE_AMOUNT;
+
+    const list = [];
+    let lineCounter = 0;
+    lineReader.eachLine(path, line => {
 
       // collect lines until the limit is reached
-      if (lineCounter >= pageStart && lineCounter <= pageEnd) {
+      if (lineCounter >= pageStart && list.length < MAX_LINE_AMOUNT) {
         list.push(line);
       }
+
+      lineCounter++;
     }, err => {
       if (err) reject(err);
       else {
         result.totalLines = lineCounter;
+        result.pageStart = pageStart + 1;
+        result.pageEnd = pageStart + MAX_LINE_AMOUNT;
+        if (result.pageEnd > lineCounter) result.pageEnd = lineCounter;
         result.maxPage = Math.ceil(lineCounter / MAX_LINE_AMOUNT);
         resolve(list);
       }
@@ -72,7 +76,7 @@ const readFile = async (path, page = 1) => {
 const handleMessage = msg => {
   switch (msg.type) {
     case 'getContents':
-      readFile(msg.path)
+      readFile(msg.path, msg.page)
         .then(result => sendNormMessage('success', msg, result))
         .catch(err => sendNormMessage('error', msg, err.message));
       break;

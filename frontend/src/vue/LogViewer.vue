@@ -83,21 +83,40 @@
           <!-- actions-->
           <div class="column">
             <p class="title is-6">Actions</p>
-            <div class="field is-grouped">
-              <a class="control button is-primary" :href="downloadUrl" v-if="entry">Download</a>
-              <a class="control button is-info" @click="refresh" v-if="entry">Refresh</a>
-              <a class="control button is-link" @click="openGoToLine" v-if="entry">Go to line</a>
+            <div class="field is-grouped" v-if="entry">
+              <a class="control button is-primary" :href="downloadUrl">Download</a>
+              <a class="control button is-info" @click="refresh">Refresh</a>
+              <a class="control button is-link" @click="openGoToLine">Go to line</a>
             </div>
+            <nav class="pagination is-centered" v-if="entry">
+              <a class="pagination-previous" @click="previousPage" :disabled="page <= 1">&laquo;</a>
+              <a class="pagination-next" @click="nextPage" :disabled="content ? page >= content.maxPage : true">&raquo;</a>
+              <ul class="pagination-list">
+                <li><a class="pagination-link is-current">{{ page }}</a></li>
+              </ul>
+            </nav>
           </div>
 
           <!-- info-->
           <div class="column">
             <p class="title is-6">Info</p>
-            <ul v-if="content">
-              <li v-if="grep">Lines: {{ filteredLinesAmount }} / {{ content.lines.length }}</li>
-              <li v-else>Lines: {{ filteredLinesAmount }}</li>
-              <li>Size: ~{{ content.size }}</li>
-            </ul>
+            <table class="table is-bordered is-fullwidth is-narrow" v-if="content">
+              <thead>
+                <tr>
+                  <th>Size</th>
+                  <th>Lines</th>
+                  <th>Page</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>~{{ content.size }}</td>
+                  <!-- <td>{{ filteredLinesAmount }} / {{ content.totalLines }}</td> -->
+                  <td>{{ content.pageStart }} - {{ content.pageEnd }} / {{ content.totalLines }}</td>
+                  <td>{{ content.page }} / {{ content.maxPage }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
         </div> <!-- .columns -->
@@ -105,7 +124,7 @@
     </div> <!-- end .card -->
 
     <!-- actual log content-->
-    <pre id="logContent" v-if="!error &amp;&amp; !loading"><code>
+    <pre id="logContent" class="log-lines" v-if="!error &amp;&amp; !loading"><code>
       <div v-for="line in linesFiltered" :data-line="line.lineNumber" :key="line.lineNumber">
         <span class="has-text-link">{{ line.lineNumber }}:&nbsp;</span>
         <span>{{ line.text }}</span>
@@ -132,16 +151,17 @@
           <div class="field">
             <label class="label">Enter the line number you want to jump to</label>
             <div class="control">
-              <input class="input" type="number" min="1" :max="filteredLinesAmount"
+              <input class="input" type="number" v-if="content"
+                     :min="content.pageStart" :max="content.pageEnd"
                      v-model="lineToGoTo" @keyup.enter="goToLine" @keyup.esc="closeGoToLine" />
             </div>
-            <div class="span has-text-danger" v-if="showGoToLineError">
-              Must not be bigger than {{ filteredLinesAmount }}!
+            <div class="span has-text-danger" v-if="goToLineError !== null">
+              {{ goToLineError }}
             </div>
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success" @click="goToLine" :disabled="showGoToLineError">Go</button>
+          <button class="button is-success" @click="goToLine" :disabled="goToLineError !== null">Go</button>
           <button class="button" @click="closeGoToLine">Cancel</button>
         </footer>
       </div>
@@ -173,7 +193,8 @@ module.exports = {
       grep: '', // TODO: Add more filters
       lineMode: 'head',
       line: '',
-      lineToGoTo: 1
+      lineToGoTo: 1,
+      page: 1
     }
   },
   computed: {
@@ -205,8 +226,13 @@ module.exports = {
     downloadUrl() {
       return this.path(`/entry/download/${this.adapter}/${this.entry.id}`);
     },
-    showGoToLineError() {
-      return parseInt(this.lineToGoTo) > this.filteredLinesAmount;
+    goToLineError() {
+      if (!this.content) return null;
+
+      const asInt = parseInt(this.lineToGoTo);
+      if (asInt < this.content.pageStart) return `Must not be less than ${this.content.pageStart}!`;
+      if (asInt > this.content.pageEnd) return `Must not be greater than ${this.content.pageEnd}!`;
+      return null;
     },
     error() {
       if (this.$root.error) return this.$root.error;
@@ -224,14 +250,19 @@ module.exports = {
     refresh() {
       this.$root.error = null;
       this.loading = true;
-      axios.post('/entry/contents', { adapter: this.adapter, id: this.entry.id })
+      axios.post('/entry/contents', { adapter: this.adapter, id: this.entry.id, page: this.page })
         .then(response => {
           if (response.data.lines.length > 0) {
             this.content = response.data;
 
+            // handle page update
+            if (this.content.maxPage < this.page) {
+              this.page = this.content.maxPage;
+            }
+
             let line = 1;
             this.content.lines = this.content.lines.map(el => ({
-              lineNumber: line++, text: el
+              lineNumber: (this.content.limit * (this.page - 1)) + line++, text: el
             }));
           }
         })
@@ -261,19 +292,36 @@ module.exports = {
       $('#goToLineModal').removeClass('is-active');
     },
     goToLine() {
+      if (this.goToLineError) return;
+
       this.closeGoToLine();
       $('#logContent')
-        .scrollTop(19.5 * this.lineToGoTo)
         .find('div[data-line="' + this.lineToGoTo + '"]')
-          .addClass('blink')
-          .one(window.helpers.whichAnimationEvent(), event => {
-            $(this).removeClass('blink');
-          });
+        .addClass('blink')
+        .one(window.helpers.whichAnimationEvent(), event => {
+          $(this).removeClass('blink');
+        })
+        .get(0).scrollIntoView();
+    },
+
+    previousPage() {
+      if (this.page > 1) {
+        this.page--;
+        this.refresh();
+      }
+    },
+    nextPage() {
+      if (!content) return;
+      if (this.page < this.content.maxPage) {
+        this.page++;
+        this.refresh();
+      }
     }
   },
   watch: {
     entry() {
       if (this.entry) {
+        this.page = 1;
         this.refresh();
       } else {
         this.content = null;

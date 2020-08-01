@@ -1,9 +1,13 @@
 declare interface FileResult {
   size: number
-  totalLines: number
+
   page: number
+  pageStart: number
+  pageEnd: number
   maxPage: number
 
+  limit: number
+  totalLines: number
   lines: Array<string>
 }
 
