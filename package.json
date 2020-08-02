@@ -63,7 +63,6 @@
     "redis": "^3.0.2",
     "sqlite3": "^4.1.1",
     "string-strip-html": "^4.4.0",
-    "vue-is-mounted": "^1.0.0",
     "winston": "^3.2.1",
     "ws": "^7.1.2"
   },
@@ -73,7 +72,9 @@
     "eslint": "^5.16.0",
     "parcel-bundler": "^1.12.4",
     "sass": "^1.15.2",
-    "vue-template-compiler": "^2.6.10"
+    "vue-is-mounted": "^1.0.1",
+    "vue-template-compiler": "^2.6.10",
+    "vuejs-paginate": "^2.1.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.0",

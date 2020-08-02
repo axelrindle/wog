@@ -88,13 +88,19 @@
               <a class="control button is-info" @click="refresh">Refresh</a>
               <a class="control button is-link" @click="openGoToLine">Go to line</a>
             </div>
-            <nav class="pagination is-centered" v-if="entry">
-              <a class="pagination-previous" @click="previousPage" :disabled="page <= 1">&laquo;</a>
-              <a class="pagination-next" @click="nextPage" :disabled="content ? page >= content.maxPage : true">&raquo;</a>
-              <ul class="pagination-list">
-                <li><a class="pagination-link is-current">{{ page }}</a></li>
-              </ul>
-            </nav>
+            <paginate v-if="content"
+              :page-count="content.maxPage"
+              :click-handler="changePage"
+              prev-text="&lt;"
+              next-text="&gt;"
+              container-class="pagination"
+              page-link-class="pagination-link"
+              prev-link-class="button is-link is-outlined"
+              next-link-class="button is-link is-outlined"
+              active-class="is-current"
+              disabled-class="is-disabled"
+              :no-li-surround="true">
+            </paginate>
           </div>
 
           <!-- info-->
@@ -171,10 +177,15 @@
 </template>
 
 <script>
+// Require modules
+const Paginate = require('vuejs-paginate');
 const { fuzzysearch } = require('../js/util/fuzzy');
 
 module.exports = {
   name: 'LogViewer',
+  components: {
+    'paginate': Paginate
+  },
 
   props: {
     adapter: String,
@@ -304,18 +315,9 @@ module.exports = {
         .get(0).scrollIntoView();
     },
 
-    previousPage() {
-      if (this.page > 1) {
-        this.page--;
-        this.refresh();
-      }
-    },
-    nextPage() {
-      if (!content) return;
-      if (this.page < this.content.maxPage) {
-        this.page++;
-        this.refresh();
-      }
+    changePage(num) {
+      this.page = num;
+      this.refresh();
     }
   },
   watch: {
