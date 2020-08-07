@@ -1,5 +1,5 @@
 <template>
-  <div class="content log">
+  <div class="content">
 
     <div class="card">
       <header class="card-header">
