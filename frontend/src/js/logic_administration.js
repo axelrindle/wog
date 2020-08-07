@@ -17,6 +17,7 @@ new Vue({
         component: require('../vue/admin/users/'),
         actions: [
           {
+            icon: 'fas fa-sync-alt',
             name: 'Refresh',
             description: 'Reload the user list.',
             handler() {
@@ -24,6 +25,7 @@ new Vue({
             }
           },
           {
+            icon: 'fas fa-user-plus',
             name: 'Create a User',
             handler() {
               this.create = true;
@@ -38,6 +40,7 @@ new Vue({
         component: require('../vue/admin/config/'),
         actions: [
           {
+            icon: 'fas fa-sync-alt',
             name: 'Refresh',
             description: 'Reload the config values.',
             handler() {
@@ -53,6 +56,7 @@ new Vue({
         component: require('../vue/admin/statistics/'),
         actions: [
           {
+            icon: 'fas fa-sync-alt',
             name: 'Refresh',
             description: 'Reload the statistics.',
             handler() {

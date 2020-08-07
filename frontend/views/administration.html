@@ -5,24 +5,18 @@
 
   <div class="app" id="app">
 
-    <div class="sidebar">
-      <section class="section">
-        <div class="container">
-          {% include "partials/nav.html" %}
-        </div>
-      </section>
-
+    {% set sidebar_slot_expaned %}
       <hr>
 
       <!-- Section buttons -->
       <section class="section">
         <div class="buttons">
           {% raw %}
-            <button class="button is-fullwidth" :class="{ 'is-link': selected === index }"
-                    v-for="(component, index) in components" :key="index"
-                    @click="selected = index" :title="component.description">
-              <span class="icon is-small"><i :class="component.icon"></i></span>
-              <span>{{ component.name }}</span>
+            <button class="button is-fullwidth" :class="{ 'is-primary': selected === index }"
+                    v-for="(theComponent, index) in components" :key="'component-' + index"
+                    @click="selected = index" :title="theComponent.description">
+              <span class="icon is-small"><i :class="theComponent.icon"></i></span>
+              <span>{{ theComponent.name }}</span>
             </button>
           {% endraw %}
         </div>
@@ -35,17 +29,43 @@
         <div class="buttons">
           {% raw %}
             <button class="button is-fullwidth is-info"
-                    v-for="(action, index) in theActions" :key="index"
+                    v-for="(action, index) in theActions" :key="'action-' + index"
                     :title="action.description" @click="handleAction(index)">
-              <span class="icon is-small" v-if="action.icon">
-                <i :class="component.icon"></i>
+              <span class="icon is-small">
+                <i :class="action.icon"></i>
               </span>
               <span>{{ action.name }}</span>
             </button>
           {% endraw %}
         </div>
       </section>
-    </div> <!-- end #sidebar -->
+    {% endset %}
+    {% set sidebar_slot_collapsed %}
+      <hr style="width: 100%;">
+
+      {% raw %}
+        <button class="button is-fullwidth mb-3" :class="{ 'is-primary': selected === index }"
+                v-for="(theComponent, index) in components" :key="'component-' + index"
+                @click="selected = index" :title="theComponent.name" v-if="theComponent">
+          <span class="icon is-small">
+            <i :class="theComponent.icon"></i>
+          </span>
+        </button>
+      {% endraw %}
+
+      <hr style="width: 100%;">
+
+      {% raw %}
+        <button class="button is-fullwidth is-info mb-3"
+                v-for="(action, index) in theActions" :key="'action-' + index"
+                :title="action.name" @click="handleAction(index)" v-if="theComponent">
+          <span class="icon is-small">
+            <i :class="action.icon"></i>
+          </span>
+        </button>
+      {% endraw %}
+    {% endset %}
+    {% include "partials/sidebar.html" %}
 
     <div class="content">
       <div class="columns">
@@ -69,7 +89,7 @@
           </div> <!-- end .card -->
         </div> <!-- end .column -->
       </div> <!-- end .columns -->
-    </div>
+    </div> <!-- end .content -->
 
   </div> <!-- end #app -->
 {% endblock %}
@@ -77,4 +97,5 @@
 {% block js %}
   {% include "partials/vendor_scripts.html" %}
   <script src="{{ path('js/logic_administration.js') }}"></script>
+  <script src="{{ path('js/sidebar.js') }}"></script>
 {% endblock %}
