@@ -1,5 +1,13 @@
+// 1. Override bulma
+$family-sans-serif: 'Montserrat', sans-serif;
+$section-padding: 1rem 1.5rem;
+
+// 2. Custom
 $sidebar_background: darken(white, 2%);
 $sidebar_width: 350px;
+
+$sidebar_collapsed_padding: 8px;
+$sidebar_collapsed_width: 50px + $sidebar_collapsed_padding;
 
 $content_background: lighten(black, 10%);
 $content_padding_vertical: 50px;
@@ -8,5 +16,3 @@ $content_padding_horizontal: 100px;
 $about_link_size: 40px;
 
 $blink_background: transparentize(#356bd4, .5);
-
-$family-sans-serif: 'Montserrat', sans-serif;

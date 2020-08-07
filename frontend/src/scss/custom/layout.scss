@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 * {
   outline: none !important;
 }
@@ -33,24 +35,68 @@ pre, pre code {
 }
 
 .sidebar {
-  height: 100%;
+  min-width: $sidebar_width;
   width: $sidebar_width;
-  overflow-y: auto;
+  max-width: $sidebar_width;
+  height: 100%;
   border-right: 1px solid transparentize(#333, .75);
   background-color: $sidebar_background;
+
+  display: flex;
+  flex-flow: column nowrap;
+
+  transition: all .5s;
+
+  img {
+    width: calc(#{$sidebar_width} - #{list.nth($section-padding, 2)});
+  }
+
+  .sidebar-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .sidebar-container-collapsed {
+    display: none;
+  }
+
+  .sidebar-container, .sidebar-container-collapsed {
+    flex: 1;
+  }
+
+  .sidebar-collapse {
+    border: none;
+    border-radius: 0;
+  }
+
+  &.is-collapsed {
+    min-width: $sidebar_collapsed_width;
+    width: $sidebar_collapsed_width;
+    max-width: $sidebar_collapsed_width;
+
+    img {
+      width: $sidebar_collapsed_width - $sidebar_collapsed_padding * 2;
+    }
+
+    .sidebar-container, .collapse-text {
+      display: none;
+    }
+
+    .sidebar-container-collapsed {
+      flex: 1 0 auto;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      padding: $sidebar_collapsed_padding;
+    }
+  }
 }
 
 .content {
-  height: 100%;
-  flex: 1 0 auto;
-  padding: $content_padding_vertical $content_padding_horizontal;
-  background-color: $content_background;
   display: flex;
-  flex-direction: column;
-
-  &.log {
-    max-width: calc(100% - #{$sidebar_width});
-  }
+  flex-flow: column nowrap;
+  width: 100%;
+  overflow: hidden;
 
   pre {
     height: 100%;
