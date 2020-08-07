@@ -5,15 +5,11 @@
 
   <div class="app" id="app">
 
-    <div class="sidebar">
-      <section class="section">
-        <div class="container">
-          {% include "partials/nav.html" %}
-        </div>
-      </section>
-      <hr class="bottom">
+    {% set sidebar_slot_expaned %}
+      <hr>
       <file-list @ready="ready()" :socket="socket" ref="fileList"></file-list>
-    </div> <!-- end #sidebar -->
+    {% endset %}
+    {% include "partials/sidebar.html" %}
 
     <!-- Log content -->
     <log-viewer ref="logViewer" :adapter="theAdapter" :entry="theEntry"></log-viewer>
@@ -24,4 +20,5 @@
 {% block js %}
   {% include "partials/vendor_scripts.html" %}
   <script src="{{ path('js/logic.js') }}"></script>
+  <script src="{{ path('js/sidebar.js') }}"></script>
 {% endblock %}

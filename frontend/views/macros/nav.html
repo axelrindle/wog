@@ -1,0 +1,11 @@
+{% macro expanded(href, text) %}
+  <a class="button {{ 'is-link' if isPath(href) }}" href="{{ path(href) }}">{{ text }}</a>
+{% endmacro %}
+
+{% macro collapsed(href, icon, text) %}
+  <a class="button is-link mb-3 {{ 'is-light' if not isPath(href) }}" title="{{ text }}" href="{{ path(href) }}">
+    <span class="icon is-large">
+      <i class="fas fa-{{ icon }}"></i>
+    </span>
+  </a>
+{% endmacro %}

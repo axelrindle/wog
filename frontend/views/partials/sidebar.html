@@ -1,0 +1,48 @@
+{% import "../macros/nav.html" as nav with context %}
+
+<!-- The sidebar is used for navigation. -->
+<div class="sidebar" id="sidebar">
+
+  <div class="sidebar-container">
+    <section class="section">
+      <img src="{{ path('img/header.png') }}">
+      <p class="welcome">
+        Logged in as&nbsp;
+        <u>{{ user.username }}</u>
+      </p>
+      <div class="buttons is-centered">
+        {{ nav.expanded('/', 'Home') }}
+        {% if user.role === 'admin' %}
+          {{ nav.expanded('/admin', 'Administration') }}
+        {% endif %}
+        {{ nav.expanded('/about', 'About') }}
+        {{ nav.expanded('/logout', 'Sign out') }}
+      </div>
+    </section> <!-- end .section -->
+
+    <!-- Include the user-defined custom slot below the expanded navigation -->
+    {{ sidebar_slot_expaned | safe }}
+
+  </div> <!-- end .sidebar-container -->
+
+  <div class="sidebar-container-collapsed">
+    <img src="{{ path('img/favicon.png') }}" class="mb-5">
+
+    {{ nav.collapsed('/', 'home', 'Home' ) }}
+    {{ nav.collapsed('/admin', 'toolbox', 'Administration' ) }}
+    {{ nav.collapsed('/about', 'info', 'About' ) }}
+    {{ nav.collapsed('/logout', 'sign-out-alt', 'Sign out' ) }}
+
+    <!-- Include the user-defined custom slot below the collapsed navigation -->
+    {{ sidebar_slot_collapsed | safe }}
+
+  </div> <!-- end .sidebar-container-collapsed -->
+
+  <button class="button is-link sidebar-collapse" id="sidebar-collapse">
+    <span class="icon">
+      <i class="fas fa-angle-double-left"></i>
+    </span>
+    <span class="collapse-text">Collapse</span>
+  </button> <!-- end .sidebar-collapse -->
+
+</div> <!-- end .sidebar -->
