@@ -8,6 +8,7 @@
     "dev": "DEBUG=true node backend/main",
     "compile:scss": "parcel build frontend/src/scss/style.scss --no-source-maps -d frontend/static/css --out-file style.min.css",
     "compile:js": "parcel build frontend/src/js/*.js --no-source-maps -d frontend/static/js",
+    "watch:scss": "parcel watch frontend/src/scss/style.scss --no-source-maps -d frontend/static/css --out-file style.min.css --no-hmr",
     "watch:js": "parcel watch frontend/src/js/*.js --no-source-maps -d frontend/static/js --no-hmr"
   },
   "repository": {
