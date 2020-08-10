@@ -54,7 +54,7 @@ module.exports = class AdminController extends Controller {
         res.sendStatus(200);
       })
       .catch(err => {
-        res.status(500).json(err);
+        res.status(500).json({ message: err.message, ...err });
       });
   }
 
