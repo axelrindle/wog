@@ -86,3 +86,7 @@ p.welcome {
     background-color: transparent;
   }
 }
+
+.is-transitionless {
+  transition: none !important;
+}
