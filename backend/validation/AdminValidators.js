@@ -10,6 +10,7 @@ class CreateUserValidator extends Validator {
   rules() {
     return {
       username: [ rules.usernameExistsNot, rules.alphaDash(4) ],
+      email: [ rules.email ],
       password: [ rules.password ],
       role: [ rules.role ]
     };
