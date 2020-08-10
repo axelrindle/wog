@@ -78,65 +78,49 @@ module.exports = class ResetPasswordController extends Controller {
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
-  handleRequest(req, res) {
+  async handleRequest(req, res) {
     const redirectPath = getPath('reset/password');
+    const commonErrorHandler = err => {
+      if (typeof err === 'object') this.logger.error(err); // only log thrown errors
+      this._flashError(req, err.message || err);
+      res.redirect(redirectPath);
+    };
+
     req.flash('username', req.body.username);
 
     // do nothing when not connected to SMTP server
     if (!mailer.isConnected) {
-      this._flashError(req, 'Application is not configured to send mails! Please contact your administrator.');
-      res.redirect(redirectPath);
+      commonErrorHandler('Application is not configured to send mails! Please contact your administrator.');
+      return;
     }
 
-    else {
-      accounts.findByUsername(req.body.username)
-        .then(user => {
-          if (!user) {
-            this._flashError(req, 'No matching user found!');
-            res.redirect(redirectPath);
-          }
+    try {
+      const user = await accounts.findByUsername(req.body.username);
+      if (!user) {
+        commonErrorHandler('No matching user found!');
+        return;
+      }
+      if (!user.email) {
+        commonErrorHandler('The user has no email configured! Please contact your administrator.');
+        return;
+      }
 
-          else if (!user.email) {
-            this._flashError(req, 'The user has no email configured! Please contact your administrator.');
-            res.redirect(redirectPath);
-          }
+      const token = await this._generateToken(user.id);
+      const url = redirectPath + '/' + token;
+      const sentMailInfo = await mailer.sendMail(
+        user.email, 'Password Reset Request',
+        `
+        <p>Password Reset Request</p>
+        <a href="${url}">${url}</a>
+        `
+      );
 
-          else {
-            this._generateToken(user.id)
-              .then(token => {
-                const url = redirectPath + '/' + token;
-                mailer.sendMail(
-                  user.email, 'Password Reset Request',
-                  `
-                  <p>Password Reset Request</p>
-                  <a href="${url}">${url}</a>
-                  `
-                )
-                  .then(info => {
-                    this.logger.info('Sent an email message to ' + user.email + '. (' + info.messageId + ')');
-                    req.flash('status', 'An email has been sent. Check your inbox.');
-                    req.flash('status-class', 'is-success');
-                  })
-                  .catch(err => {
-                    this.logger.error('Failed to send an email message! ' + err.message);
-                    this._flashError(req, err.message);
-                  })
-                  .then(() => {
-                    res.redirect(redirectPath);
-                  });
-              })
-              .catch(err => {
-                if (DEBUG) this.logger.error(err);
-                this._flashError(req, err.message);
-                res.redirect(redirectPath);
-              });
-          }
-        })
-        .catch(err => {
-          if (DEBUG) console.error(err);
-          this._flashError(req, err.message);
-          res.redirect(redirectPath);
-        });
+      this.logger.info('Sent an email message to ' + user.email + '. (' + sentMailInfo.messageId + ')');
+      req.flash('status', 'An email has been sent. Check your inbox.');
+      req.flash('status-class', 'is-success');
+      res.redirect(redirectPath);
+    } catch (err) {
+      commonErrorHandler(err);
     }
   }
 
@@ -152,14 +136,13 @@ module.exports = class ResetPasswordController extends Controller {
     if (!token || !await this._checkToken(token)) {
       this._flashError(req, 'Invalid token!');
       res.redirect(getPath('reset/password'));
+      return;
     }
 
-    else {
-      this.render(res, 'password-reset/reset-form.html', {
-        title: `${this.title} | reset password`,
-        token
-      });
-    }
+    this.render(res, 'password-reset/reset-form.html', {
+      title: `${this.title} | reset password`,
+      token
+    });
   }
 
   /**
@@ -172,40 +155,38 @@ module.exports = class ResetPasswordController extends Controller {
     const tokenFromRequest = req.params.token;
     const redirectPath = getPath('reset/password/' + tokenFromRequest);
 
-    const userId = await this._checkToken(tokenFromRequest);
-    if (!tokenFromRequest || !userId) {
-      this._flashError(req, 'Invalid token!');
-      res.redirect(redirectPath);
-    }
+    try {
+      const userId = await this._checkToken(tokenFromRequest);
+      if (!tokenFromRequest || !userId) {
+        this._flashError(req, 'Invalid token!');
+        res.redirect(redirectPath);
+        return;
+      }
 
-    else {
       const password = req.body.password;
       const password_confirmed = req.body.password_confirm;
 
       if (!password || !password_confirmed) {
         this._flashError(req, 'Both fields must be filled!');
         res.redirect(redirectPath);
+        return;
       }
-
-      else if (password !== password_confirmed) {
+      if (password !== password_confirmed) {
         this._flashError(req, 'The passwords do no match!');
         res.redirect(redirectPath);
+        return;
       }
 
-      else {
-        await this._deleteToken(tokenFromRequest);
-        accounts.update({ id: userId, password })
-          .then(() => {
-            req.flash('status', 'The password has been changed.');
-            res.redirect(getPath());
-          })
-          .catch(err => {
-            this.logger.error('Failed to reset a password! ' + err.message);
-            if (DEBUG) console.error(err);
-            this._flashError(req, err.message);
-            res.redirect(redirectPath);
-          });
-      }
+      await this._deleteToken(tokenFromRequest);
+      await accounts.update({ id: userId, password });
+
+      req.flash('status', 'The password has been changed.');
+      res.redirect(getPath());
+    } catch (err) {
+      this.logger.error('Failed to reset a password! ' + err.message);
+      if (DEBUG) console.error(err);
+      this._flashError(req, err.message);
+      res.redirect(redirectPath);
     }
   }
 }
