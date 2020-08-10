@@ -174,8 +174,10 @@ class Accounts {
     return new Promise((resolve, reject) => {
       const params = [user.username, user.email, hash, user.role];
       this.db.run(queries.insert, params, err => {
-        if (err)
+        if (err) {
+          this.logger.error(err);
           reject(err);
+        }
         else {
           this.logger.info(`A new user ${user.username} has been created.`);
           resolve();
