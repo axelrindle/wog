@@ -29,6 +29,12 @@ module.exports = {
 
     /** Defines the maximum age of cookies. Defaults to 24 hours. */
     maxAge: env('APP_COOKIE_MAX_AGE', 1000 * 60 * 60 * 24)
-  }
+  },
+
+  /**
+   * Specifies the lifetime (in seconds) of the tokens used to reset passwords.
+   * Defaults to one hour.
+   */
+  resetTokenLifetime: env('APP_TOKEN_AGE', 60 * 60)
 
 };

@@ -1,7 +1,9 @@
 // Require modules
 const Controller = require('./Controller');
-const nanoid = require('nanoid/generate');
+const nanoid = require('nanoid/async/generate');
 const { getPath, NANOID_ALPHABET } = require('../util');
+
+const TOKEN_LENGTH = 32;
 
 /**
  * The ResetPasswordController is responsible for handling password reset requests and sending
@@ -11,12 +13,49 @@ module.exports = class ResetPasswordController extends Controller {
 
   init() {
     this.title = this.app.get('title');
-    this.tokens = {}; // TODO: store tokens in redis
   }
 
   _flashError(req, msg) {
     req.flash('status', msg);
     req.flash('status-class', 'is-danger');
+  }
+
+  async _generateToken(userId) {
+    const token = await nanoid(NANOID_ALPHABET, TOKEN_LENGTH)
+    return new Promise((resolve, reject) => {
+      redis.client.setex(token, config.secure.resetTokenLifetime, userId, (err, reply) => {
+        if (err) reject(err);
+        else {
+          if (DEBUG) this.logger.debug(`Redis replied: ${reply}`);
+          resolve(token);
+        }
+      });
+    });
+  }
+
+  _checkToken(token) {
+    return new Promise((resolve, reject) => {
+      redis.client.get(token, (err, reply) => {
+        if (err) reject(err);
+        else if (reply === null) resolve();
+        else {
+          if (DEBUG) this.logger.debug(`Redis replied: ${reply}`);
+          resolve(reply);
+        }
+      });
+    });
+  }
+
+  async _deleteToken(token) {
+    return new Promise((resolve, reject) => {
+      redis.client.del(token, (err, reply) => {
+        if (err) reject(err);
+        else {
+          if (DEBUG) this.logger.debug(`Redis replied: ${reply}`);
+          resolve();
+        }
+      });
+    });
   }
 
   /**
@@ -62,33 +101,33 @@ module.exports = class ResetPasswordController extends Controller {
             res.redirect(redirectPath);
           }
 
-          else if (Object.values(this.tokens).indexOf(user.id) !== -1) {
-            this._flashError(req, 'A request for the given user is already pending!');
-            res.redirect(redirectPath);
-          }
-
           else {
-            const token = nanoid(NANOID_ALPHABET, 32);
-            this.tokens[token] = user.id;
-            const url = redirectPath + '/' + token;
-            mailer.sendMail(
-              user.email, 'Password Reset Request',
-              `
-              <p>Password Reset Request</p>
-              <a href="${url}">${url}</a>
-              `
-            )
-              .then(info => {
-                this.logger.info('Sent an email message to ' + user.email + '. (' + info.messageId + ')');
-                req.flash('status', 'An email has been sent. Check your inbox.');
-                req.flash('status-class', 'is-success');
+            this._generateToken(user.id)
+              .then(token => {
+                const url = redirectPath + '/' + token;
+                mailer.sendMail(
+                  user.email, 'Password Reset Request',
+                  `
+                  <p>Password Reset Request</p>
+                  <a href="${url}">${url}</a>
+                  `
+                )
+                  .then(info => {
+                    this.logger.info('Sent an email message to ' + user.email + '. (' + info.messageId + ')');
+                    req.flash('status', 'An email has been sent. Check your inbox.');
+                    req.flash('status-class', 'is-success');
+                  })
+                  .catch(err => {
+                    this.logger.error('Failed to send an email message! ' + err.message);
+                    this._flashError(req, err.message);
+                  })
+                  .then(() => {
+                    res.redirect(redirectPath);
+                  });
               })
               .catch(err => {
-                this.logger.error('Failed to send an email message! ' + err.message);
-                if (DEBUG) console.error(err);
+                if (DEBUG) this.logger.error(err);
                 this._flashError(req, err.message);
-              })
-              .then(() => {
                 res.redirect(redirectPath);
               });
           }
@@ -107,10 +146,11 @@ module.exports = class ResetPasswordController extends Controller {
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
-  showResetForm(req, res) {
+  async showResetForm(req, res) {
     const token = req.params.token;
 
-    if (!token || !this.tokens[token]) {
+    if (!token || !await this._checkToken(token)) {
+      this._flashError(req, 'Invalid token!');
       res.redirect(getPath('reset/password'));
     }
 
@@ -128,11 +168,12 @@ module.exports = class ResetPasswordController extends Controller {
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
-  handleReset(req, res) {
-    const token = req.params.token;
-    const redirectPath = getPath('reset/password' + token);
+  async handleReset(req, res) {
+    const tokenFromRequest = req.params.token;
+    const redirectPath = getPath('reset/password/' + tokenFromRequest);
 
-    if (!token || !this.tokens[token]) {
+    const userId = await this._checkToken(tokenFromRequest);
+    if (!tokenFromRequest || !userId) {
       this._flashError(req, 'Invalid token!');
       res.redirect(redirectPath);
     }
@@ -152,7 +193,8 @@ module.exports = class ResetPasswordController extends Controller {
       }
 
       else {
-        accounts.update({ password })
+        await this._deleteToken(tokenFromRequest);
+        accounts.update({ id: userId, password })
           .then(() => {
             req.flash('status', 'The password has been changed.');
             res.redirect(getPath());
