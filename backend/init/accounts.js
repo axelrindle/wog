@@ -172,7 +172,7 @@ class Accounts {
   async create(user) {
     const hash = await this.hashPassword(user.password);
     return new Promise((resolve, reject) => {
-      const params = [user.username, hash, user.role];
+      const params = [user.username, user.email, hash, user.role];
       this.db.run(queries.insert, params, err => {
         if (err)
           reject(err);
