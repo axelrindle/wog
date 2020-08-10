@@ -3,6 +3,7 @@ const Controller = require('./Controller');
 const nanoid = require('nanoid/async/generate');
 const { getPath, NANOID_ALPHABET } = require('../util');
 
+const TOKEN_PREFIX = 'password_reset:';
 const TOKEN_LENGTH = 32;
 
 /**
@@ -23,7 +24,7 @@ module.exports = class ResetPasswordController extends Controller {
   async _generateToken(userId) {
     const token = await nanoid(NANOID_ALPHABET, TOKEN_LENGTH)
     return new Promise((resolve, reject) => {
-      redis.client.setex(token, config.secure.resetTokenLifetime, userId, (err, reply) => {
+      redis.client.setex(TOKEN_PREFIX + token, config.secure.resetTokenLifetime, userId, (err, reply) => {
         if (err) reject(err);
         else {
           if (DEBUG) this.logger.debug(`Redis replied: ${reply}`);
@@ -35,7 +36,7 @@ module.exports = class ResetPasswordController extends Controller {
 
   _checkToken(token) {
     return new Promise((resolve, reject) => {
-      redis.client.get(token, (err, reply) => {
+      redis.client.get(TOKEN_PREFIX + token, (err, reply) => {
         if (err) reject(err);
         else if (reply === null) resolve();
         else {
