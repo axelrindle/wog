@@ -29,7 +29,9 @@
     <img src="{{ path('img/favicon.png') }}" class="mb-5">
 
     {{ nav.collapsed('/', 'home', 'Home' ) }}
-    {{ nav.collapsed('/admin', 'toolbox', 'Administration' ) }}
+    {% if user.role === 'admin' %}
+      {{ nav.collapsed('/admin', 'toolbox', 'Administration' ) }}
+    {% endif %}
     {{ nav.collapsed('/about', 'info', 'About' ) }}
     {{ nav.collapsed('/logout', 'sign-out-alt', 'Sign out' ) }}
 
