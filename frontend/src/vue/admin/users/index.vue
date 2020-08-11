@@ -1,6 +1,6 @@
 <template>
   <div>
-    <list :users="users" @select="selected = $event" v-if="selected === -1 && !create"></list>
+    <list :users="users" @select="selected = $event" v-if="selected === -1 && !create" ref="list"></list>
     <editor :user="selectedUser" @finish="onEditorFinish" :selected="selected" :create="create" v-else></editor>
   </div>
 </template>
@@ -44,6 +44,9 @@ module.exports = {
         .then(() => {
           this.loading = false;
         });
+    },
+    reset() {
+      this.$refs.list.reset();
     },
     onEditorFinish() {
       this.selected = -1;

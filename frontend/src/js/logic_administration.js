@@ -25,6 +25,14 @@ new Vue({
             }
           },
           {
+            icon: 'fas fa-trash-alt',
+            name: 'Reset',
+            description: 'Reset all filters.',
+            handler() {
+              this.reset();
+            }
+          },
+          {
             icon: 'fas fa-user-plus',
             name: 'Create a User',
             handler() {
