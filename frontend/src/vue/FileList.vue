@@ -78,7 +78,7 @@
 
         <hr>
 
-        <ul class="button-list">
+        <ul class="button-list" v-if="filesFiltered.length > 0">
           <li v-for="(file, index) in filesFiltered" :key="file.id">
             <a class="button" @click="select(index)" :title="file.path"
                :class="{ 'is-link': selected.file === index }">
@@ -86,6 +86,10 @@
             </a>
           </li>
         </ul>
+        <div class="error-image" v-else>
+          <img :src="path('img/illustrations/undraw_no_data_qbuo.svg')">
+          <span>Nothing found...</span>
+        </div>
       </div> <!-- end .container -->
     </section> <!-- end .section -->
   </div> <!-- end wrapper -->
@@ -126,6 +130,9 @@ module.exports = {
     }
   },
   methods: {
+    path(path) {
+      return window.helpers.path(path);
+    },
     load(what, data) {
       return new Promise((resolve, reject) => {
         axios.post('/all/' + what, data)
