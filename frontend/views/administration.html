@@ -44,7 +44,7 @@
       <hr style="width: 100%;">
 
       {% raw %}
-        <button class="button is-fullwidth mb-3" :class="{ 'is-primary': selected === index }"
+        <button class="button is-primary mb-3" :class="{ 'is-light': selected !== index }"
                 v-for="(theComponent, index) in components" :key="'component-' + index"
                 @click="selected = index" :title="theComponent.name" v-if="theComponent">
           <span class="icon is-small">
@@ -56,7 +56,7 @@
       <hr style="width: 100%;">
 
       {% raw %}
-        <button class="button is-fullwidth is-info mb-3"
+        <button class="button is-info mb-3"
                 v-for="(action, index) in theActions" :key="'action-' + index"
                 :title="action.name" @click="handleAction(index)" v-if="theComponent">
           <span class="icon is-small">
