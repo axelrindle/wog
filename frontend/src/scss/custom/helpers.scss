@@ -36,8 +36,7 @@ p.welcome {
 }
 
 .is-rounded {
-  padding-left: .75em !important;
-  padding-right: .75em !important;
+  padding:  $button-padding-vertical $button-padding-horizontal !important;
 }
 
 .button-list .button {
