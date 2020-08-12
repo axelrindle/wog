@@ -4,6 +4,7 @@
   "description": "A web interface for viewing logs.",
   "main": "backend/main.js",
   "scripts": {
+    "deps": "./deps.sh",
     "start": "node backend/main",
     "dev": "DEBUG=true node backend/main",
     "compile:scss": "parcel build frontend/src/scss/style.scss --no-source-maps -d frontend/static/css --out-file style.min.css",
