@@ -1,5 +1,3 @@
-@use 'sass:list';
-
 * {
   outline: none !important;
 }
@@ -27,64 +25,6 @@ html, body, .app {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.sidebar {
-  min-width: $sidebar_width;
-  width: $sidebar_width;
-  max-width: $sidebar_width;
-  height: 100%;
-  border-right: 1px solid transparentize(#333, .75);
-  background-color: $sidebar_background;
-
-  display: flex;
-  flex-flow: column nowrap;
-
-  transition: all .5s;
-
-  img {
-    width: calc(#{$sidebar_width} - #{list.nth($section-padding, 2)});
-  }
-
-  .sidebar-container {
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  .sidebar-container-collapsed {
-    display: none;
-  }
-
-  .sidebar-container, .sidebar-container-collapsed {
-    flex: 1;
-  }
-
-  .sidebar-collapse {
-    border: none;
-    border-radius: 0;
-  }
-
-  &.is-collapsed {
-    min-width: $sidebar_collapsed_width;
-    width: $sidebar_collapsed_width;
-    max-width: $sidebar_collapsed_width;
-
-    img {
-      width: $sidebar_collapsed_width - $sidebar_collapsed_padding * 2;
-    }
-
-    .sidebar-container, .collapse-text {
-      display: none;
-    }
-
-    .sidebar-container-collapsed {
-      flex: 1 0 auto;
-      display: flex;
-      flex-flow: column nowrap;
-      align-items: center;
-      padding: $sidebar_collapsed_padding;
-    }
-  }
 }
 
 .content {
