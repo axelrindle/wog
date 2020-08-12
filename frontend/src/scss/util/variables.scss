@@ -3,16 +3,17 @@ $family-sans-serif: 'Montserrat', sans-serif;
 $section-padding: 1rem 1.5rem;
 
 // 2. Custom
+// 2.1. Sidebar
 $sidebar_background: darken(white, 2%);
 $sidebar_width: 350px;
-
 $sidebar_collapsed_padding: 8px;
 $sidebar_collapsed_width: 50px + $sidebar_collapsed_padding;
 
+// 2.2. Content
 $content_background: lighten(black, 10%);
 $content_padding_vertical: 50px;
 $content_padding_horizontal: 100px;
 
+// 2.3. Other
 $about_link_size: 40px;
-
 $blink_background: transparentize(#356bd4, .5);
