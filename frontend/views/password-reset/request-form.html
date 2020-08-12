@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="flex no-justify" id="app">
-    <img src="{{ path('img/header.png') }}" width="600px">
+    {% include "partials/noauth-header.html" %}
 
     {% if messages.status %}
       <div class="notification {{ messages['status-class'] or '' }}">
