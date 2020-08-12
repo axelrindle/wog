@@ -1,0 +1,16 @@
+@use 'sass:list';
+
+pre, pre code {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+}
+
+pre.log-viewer {
+  height: 100%;
+  overflow-y: auto;
+  white-space: nowrap;
+
+  div[data-line]:last-child {
+    margin-bottom: list.nth($pre-padding, 1);
+  }
+}

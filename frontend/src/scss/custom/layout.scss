@@ -15,11 +15,6 @@ html, body, .app {
   flex-flow: row nowrap;
 }
 
-pre, pre code {
-  font-family: 'Space Mono', monospace;
-  font-size: 13px;
-}
-
 .fader {
   position: absolute;
   left: 0;
@@ -98,12 +93,6 @@ pre, pre code {
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-
-  pre {
-    height: 100%;
-    overflow-y: auto;
-    white-space: nowrap;
-  }
 }
 
 .error-image {

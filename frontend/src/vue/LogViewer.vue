@@ -130,13 +130,13 @@
     </div> <!-- end .card -->
 
     <!-- actual log content-->
-    <pre id="logContent" class="log-lines" v-if="!error && !loading"><code>
+    <pre id="logContent" class="log-viewer" v-if="!error && !loading"><code>
       <div v-for="line in linesFiltered" :data-line="line.lineNumber" :key="line.lineNumber">
         <span class="has-text-link">{{ line.lineNumber }}:&nbsp;</span>
         <span>{{ line.text }}</span>
       </div>
     </code></pre>
-    <pre v-else>
+    <pre class="log-viewer" v-else>
       <code class="has-text-danger" v-if="error">{{ error }}</code>
       <code class="loading" v-else>
         <span style="margin-right: 10px;">Loading...</span>
