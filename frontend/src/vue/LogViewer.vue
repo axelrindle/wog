@@ -85,7 +85,7 @@
             <p class="title is-6">Actions</p>
             <div class="field is-grouped" v-if="entry">
               <a class="control button is-primary" :href="downloadUrl">Download</a>
-              <a class="control button is-info" @click="refresh">Refresh</a>
+              <a class="control button is-info" @click="refresh(false)">Refresh</a>
               <a class="control button is-link" @click="openGoToLine">Go to line</a>
             </div>
             <paginate v-if="content"
@@ -258,9 +258,12 @@ module.exports = {
     path(path) {
       return window.helpers.path(path);
     },
-    refresh() {
+    refresh(socketEvent) {
       this.$root.error = null;
       this.loading = true;
+
+      let scrollTop = $('#logContent').scrollTop();
+
       axios.post('/entry/contents', { adapter: this.adapter, id: this.entry.id, page: this.page })
         .then(response => {
           if (response.data.lines.length > 0) {
@@ -275,6 +278,13 @@ module.exports = {
             this.content.lines = this.content.lines.map(el => ({
               lineNumber: (this.content.limit * (this.page - 1)) + line++, text: el
             }));
+
+            // restore scroll position
+            setTimeout(() => { // TODO: dirty
+              const logContent = $('#logContent');
+              if (socketEvent) logContent.scrollTop(logContent.prop('scrollHeight'));
+              else logContent.scrollTop(scrollTop);
+            }, 100);
           }
         })
         .catch(err => {
@@ -317,14 +327,13 @@ module.exports = {
 
     changePage(num) {
       this.page = num;
-      this.refresh();
+      this.refresh(false);
     }
   },
   watch: {
     entry() {
       if (this.entry) {
-        this.page = 1;
-        this.refresh();
+        this.refresh(false);
       } else {
         this.content = null;
       }

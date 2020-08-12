@@ -63,7 +63,7 @@ new Vue({
             this.$refs.fileList.refreshEntries();
             break;
           case 'change':
-            this.$refs.logViewer.refresh();
+            this.$refs.logViewer.refresh(true);
             break;
           case 'unlink':
             this.$refs.fileList.refreshEntries();
