@@ -39,8 +39,15 @@ p.welcome {
   padding:  $button-padding-vertical $button-padding-horizontal !important;
 }
 
-.button-list .button {
-  margin-bottom: 5px;
+.error-image {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+
+  img {
+    width: 300px;
+    margin-bottom: 16px;
+  }
 }
 
 

@@ -34,14 +34,3 @@ html, body, .app {
   overflow-x: hidden;
   overflow-y: auto;
 }
-
-.error-image {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-
-  img {
-    width: 300px;
-    margin-bottom: 16px;
-  }
-}
