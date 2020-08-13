@@ -10,14 +10,14 @@
         Logged in as&nbsp;
         <u>{{ user.username }}</u>
       </p>
-      <div class="buttons is-centered">
+      <nav class="sidebar-nav is-centered">
         {{ nav.expanded('/', 'Home') }}
         {% if user.role === 'admin' %}
           {{ nav.expanded('/admin', 'Administration') }}
         {% endif %}
         {{ nav.expanded('/about', 'About') }}
         {{ nav.expanded('/logout', 'Sign out') }}
-      </div>
+      </nav>
     </section> <!-- end .section -->
 
     <!-- Include the user-defined custom slot below the expanded navigation -->
