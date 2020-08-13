@@ -18,6 +18,7 @@ global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 global.storage = require('./init/storage');
 global.config = require('./init/config');
 global.logger = require('./init/logger');
+global.database = require('./init/database');
 global.adapters = require('./init/adapter-manager');
 global.accounts = require('./init/accounts');
 global.mailer = require('./init/mailer');
@@ -42,6 +43,7 @@ const checkForUpdates = require('./updater');
 
     await checkForUpdates();
     await storage.init();
+    await database.init();
     await adapters.init();
     await accounts.init();
     await mailer.init();

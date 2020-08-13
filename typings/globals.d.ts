@@ -1,4 +1,5 @@
 import { RedisClient } from 'redis'
+import { Database } from 'sqlite3'
 import { Logger as WinstonLogger } from 'node_modules/winston/index'
 import * as BaseAdapter from 'backend/adapter/BaseAdapter'
 
@@ -20,6 +21,18 @@ declare interface Logger extends WinstonLogger {
    */
   scope(name: string): Logger
 
+}
+
+declare interface DatabaseManager {
+
+  readonly db: Database
+
+  init(): Promise<void>
+  dispose(): Promise<void>
+
+  run(sql: string, params: any[]): Promise<void>
+  get(sql: string, params: any[]): Promise<Object?>
+  all(sql: string, params: any[]): Promise<Array<Object>>
 }
 
 declare interface AdapterManager {
@@ -96,6 +109,7 @@ declare global {
   const storage: Storage
   const config: Object
   const logger: Logger
+  const database: DatabaseManager
   const adapters: AdapterManager
   const accounts: Accounts
   const mailer: Mailer

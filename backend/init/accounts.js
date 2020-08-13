@@ -2,12 +2,8 @@
 const bcrypt = require('bcrypt');
 const nanoid = require('nanoid/generate');
 const { NANOID_ALPHABET } = require('../util');
-const { Database } = (() => {
-  const sqlite3 = require('sqlite3');
-  return DEBUG ? sqlite3.verbose() : sqlite3;
-})();
 
-const queries = {
+const queries = { // TODO: Move to .sql files
   createTable: `
     CREATE TABLE accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,42 +30,20 @@ class Accounts {
 
   constructor() {
     this.logger = logger.scope('accounts');
-    this.dbFile = storage.getPath('accounts.sqlite');
     this.needsSeed = true;
   }
 
-  _openConnection() {
-    return new Promise((resolve, reject) => {
-      this.db = new Database(this.dbFile, err => {
-        if (err) reject(err);
-        else {
-          this.logger.info('SQLite database opened.');
-          this.db.on('trace', sql => {
-            this.logger.debug('Executing SQL: ' + sql);
-          });
-          resolve();
-        }
-      });
-    });
-  }
-
-  _createTable() {
-    return new Promise((resolve, reject) => {
-      this.db.run(queries.createTable, err => {
-        if (err) {
-          if (err.message.endsWith('table accounts already exists')) {
-            this.needsSeed = false;
-            resolve();
-          } else {
-            reject(err);
-          }
-        }
-        else {
-          this.logger.info('Tables created.');
-          resolve();
-        }
-      })
-    });
+  async _createTable() {
+    try {
+      await database.run(queries.createTable);
+    } catch (error) {
+      if (error.message.endsWith('table accounts already exists')) {
+        this.needsSeed = false;
+      } else {
+        throw error;
+      }
+    }
+    this.logger.info('Tables created.');
   }
 
   async _seedDatabase() {
@@ -81,16 +55,9 @@ class Accounts {
     this.logger.info(`An initial user password has been written to storage/${file}.`);
 
     const hash = await this.hashPassword(rawPassword);
-    return new Promise((resolve, reject) => {
-      const params = ['wog', 'wog@localhost', hash, 'admin'];
-      this.db.run(queries.insert, params, err => {
-        if (err) reject(err);
-        else {
-          this.logger.info('Initial user account created.');
-          resolve();
-        }
-      });
-    })
+    const params = ['wog', 'wog@localhost', hash, 'admin'];
+    await database.run(queries.insert, params);
+    this.logger.info('Initial user account created.');
   }
 
   /**
@@ -99,7 +66,6 @@ class Accounts {
    * @returns {Promise<void>} A Promise that resolves when the database connection is established.
    */
   async init() {
-    await this._openConnection();
     await this._createTable();
     await this._seedDatabase();
   }
@@ -140,27 +106,18 @@ class Accounts {
    *
    * @returns {Promise<Array>} A Promise that resolves with the result rows.
    */
-  all() {
-    return new Promise((resolve, reject) => {
-      this.db.all(queries.selectAll, (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      });
-    });
+  async all() {
+    return await database.all(queries.selectAll);
   }
 
   /**
    * Count the total number of users.
    *
-   * @returns {Promise<Array>} A Promise that resolves with the result row.
+   * @returns {Promise<Number>} A Promise that resolves with the amount of user accounts.
    */
-  count() {
-    return new Promise((resolve, reject) => {
-      this.db.get(queries.count, (err, row) => {
-        if (err) reject(err);
-        else resolve(row['COUNT(*)']);
-      });
-    });
+  async count() {
+    const row = await database.get(queries.count);
+    return row['COUNT(*)'];
   }
 
   /**
@@ -171,19 +128,9 @@ class Accounts {
    */
   async create(user) {
     const hash = await this.hashPassword(user.password);
-    return new Promise((resolve, reject) => {
-      const params = [user.username, user.email, hash, user.role];
-      this.db.run(queries.insert, params, err => {
-        if (err) {
-          this.logger.error(err);
-          reject(err);
-        }
-        else {
-          this.logger.info(`A new user ${user.username} has been created.`);
-          resolve();
-        }
-      });
-    });
+    const params = [user.username, user.email, hash, user.role];
+    await database.run(queries.insert, params);
+    this.logger.info(`A new user ${user.username} has been created.`);
   }
 
   async update(user) {
@@ -212,15 +159,7 @@ class Accounts {
     const query = queries.update.replace('%%columns%%', records.join(', '));
     params.push(foundUser.id);
     const result = await Promise.resolve({ query, params });
-
-    return new Promise((resolve, reject) => {
-      this.db.run(result.query, result.params, err => {
-        if (err)
-          reject(err);
-        else
-          resolve();
-      });
-    });
+    await database.run(result.query, result.params);
   }
 
   /**
@@ -229,13 +168,8 @@ class Accounts {
    * @param {Number} id
    * @returns {Promise<Void>} A Promise that resolves when the user has been deleted.
    */
-  deleteUser(id) {
-    return new Promise((resolve, reject) => {
-      this.db.run(queries.deleteUser, id, err => {
-        if (err) reject(err);
-        else resolve();
-      });
-    });
+  async deleteUser(id) {
+    await database.run(queries.deleteUser, id);
   }
 
   /**
@@ -244,13 +178,8 @@ class Accounts {
    * @param {string} id
    * @returns {Promise} A Promise which resolves with the result row.
    */
-  findById(id) {
-    return new Promise((resolve, reject) => {
-      this.db.get(queries.selectFindById, id, (err, row) => {
-        if (err) reject(err);
-        else resolve(row);
-      })
-    });
+  async findById(id) {
+    return await database.get(queries.selectFindById, id);
   }
 
   /**
@@ -259,13 +188,8 @@ class Accounts {
    * @param {string} username
    * @returns {Promise} A Promise which resolves with the result row.
    */
-  findByUsername(username) {
-    return new Promise((resolve, reject) => {
-      this.db.get(queries.selectFindByUsername, username, (err, row) => {
-        if (err) reject(err);
-        else resolve(row);
-      })
-    });
+  async findByUsername(username) {
+    return await database.get(queries.selectFindByUsername, username);
   }
 
   /**
@@ -283,22 +207,6 @@ class Accounts {
       return this.verifyPassword(password, user.password);
     }
   }
-
-  /**
-   * Closes the database connection.
-   */
-  dispose() {
-    return new Promise((resolve, reject) => {
-      this.db.close(err => {
-        if (err) reject(err);
-        else {
-          this.logger.info('Disposed.');
-          resolve();
-        }
-      });
-    });
-  }
-
 }
 
 module.exports = new Accounts();

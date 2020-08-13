@@ -66,7 +66,8 @@ const onSignal = () => {
     websocket.dispose(),
     adapters.dispose(),
     mailer.dispose(),
-    accounts.dispose()
+    accounts.dispose(),
+    database.dispose()
   ]);
 };
 

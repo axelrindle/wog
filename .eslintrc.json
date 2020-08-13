@@ -20,7 +20,8 @@
         "Vue": "readonly",
         "axios": "readonly",
         "mailer": "readonly",
-        "redis": "readonly"
+        "redis": "readonly",
+        "database": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 2018
