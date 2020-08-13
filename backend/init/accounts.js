@@ -34,8 +34,10 @@ class Accounts {
   }
 
   async _createTable() {
+    let created = false;
     try {
       await database.run(queries.createTable);
+      created = true;
     } catch (error) {
       if (error.message.endsWith('table accounts already exists')) {
         this.needsSeed = false;
@@ -43,7 +45,9 @@ class Accounts {
         throw error;
       }
     }
-    this.logger.info('Tables created.');
+    if (created) {
+      this.logger.info('Tables created.');
+    }
   }
 
   async _seedDatabase() {
