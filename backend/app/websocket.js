@@ -73,6 +73,7 @@ const handler = ws => {
  */
 module.exports = app => {
   let server;
+  let isOpen;
 
   // based on whether we are running behind a proxy, deploy the /socket route
   // or create my own WebSocket server instance
@@ -85,11 +86,22 @@ module.exports = app => {
     server.on('error', error => {
       myLogger.error(error);
     });
+
+    server.on('listening', () => {
+      isOpen = true;
+    });
+    server.on('close', () => {
+      isOpen = false;
+    });
   }
 
   myLogger.info(`WebSocket server accessible via ${config.app.isProxy ? 'port ' + config.app.socketPort : '/socket endpoint'}.`);
 
   return {
+    isConnected() {
+      return isOpen;
+    },
+
     /**
      * Closes the WebSocket Server and discards any open connection.
      */
