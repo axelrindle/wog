@@ -6,6 +6,7 @@
     "clazz",
     "fuzzysearch",
     "fuzzytest",
+    "godaddy",
     "llen",
     "lrange",
     "mixins",
@@ -16,7 +17,17 @@
     "resave",
     "signale",
     "targz",
+    "transitionless",
     "uncolorize",
     "yesno"
-  ]
+  ],
+  "sqltools.connections": [
+    {
+      "database": "${workspaceFolder:wog}/storage/database.sqlite",
+      "driver": "SQLite",
+      "name": "wog db",
+      "previewLimit": 50
+    }
+  ],
+  "sqltools.useNodeRuntime": true
 }
