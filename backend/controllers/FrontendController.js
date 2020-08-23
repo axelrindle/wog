@@ -7,8 +7,10 @@ const Controller = require('./Controller');
 module.exports = class FrontendController extends Controller {
 
   init() {
+    const { name, description, version } = require('@root/package.json');
+
     this.title = this.app.get('title');
-    this.version = this.app.get('version');
+    this.pkg = { name, description, version };
   }
 
   /**
@@ -55,10 +57,41 @@ module.exports = class FrontendController extends Controller {
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
-  about(req, res) {
+  async about(req, res) {
+    // handle cache deletion request
+    if (DEBUG && req.query.fresh) {
+      await new Promise((resolve, reject) => {
+        redis.client.del('dependencies', (err, _reply) => {
+          if (err) reject(err);
+          else resolve();
+        })
+      });
+    }
+
+    // load dependencies from cache
+    let dependenciesCached = await new Promise((resolve, reject) => {
+      redis.client.get('dependencies', (err, reply) => {
+        if (err) reject(err);
+        else resolve(JSON.parse(reply));
+      })
+    });
+
+    // cache entry not found, resolve dependencies and write them to the cache
+    if (!dependenciesCached) {
+      dependenciesCached = Object.keys(require('@root/package.json').dependencies);
+      await new Promise((resolve, reject) => {
+        redis.client.set('dependencies', dependenciesCached, (err, _reply) => {
+          if (err) reject(err);
+          else resolve();
+        })
+      });
+    }
+
     this.render(res, 'about.html', {
+      user: req.user,
       title: `${this.title} | about`,
-      version: this.version
+      dependencies: dependenciesCached,
+      pkg: this.pkg
     });
   }
 

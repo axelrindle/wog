@@ -1,23 +1,94 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
-  <div class="about">
-    <a class="back" href="{{ url }}">
-      <i class="fas fa-arrow-left">
-        &nbsp; Back
-      </i>
-    </a>
+  <div class="app" id="app">
 
-    <h1>
-      wog
-      <span class="subtitle is-3">v{{ version }}</span>
-    </h1>
-    <h3>A web interface for viewing logs.</h3>
+    {% set sidebar_slot_expaned %}
+      <hr>
+      <section class="section">
+        <h1 class="title">Links</h1>
+        <a class="button is-fullwidth is-light is-link" href="https://github.com/axelrindle/wog">
+          <span class="icon">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>GitHub</span>
+        </a>
+      </section>
+    {% endset %}
+    {% set sidebar_slot_collapsed %}
+      <hr style="width: 100%;">
 
-    <div class="links">
-      <a href="https://github.com/axelrindle/wog">
-        <i class="fab fa-github"></i>
+      <a class="button is-fullwidth is-light is-link" href="https://github.com/axelrindle/wog">
+        <span class="icon">
+          <i class="fab fa-github"></i>
+        </span>
       </a>
-    </div>
-  </div>
+    {% endset %}
+    {% include "partials/sidebar.html" %}
+
+    <div class="content about">
+
+      <section class="hero is-primary is-bold is-medium">
+        <div class="hero-body">
+          <div class="container has-text-centered">
+            <h1 class="title">
+              {{ pkg.name }}
+              <span class="subtitle is-2 has-text-weight-normal">v{{ pkg.version }}</span>
+            </h1>
+            <h2 class="subtitle is-4">
+              {{ pkg.description }}
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      {% set column_size = "is-6-desktop is-offset-3-desktop is-8-tablet is-offset-2-tablet is-12-mobile is-offset-0-mobile" %}
+
+      <section class="section">
+        <div class="container">
+
+          <div class="columns">
+            <div class="column {{ column_size }}">
+              <h1 class="title is-size-2">
+                Dependencies
+              </h1>
+              <h2 class="subtitle has-text-justified">
+                <b>{{ pkg.name }}</b> depends on <u>open source software</u> to avoid reinventing the wheel.
+              </h2>
+              <p>
+                Total: {{ dependencies.length }}
+              </p>
+            </div>
+          </div>
+
+          {% for dependency in dependencies %}
+            <div class="columns">
+              <div class="column {{ column_size }}">
+                <div class="card">
+                  <div class="card-content">
+                    <p class="title is-size-4">
+                      {{ dependency }}
+                      <span class="subtitle is-size-6 has-text-weight-normal">vINSERT_VERSION_HERE</span>
+                    </p>
+
+                    {% set url = "https://npmjs.com/package/" + dependency %}
+                    <p class="subtitle is-size-6">
+                      <a href="{{ url }}">{{ url }}</a>
+                    </p>
+                  </div>
+                </div> <!-- end .card -->
+              </div> <!-- end .column -->
+            </div> <!-- end .columns -->
+          {% endfor %}
+
+        </div> <!-- end .container -->
+      </section>
+
+    </div> <!-- end .content -->
+  </div> <!-- end #app -->
+{% endblock %}
+
+{% block js %}
+  {% include "partials/vendor_scripts.html" %}
+  <script src="{{ path('js/sidebar.js') }}"></script>
 {% endblock %}
