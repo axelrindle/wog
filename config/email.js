@@ -12,11 +12,11 @@ module.exports = {
    * For a list of options see: https://nodemailer.com/smtp/
    */
   transport: {
-    host: env('MAIL_HOST'),
-    port: env('MAIL_PORT', 587),
+    host: env.text('MAIL_HOST'),
+    port: env.int('MAIL_PORT', 587),
     auth: {
-      user: env('MAIL_USER', 'mail@localhost'),
-      pass: env('MAIL_PASS')
+      user: env.text('MAIL_USER', 'mail@localhost'),
+      pass: env.text('MAIL_PASS')
     },
 
     /**
@@ -40,7 +40,7 @@ module.exports = {
    * For a list of options see: https://nodemailer.com/message/
    */
   message: {
-    from: env('MAIL_FROM', '"wog admin" <wog@localhost>')
+    from: env.text('MAIL_FROM', '"wog admin" <wog@localhost>')
   }
 
 };

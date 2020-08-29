@@ -21,7 +21,7 @@ const baseFormat = (() => {
   });
   return combine(
     format.timestamp({
-      format: env('LOG_TIMESTAMP', 'DD.MM.YYYY HH:mm:ss.SSS')
+      format: env.text('LOG_TIMESTAMP', 'DD.MM.YYYY HH:mm:ss.SSS')
     }),
     format.splat(),
     myFormat
@@ -40,7 +40,7 @@ module.exports = {
    *
    * @see https://github.com/winstonjs/winston#logging
    */
-  level: DEBUG ? 'debug' : env('LOG_LEVEL', 'info'),
+  level: DEBUG ? 'debug' : env.text('LOG_LEVEL', 'info'),
 
   /**
    * The output format.

@@ -11,7 +11,7 @@ module.exports = {
    * Defines what adapters should be loaded.
    * @type {string}
    */
-  enabled: env('ADAPTERS', 'file'),
+  enabled: env.text('ADAPTERS', 'file'),
 
   options: {
 
@@ -45,11 +45,11 @@ module.exports = {
 
     redis: {
       connection: {
-        host: env('ADAPTER_REDIS_HOST', env('REDIS_HOST')),
-        port: env('ADAPTER_REDIS_PORT', env('REDIS_PORT', 6379)),
-        password: env('ADAPTER_REDIS_PASS', env('REDIS_PASS'))
+        host: env.text('ADAPTER_REDIS_HOST', env.text('REDIS_HOST')),
+        port: env.int('ADAPTER_REDIS_PORT', env.int('REDIS_PORT', 6379)),
+        password: env.text('ADAPTER_REDIS_PASS', env.text('REDIS_PASS'))
       },
-      keys: env('ADAPTER_REDIS_KEYS')
+      keys: env.text('ADAPTER_REDIS_KEYS')
     }
 
   }
