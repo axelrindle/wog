@@ -1,5 +1,19 @@
 // Require modules
+const fs = require('fs');
+const path = require('path');
 const { env } = require('../backend/util');
+
+const ENTRIES_DIRECTORY = 'entry-definitions';
+const readEntries = (adapter, def = {}) => {
+  const file = storage.getPath(path.join(ENTRIES_DIRECTORY, `${adapter}.json`));
+  if (fs.existsSync(file)) {
+    return JSON.parse(fs.readFileSync(file).toString());
+  } else {
+    return def;
+  }
+};
+
+storage.register(ENTRIES_DIRECTORY);
 
 /**
  * Define active adapters.
@@ -24,23 +38,19 @@ module.exports = {
        *
        * Read more here: https://www.npmjs.com/package/glob
        */
-      groups: {
-        'Apache': [
-          '/var/log/apache2/*.log'
-        ],
-        'Samba': [
-          '/var/log/samba/log.*',
-          '!/var/log/samba/log.*.gz'
-        ],
-        'Syslogs': [
-          '/var/log/*.log',
-          '/var/log/*log',
-          '!/var/log/*gz'
-        ],
-        'Test': [
-          '/home/axel/opt/test.txt'
-        ]
-      }
+      groups: (() => {
+        const def = {
+          'Syslogs': [
+            '/var/log/*.log',
+            '/var/log/*log',
+            '!/var/log/*gz'
+          ],
+          'wog': [
+            './storage/logs/*.log'
+          ]
+        };
+        return readEntries('file', def);
+      })(),
     },
 
     redis: {
