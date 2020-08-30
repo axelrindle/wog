@@ -78,14 +78,13 @@
 
         <hr>
 
-        <ul class="button-list" v-if="filesFiltered.length > 0">
-          <li v-for="(file, index) in filesFiltered" :key="file.id">
-            <a class="button" @click="select(index)" :title="file.path"
+        <div class="buttons" v-if="filesFiltered.length > 0">
+          <div v-for="(file, index) in filesFiltered" :key="file.id"
+               class="button is-fullwidth" @click="select(index)" :title="file.path"
                :class="{ 'is-link': selected.file === index }">
               {{ file.name }}
-            </a>
-          </li>
-        </ul>
+          </div>
+        </div>
         <div class="error-image" v-else>
           <img :src="path('img/illustrations/undraw_no_data_qbuo.svg')">
           <span>Nothing found...</span>
