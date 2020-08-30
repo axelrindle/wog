@@ -41,6 +41,10 @@
   .sidebar-collapse {
     border: none;
     border-radius: 0;
+
+    .icon {
+      transition: all .5s;
+    }
   }
 
   &.is-collapsed {
@@ -62,6 +66,10 @@
       flex-flow: column nowrap;
       align-items: center;
       padding: $sidebar_collapsed_padding;
+    }
+
+    .sidebar-collapse .icon {
+      transform: rotateZ(180deg);
     }
   }
 }
