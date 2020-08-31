@@ -31,6 +31,15 @@ const chalk = require('chalk');
 const { fail } = require('./util');
 const checkForUpdates = require('./updater');
 
+// Fail on uncaught exceptions or rejections
+process.on('uncaughtExceptionMonitor', (err, origin) => {
+  logger.error('Uncaught exception detected!', { stack: err.stack, origin });
+});
+process.on('unhandledRejection', err => {
+  logger.error('Unhandled promise rejection detected!', { stack: err.stack });
+  process.exit(1);
+});
+
 // call init functions in an async scope
 (async () => {
   try {
