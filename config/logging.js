@@ -9,21 +9,50 @@ const { combine, printf } = format;
 const logDirectory = storage.register('logs');
 
 /**
+ * Extracts additional context to a separate object `info.additional`;
+ */
+const extractAdditional = format(info => {
+  const additional = Object.assign({}, info, {
+    level: undefined,
+    label: undefined,
+    message: undefined,
+    timestamp: undefined,
+    stack: undefined,
+    additional: undefined
+  });
+
+  if (JSON.stringify(additional) !== '{}') {
+    info.additional = additional;
+  }
+
+  return info;
+});
+
+/**
  * Just the raw logging format without coloring.
  *
  * Looks like this: `[timestamp] [label] level: message`
  */
 const baseFormat = (() => {
-  const myFormat = printf(({ level, message, label, timestamp }) => {
-    const _label = label ? label : 'main'; // default label is 'main'
-    const prefix = chalk.dim('[' + timestamp + '] [' + _label + ']');
-    return `${prefix} ${level}: ${message}`;
+  const myFormat = printf(info => {
+    const label = info.label ? info.label : 'main'; // default label is 'main'
+    const prefix = chalk.dim('[' + info.timestamp + '] [' + label + ']');
+    let base = `${prefix} ${info.level}: ${info.message}`;
+    if (info.stack) {
+      base += '\n' + info.stack;
+    }
+    if (info.additional) {
+      base += '\nAdditional context: ' + JSON.stringify(info.additional);
+    }
+    return base;
   });
+
   return combine(
     format.timestamp({
       format: env.text('LOG_TIMESTAMP', 'DD.MM.YYYY HH:mm:ss.SSS')
     }),
-    format.splat(),
+    format.errors({ stack: true }),
+    extractAdditional(),
     myFormat
   );
 })();
