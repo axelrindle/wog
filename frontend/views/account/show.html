@@ -1,0 +1,103 @@
+{% set page_title = "Account Overview" %}
+{% set page_description = "View and edit your account details." %}
+
+{% extends "layout/account.html" %}
+
+{% block page %}
+  <div class="columns">
+    <div class="column is-8-fullhd is-offset-2-fullhd is-10-desktop is-offset-1-desktop is-12-tablet is-offset-0-tablet">
+
+      <div class="card">
+        <form action="{{ path('/account/update') }}" method="post">
+          <div class="card-content">
+
+            <!-- Username-->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Username</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control is-expanded has-icons-left">
+                    <input class="input" type="text" value="{{ user.username }}" disabled>
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                  {# <p class="help is-danger" v-if="hasError('username')">{{ errors.username }}</p> #}
+                </div>
+              </div>
+            </div>
+
+            <!-- Email-->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Email</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control is-expanded has-icons-left">
+                    <input class="input" type="email" value="{{ user.email }}">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                  </div>
+                  {# <p class="help is-danger" v-if="hasError('email')">{{ errors.email }}</p> #}
+                </div>
+              </div>
+            </div>
+
+            <!-- Role-->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Role</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control is-expanded has-icons-left">
+                    <div class="select">
+                      <select selected="{{ user.role }}" disabled>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                      </select>
+                    </div>
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-tag"></i>
+                    </span>
+                  </div> <!-- end .control -->
+                  <p class="help is-danger" v-if="hasError('role')">{{ errors.role }}</p>
+                </div> <!-- end .field -->
+              </div> <!-- end .field-body -->
+            </div>
+
+            <hr>
+
+            <!-- Change password-->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Change password</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control is-expanded has-icons-left">
+                    <input class="input" type="password" v-model="user.password" :disabled="loading">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-key"></i>
+                    </span>
+                  </div>
+                  <p class="help is-danger" v-if="hasError('password')">{{ errors.password }}</p>
+                </div> <!-- end .field -->
+              </div> <!-- end .field-body -->
+            </div> <!-- end .field -->
+          </div> <!-- end .card-content -->
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Save</a>
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Delete</a>
+          </footer>
+        </form>
+      </div> <!-- end .card -->
+
+    </div> <!-- end .column -->
+  </div> <!-- end .columns -->
+{% endblock %}

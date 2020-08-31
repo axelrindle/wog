@@ -1,22 +1,48 @@
 {% import "../macros/nav.html" as nav with context %}
 
+{% set profile_dropdown_content %}
+  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+      <div class="dropdown-item">
+        <p>
+          Welcome, <u>{{ user.username }}</u>
+        </p>
+      </div>
+      {{ nav.dropdown_item('/account', 'sign-in-alt', 'Manage', 'Manage your account') }}
+      <hr class="dropdown-divider">
+      {{ nav.dropdown_item('/logout', 'sign-out-alt', 'Sign out') }}
+    </div>
+  </div>
+{% endset %}
+
 <!-- The sidebar is used for navigation. -->
 <div class="sidebar" id="sidebar">
 
   <div class="sidebar-container">
     <section class="section">
       <img src="{{ path('img/header.png') }}">
-      <p class="welcome">
-        Logged in as&nbsp;
-        <u>{{ user.username }}</u>
-      </p>
       <nav class="sidebar-nav is-centered">
+
+        <!-- User dropdown -->
+        <div class="dropdown">
+          <div class="dropdown-trigger" style="width: 100%;">
+            <button class="button is-fullwidth {{ 'is-link' if onPath('/account') }}">
+              <span style="flex: 1 0 auto;">
+                Account
+              </span>
+              <span class="icon is-small" data-rotate="true">
+                <i class="fas fa-angle-down"></i>
+              </span>
+            </button>
+          </div>
+          {{ profile_dropdown_content | safe }}
+        </div> <!-- end .dropdown -->
+
         {{ nav.expanded('/', 'Home') }}
         {% if user.role === 'admin' %}
           {{ nav.expanded('/admin', 'Administration') }}
         {% endif %}
         {{ nav.expanded('/about', 'About') }}
-        {{ nav.expanded('/logout', 'Sign out') }}
       </nav>
     </section> <!-- end .section -->
 
@@ -28,12 +54,23 @@
   <div class="sidebar-container-collapsed">
     <img src="{{ path('img/favicon.png') }}" class="mb-5">
 
+    <!-- User dropdown -->
+    <div class="dropdown mb-3">
+      <div class="dropdown-trigger">
+        <button class="button is-link {{ 'is-light' if not onPath('/account') }}">
+          <span class="icon is-small">
+            <i class="fas fa-user"></i>
+          </span>
+        </button>
+      </div>
+      {{ profile_dropdown_content | safe }}
+    </div> <!-- end .dropdown -->
+
     {{ nav.collapsed('/', 'home', 'Home' ) }}
     {% if user.role === 'admin' %}
       {{ nav.collapsed('/admin', 'toolbox', 'Administration' ) }}
     {% endif %}
     {{ nav.collapsed('/about', 'info', 'About' ) }}
-    {{ nav.collapsed('/logout', 'sign-out-alt', 'Sign out' ) }}
 
     <!-- Include the user-defined custom slot below the collapsed navigation -->
     {{ sidebar_slot_collapsed | safe }}

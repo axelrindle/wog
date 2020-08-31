@@ -21,6 +21,7 @@
 @import "../../../node_modules/bulma/sass/elements/title";
 @import "../../../node_modules/bulma/sass/form/_all";
 @import "../../../node_modules/bulma/sass/components/card";
+@import "../../../node_modules/bulma/sass/components/dropdown";
 @import "../../../node_modules/bulma/sass/components/menu";
 @import "../../../node_modules/bulma/sass/components/modal";
 @import "../../../node_modules/bulma/sass/components/pagination";
@@ -30,6 +31,7 @@
 @import "components/log-viewer";
 @import "components/sidebar";
 
+@import "custom/dropdown";
 @import "custom/helpers";
 @import "custom/layout";
 @import "custom/about";

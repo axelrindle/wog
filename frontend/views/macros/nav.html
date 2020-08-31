@@ -1,11 +1,40 @@
 {% macro expanded(href, text) %}
-  <a class="button {{ 'is-link' if isPath(href) }}" href="{{ path(href) }}">{{ text }}</a>
+  <a class="button {{ 'is-link' if isPath(href) }}" href="{{ path(href) }}">
+    {% if icon %}
+      <span class="icon is-small">
+        <i class="fas fa-{{ icon }}"></i>
+      </span>
+    {% endif %}
+    <span>{{ text }}</span>
+  </a>
 {% endmacro %}
 
-{% macro collapsed(href, icon, text) %}
-  <a class="button is-link mb-3 {{ 'is-light' if not isPath(href) }}" title="{{ text }}" href="{{ path(href) }}">
+{% macro extra_expanded(href, text, icon, color = 'link') %}
+  <a class="button is-fullwidth is-{{ color }} {{ 'is-light' if not isPath(href) }}" href="{{ path(href) }}">
+    <span class="icon is-small">
+      <i class="fas fa-{{ icon }}"></i>
+    </span>
+    <span>{{ text }}</span>
+  </a>
+{% endmacro %}
+
+{% macro collapsed(href, icon, text, color = 'link') %}
+  <a class="button is-{{ color }} mb-3 {{ 'is-light' if not isPath(href) }}" title="{{ text }}" href="{{ path(href) }}">
     <span class="icon is-large">
       <i class="fas fa-{{ icon }}"></i>
     </span>
+  </a>
+{% endmacro %}
+
+{% macro dropdown_item(href, icon, text, title = null) %}
+  {% if title %}
+    <a href="{{ path(href) }}" class="dropdown-item has-icon" title="{{ title }}">
+  {% else %}
+    <a href="{{ path(href) }}" class="dropdown-item has-icon">
+  {% endif %}
+    <span class="icon">
+      <i class="fas fa-{{ icon }}"></i>
+    </span>
+    <span>{{ text }}</span>
   </a>
 {% endmacro %}

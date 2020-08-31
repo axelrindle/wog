@@ -22,6 +22,18 @@ module.exports = (req, res, next) => {
     isPath: path => {
       const reqPath = req.originalUrl.split('?')[0];
       return reqPath === path;
+    },
+
+    /**
+     * Checks whether the current request is on the given path.
+     * This also includes sub-paths, e.g. `/api` and `/api/info`.
+     *
+     * @param {string} path The path to check for.
+     * @returns {boolean}
+     */
+    onPath: path => {
+      const reqPath = req.originalUrl.split('?')[0];
+      return reqPath.startsWith(path);
     }
   };
   next();
