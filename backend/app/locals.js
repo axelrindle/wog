@@ -5,7 +5,7 @@ const { getPath } = require('../util');
  * Returns a middleware function which attaches locals to every request.
  */
 module.exports = (req, res, next) => {
-  res.locals = {
+  res.locals = Object.assign({}, res.locals, {
     // properties
     url: config.app.url,
     _debug: DEBUG,
@@ -35,6 +35,6 @@ module.exports = (req, res, next) => {
       const reqPath = req.originalUrl.split('?')[0];
       return reqPath.startsWith(path);
     }
-  };
+  });
   next();
 };
