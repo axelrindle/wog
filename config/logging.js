@@ -52,6 +52,7 @@ const baseFormat = (() => {
       format: env.text('LOG_TIMESTAMP', 'DD.MM.YYYY HH:mm:ss.SSS')
     }),
     format.errors({ stack: true }),
+    format.splat(),
     extractAdditional(),
     myFormat
   );
