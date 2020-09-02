@@ -3,7 +3,7 @@ const Controller = require('./Controller');
 const { getPath } = require('../util');
 
 /**
- * The FrontendController is responsible for rendering the HTML pages.
+ * The AccountController is responsible for everything account related.
  */
 module.exports = class AccountController extends Controller {
 
@@ -13,7 +13,7 @@ module.exports = class AccountController extends Controller {
   }
 
   /**
-   * Example route handler.
+   * Shows a details page.
    *
    * @param {Express.Request} req
    * @param {Express.Response} res
