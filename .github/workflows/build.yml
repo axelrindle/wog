@@ -23,8 +23,8 @@ jobs:
       run: npm ci
     - name: Compile source files
       run: |
-        - chmod +x dist.sh
-        - ./dist.sh
+        chmod +x dist.sh
+        ./dist.sh
     - uses: actions/upload-artifact@v2
       with:
         name: dist
