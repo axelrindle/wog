@@ -1,5 +1,4 @@
 // Require modules
-const { isEmptyObject } = require('../util');
 const owWrapper = require('./ow-wrapper');
 const { ArgumentError } = require('ow');
 
@@ -22,6 +21,15 @@ module.exports = class Validator {
   }
 
   /**
+   * Indicates whether any errors should be flashed to the session.
+   *
+   * @returns {boolean}
+   */
+  shouldFlash() {
+    return false;
+  }
+
+  /**
    * Validate a request based on the given rules.
    *
    * @param {Express.Request} req
@@ -31,15 +39,20 @@ module.exports = class Validator {
   async validate(req, res, next) {
     const body = req.body;
     const rules = this.rules();
-    const errors = {};
+    let errored = false;
 
     // validate each defined property rule
     for (let property in rules) {
+      const pushError = msg => {
+        errored = true;
+        req.flash('errors.' + property, msg);
+      };
+
       const optional = rules[property].indexOf('optional') !== -1;
 
       // check for existence if not optional
       if (!optional && !body[property]) {
-        errors[property] = `Missing required property ${property}!`;
+        pushError(`Missing required property ${property}!`);
         continue;
       }
       else if (optional && !body[property]) {
@@ -54,19 +67,35 @@ module.exports = class Validator {
         await wrapped(value);
       } catch (error) {
         if (typeof error === 'string') {
-          errors[property] = error;
+          pushError(error);
         }
         else if (error instanceof ArgumentError) {
-          errors[property] = error.message;
+          pushError(error.message);
         }
       }
     }
 
     // check for errors
-    if (!isEmptyObject(errors)) {
-      this.myLogger.debug('Validation errors: ' + JSON.stringify(errors));
-      res.status(422).json({ errors });
+    if (errored) {
+      const errors = req.session.flash;
+      this.myLogger.debug('Validation errors: \n' + JSON.stringify(errors));
+      if (this.shouldFlash()) {
+        res.redirect('back');
+      } else {
+        req.session.flash = null; // reset the flash store for API calls
+        res.status(422).json({ errors });
+      }
     } else {
+      // filter req.body to only include validated keys
+      const newBody = {};
+      const validatedKeys = Object.keys(rules);
+      for (const key in body) {
+        if (validatedKeys.includes(key)) {
+          newBody[key] = body[key];
+        }
+      }
+
+      req.body = newBody;
       next();
     }
   }

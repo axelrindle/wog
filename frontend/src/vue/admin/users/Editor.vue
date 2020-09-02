@@ -17,7 +17,11 @@
                 <i class="fas fa-user"></i>
               </span>
             </div>
-            <p class="help is-danger" v-if="hasError('username')">{{ errors.username }}</p>
+            <div v-if="hasError('username')">
+              <p class="help is-danger" v-for="(msg, index) in errors['errors.username']" :key="index">
+                {{ msg }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -35,7 +39,11 @@
                 <i class="fas fa-envelope"></i>
               </span>
             </div>
-            <p class="help is-danger" v-if="hasError('email')">{{ errors.email }}</p>
+            <div v-if="hasError('email')">
+              <p class="help is-danger" v-for="(msg, index) in errors['errors.email']" :key="index">
+                {{ msg }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -58,7 +66,11 @@
                 <i class="fas fa-tag"></i>
               </span>
             </div> <!-- end .control -->
-            <p class="help is-danger" v-if="hasError('role')">{{ errors.role }}</p>
+            <div v-if="hasError('role')">
+              <p class="help is-danger" v-for="(msg, index) in errors['errors.role']" :key="index">
+                {{ msg }}
+              </p>
+            </div>
           </div> <!-- end .field -->
         </div> <!-- end .field-body -->
       </div>
@@ -78,7 +90,11 @@
                 <i class="fas fa-key"></i>
               </span>
             </div>
-            <p class="help is-danger" v-if="hasError('password')">{{ errors.password }}</p>
+            <div v-if="hasError('password')">
+              <p class="help is-danger" v-for="(msg, index) in errors['errors.password']" :key="index">
+                {{ msg }}
+              </p>
+            </div>
           </div> <!-- end .field -->
         </div> <!-- end .field-body -->
       </div> <!-- end .field -->
@@ -141,7 +157,7 @@ module.exports = {
 
   methods: {
     hasError(property) {
-      return this.errors && this.errors[property];
+      return this.errors && this.errors['errors.' + property];
     },
     cancel() {
       if (this.loading) return;
@@ -167,14 +183,12 @@ module.exports = {
       axios[method]('/admin/user/' + action, data)
         .then(response => {
           alert(`The User has been ${this.create ? 'created' : 'updated'}.`);
-          console.log(response);
           this.errors = null;
-          this.$parent.refresh();
-          this.cancel();
         })
         .catch(err => {
           switch (err.response.status) {
             case 422: // validation errors
+              this.errors = null;
               this.errors = err.response.data.errors;
               break;
             default: // default to just logging
