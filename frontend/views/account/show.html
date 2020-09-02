@@ -2,14 +2,51 @@
 {% set page_description = "View and edit your account details." %}
 
 {% extends "layout/account.html" %}
+{% import "../macros/form.html" as form with context %}
 
 {% block page %}
   <div class="columns">
-    <div class="column is-8-fullhd is-offset-2-fullhd is-10-desktop is-offset-1-desktop is-12-tablet is-offset-0-tablet">
+    <div class="column is-6-fullhd is-offset-3-fullhd is-8-widescreen is-offset-2-widescreen is-10-desktop is-offset-1-desktop is-12-tablet is-offset-0-tablet">
+
+      {% if messages['info'] %}
+        <div class="card mb-5">
+          <header class="card-header">
+            <p class="card-header-title">
+              Info
+            </p>
+          </header>
+          <div class="card-content">
+            <ul>
+              {% for msg in messages['info'] %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if messages['error'] %}
+        <div class="card mb-5">
+          <header class="card-header">
+            <p class="card-header-title">
+              Something went wrong!
+            </p>
+          </header>
+          <div class="card-content">
+            <ul>
+              {% for msg in messages['error'] %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
 
       <div class="card">
         <form action="{{ path('/account/update') }}" method="post">
           <div class="card-content">
+
+            <input type="hidden" name="id" value="{{ user.id }}">
 
             <!-- Username-->
             <div class="field is-horizontal">
@@ -24,7 +61,7 @@
                       <i class="fas fa-user"></i>
                     </span>
                   </div>
-                  {# <p class="help is-danger" v-if="hasError('username')">{{ errors.username }}</p> #}
+                  {{ form.error('username') }}
                 </div>
               </div>
             </div>
@@ -37,12 +74,12 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control is-expanded has-icons-left">
-                    <input class="input" type="email" value="{{ user.email }}">
+                    <input class="input" type="email" name="email" value="{{ user.email }}">
                     <span class="icon is-small is-left">
                       <i class="fas fa-envelope"></i>
                     </span>
                   </div>
-                  {# <p class="help is-danger" v-if="hasError('email')">{{ errors.email }}</p> #}
+                  {{ form.error('email') }}
                 </div>
               </div>
             </div>
@@ -65,7 +102,6 @@
                       <i class="fas fa-tag"></i>
                     </span>
                   </div> <!-- end .control -->
-                  <p class="help is-danger" v-if="hasError('role')">{{ errors.role }}</p>
                 </div> <!-- end .field -->
               </div> <!-- end .field-body -->
             </div>
@@ -80,20 +116,20 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control is-expanded has-icons-left">
-                    <input class="input" type="password" v-model="user.password" :disabled="loading">
+                    <input class="input" type="password" name="password">
                     <span class="icon is-small is-left">
                       <i class="fas fa-key"></i>
                     </span>
                   </div>
-                  <p class="help is-danger" v-if="hasError('password')">{{ errors.password }}</p>
+                  {{ form.error('password') }}
                 </div> <!-- end .field -->
               </div> <!-- end .field-body -->
             </div> <!-- end .field -->
+
           </div> <!-- end .card-content -->
           <footer class="card-footer">
-            <a href="#" class="card-footer-item">Save</a>
-            <a href="#" class="card-footer-item">Edit</a>
-            <a href="#" class="card-footer-item">Delete</a>
+            <button type="submit" class="card-footer-item">Save</button>
+            <button type="reset" class="card-footer-item">Reset</button>
           </footer>
         </form>
       </div> <!-- end .card -->
