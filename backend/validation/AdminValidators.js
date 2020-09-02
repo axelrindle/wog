@@ -27,6 +27,7 @@ class UpdateUserValidator extends Validator {
     return {
       id: rules.id,
       username: [ 'optional', rules.usernameExistsNot ],
+      email: [ 'optional', rules.email ],
       password: [ 'optional', rules.password ],
       role: [ 'optional', rules.role ]
     };
