@@ -9,5 +9,5 @@ const emailValidator = require("email-validator");
  */
 module.exports = ow.string.validate(value => ({
   validator: emailValidator.validate(value),
-  message: label => `Expected ${label} to be a valid email address according to RFC-5322!`
+  message: `Expected to be a valid email address according to RFC-5322!`
 }));
