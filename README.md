@@ -3,6 +3,7 @@
 ----
 
 <p align="center">
+  <img alt="ci status" src="https://github.com/axelrindle/wog/workflows/CI/badge.svg">
   <a href="https://app.codacy.com/app/axel.rindle/wog?utm_source=github.com&utm_medium=referral&utm_content=axelrindle/wog&utm_campaign=badger">
     <img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/43ca5dba403b4a75bdf6d285d6d8f994">
   </a>
