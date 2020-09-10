@@ -69,7 +69,11 @@ $ node backend/main.js
 $ docker volume create wog
 ```
 
-2. Start the container
+2. Store all configuration in the `wog` volume. This includes the following files:
+   
+   1. `.env`
+
+3. Start the container
 
 ```bash
 $ docker pull axelrindle/wog:<VERSION>
@@ -92,9 +96,6 @@ Short explanation on the parameters:
 - The `-d` will start the container as a daemon in the background.
 
 - The `--rm` parameter instructs docker to remove the container as soon as it exits.
-3. Store all configuration in the `wog` volume. This includes the following files:
-   
-   1. `.env`
 
 ## License
 
