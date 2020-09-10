@@ -10,6 +10,9 @@
   <a href="https://github.com/axelrindle/wog/releases">
     <img alt="latest release" src="https://img.shields.io/github/v/release/axelrindle/wog?include_prereleases">
   </a>
+  <a href="https://hub.docker.com/repository/docker/axelrindle/wog">
+    <img alt="Docker Image Version (latest by date)" src="https://img.shields.io/docker/v/axelrindle/wog?color=0db7ed&label=image&logo=docker&logoColor=0db7ed">
+  </a>
 </p>
 
 ----
