@@ -1,6 +1,8 @@
 // Require modules
 const fs = require('fs').promises;
 const path = require('path');
+const debug = require('debug')('wog:storage');
+const prettyBytes = require('pretty-bytes');
 
 /**
  * The Storage class is a small utility for working with files within the `storage/` directory.
@@ -32,6 +34,7 @@ class Storage {
    */
   register(name) {
     this.directoryRegistry.push(name);
+    debug(`Registered storage directory "${name}" for automatic creation`)
     return this.getPath(name);
   }
 
@@ -55,7 +58,10 @@ class Storage {
     const path = this.getPath(name);
     return fs.mkdir(path, {
       recursive: true // like 'mkdir -p'
-    });
+    })
+      .then(() => {
+        debug('Init storage directory%s', name ? ` ${name}` : "")
+      });
   }
 
   /**
@@ -68,7 +74,11 @@ class Storage {
    */
   writeFile(name, content = "") {
     const path = this.getPath(name);
-    return fs.writeFile(path, content);
+    return fs.writeFile(path, content)
+      .then(() => {
+        const bytes = Buffer.byteLength(content, 'utf8');
+        debug(`Written ${prettyBytes(bytes)} of data to storage file "${name}"`);
+      });
   }
 
 }

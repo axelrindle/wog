@@ -4,8 +4,8 @@ const glob = require('glob');
 const { Router } = require('express');
 const pkg = require('@root/package.json');
 
-const myLogger = logger.scope('router');
 const middleware = require('./middleware');
+const debug = require('debug')('wog:router');
 
 // Export setup function
 module.exports = app => {
@@ -16,8 +16,8 @@ module.exports = app => {
   app.set('middleware', middleware);
 
   // debug access logger
-  if (DEBUG) app.use((req, res, next) => {
-    myLogger.debug('%s %s from %s', req.method, req.url, req.ip);
+  app.use((req, _res, next) => {
+    debug('%s %s from %s', req.method, req.url, req.ip);
     next();
   });
 
@@ -48,5 +48,5 @@ module.exports = app => {
     }
   });
 
-  myLogger.info(`Loaded ${files.length} route definitions.`);
+  debug(`Loaded ${files.length} route definitions`);
 };

@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const asyncForEach = require('@axelrindle/async-for-each');
 const isDirectory = require('is-directory');
+const debug = require('debug')('wog:adapters');
 
 /**
  * The AdapterManager holds all configured adapters and is used
@@ -37,8 +38,8 @@ class AdapterManager {
       }
     });
     if (DEBUG) {
-      this.logger.debug(`Loaded ${Object.keys(result).length} adapters: `);
-      this.logger.debug('\n' + JSON.stringify(result, null, 2));
+      debug(`Loaded ${Object.keys(result).length} adapters: `);
+      debug(JSON.stringify(result, null, 2));
     }
 
     return result;

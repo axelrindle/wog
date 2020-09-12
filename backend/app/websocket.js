@@ -6,6 +6,7 @@ const WebSocket = require('ws');
 const { NANOID_ALPHABET } = require('../util');
 
 const myLogger = logger.scope('websocket');
+const debug = require('debug')('wog:websocket');
 
 /**
  * Shorthand function for sending an error to the client.
@@ -33,7 +34,7 @@ const handler = ws => {
   ws.on('message', message => {
     try {
       const parsed = JSON.parse(message);
-      if (DEBUG) myLogger.debug(message);
+      debug(message);
       switch (parsed.event) {
         case 'changeAdapter':
           if (currentAdapter) {

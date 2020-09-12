@@ -1,6 +1,7 @@
 // Require modules
 const owWrapper = require('./ow-wrapper');
 const { ArgumentError } = require('ow');
+const debug = require('debug')('wog:Validator');
 
 /**
  * The Validator is responsible for validating data from requests.
@@ -78,7 +79,7 @@ module.exports = class Validator {
     // check for errors
     if (errored) {
       const errors = req.session.flash;
-      this.myLogger.debug('Validation errors: \n' + JSON.stringify(errors));
+      debug('Validation errors: %O', errors);
       if (this.shouldFlash()) {
         res.redirect('back');
       } else {

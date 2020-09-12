@@ -6,7 +6,7 @@
   "scripts": {
     "deps": "./deps.sh",
     "start": "node backend/main",
-    "dev": "DEBUG=true node backend/main",
+    "dev": "DEBUG=wog:* node backend/main",
     "compile:scss": "parcel build frontend/src/scss/style.scss --no-source-maps -d frontend/static/css --out-file style.min.css",
     "compile:js": "parcel build frontend/src/js/*.js --no-source-maps -d frontend/static/js",
     "watch:scss": "parcel watch frontend/src/scss/style.scss --no-source-maps -d frontend/static/css --out-file style.min.css --no-hmr",
@@ -40,6 +40,7 @@
     "compression": "^1.7.4",
     "connect-redis": "^3.4.0",
     "cookie-parser": "^1.4.3",
+    "debug": "^4.1.1",
     "dotenv": "^7.0.0",
     "email-validator": "^2.0.4",
     "express": "^4.16.3",

@@ -2,6 +2,7 @@
 const path = require('path');
 const versionCheck = require('github-version-checker');
 const pkg = require(path.join(ROOT_DIRECTORY, 'package.json'));
+const debug = require('debug')('wog:updater');
 
 const myLogger = logger.scope('updater');
 const updateOpts = {
@@ -17,5 +18,6 @@ module.exports = async () => {
     myLogger.info("An update is available! " + update.name);
     myLogger.info('More infos here: ' + update.url);
     myLogger.info("You are on version " + updateOpts.currentVersion + "!");
+    debug(update);
   }
 };

@@ -1,8 +1,6 @@
 // Require modules
-const { Database } = (() => {
-  const sqlite3 = require('sqlite3');
-  return DEBUG ? sqlite3.verbose() : sqlite3;
-})();
+const { Database } = require('sqlite3').verbose();
+const debug = require('debug')('wog:database');
 
 class DatabaseManager {
 
@@ -18,7 +16,7 @@ class DatabaseManager {
         else {
           this.logger.info('SQLite database opened.');
           this.db.on('trace', sql => {
-            this.logger.debug('Executing SQL: ' + sql);
+            debug('Executing SQL: ' + sql);
           });
           resolve();
         }

@@ -2,6 +2,7 @@
 const Controller = require('./Controller');
 const nanoid = require('nanoid/async/generate');
 const { getPath, NANOID_ALPHABET } = require('../util');
+const debug = require('debug')('wog:ResetPasswordController');
 
 const TOKEN_PREFIX = 'password_reset:';
 const TOKEN_LENGTH = 32;
@@ -27,7 +28,7 @@ module.exports = class ResetPasswordController extends Controller {
       redis.client.setex(TOKEN_PREFIX + token, config.secure.resetTokenLifetime, userId, (err, reply) => {
         if (err) reject(err);
         else {
-          if (DEBUG) this.logger.debug(`Redis replied: ${reply}`);
+          debug(`Redis replied: ${reply}`);
           resolve(token);
         }
       });
@@ -40,7 +41,7 @@ module.exports = class ResetPasswordController extends Controller {
         if (err) reject(err);
         else if (reply === null) resolve();
         else {
-          if (DEBUG) this.logger.debug(`Redis replied: ${reply}`);
+          debug(`Redis replied: ${reply}`);
           resolve(reply);
         }
       });
@@ -52,7 +53,7 @@ module.exports = class ResetPasswordController extends Controller {
       redis.client.del(token, (err, reply) => {
         if (err) reject(err);
         else {
-          if (DEBUG) this.logger.debug(`Redis replied: ${reply}`);
+          debug(`Redis replied: ${reply}`);
           resolve();
         }
       });
@@ -185,7 +186,7 @@ module.exports = class ResetPasswordController extends Controller {
       res.redirect(getPath());
     } catch (err) {
       this.logger.error('Failed to reset a password! ' + err.message);
-      if (DEBUG) console.error(err);
+      debug(err);
       this._flashError(req, err.message);
       res.redirect(redirectPath);
     }

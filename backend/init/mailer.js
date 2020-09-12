@@ -1,6 +1,7 @@
 // Require modules
 const nodemailer = require('nodemailer');
 const stripHtml = require("string-strip-html");
+const debug = require('debug')('wog:mailer');
 
 class Mailer {
 
@@ -54,6 +55,7 @@ class Mailer {
     const merged = Object.assign(opts, {
       to, subject, text, htmlText
     });
+    debug('Attempting to send a mail to "' + to + '"...')
     return this.transport.sendMail(merged);
   }
 

@@ -3,6 +3,7 @@ const util = require('util');
 const path = require('path');
 const glob = require('glob-all');
 const isFile = require('is-file');
+const debug = require('debug')('wog:FileAdapter');
 
 const BaseAdapter = require('./BaseAdapter');
 const WorkerManager = require('../cluster/WorkerManager');
@@ -16,7 +17,7 @@ class FileAdapter extends BaseAdapter {
 
   init() {
     const workerPath = path.join(ROOT_DIRECTORY, 'backend/cluster/FileAdapterWorker');
-    this.workerManager = new WorkerManager(this.logger, workerPath);
+    this.workerManager = new WorkerManager(workerPath);
 
     this.logger.info(`Loading files...`);
     this.files = {};
@@ -72,6 +73,8 @@ class FileAdapter extends BaseAdapter {
     this.workerManager.worker.on('message', msg => {
       // only listen for watcher related events
       if (!msg.type.startsWith('watcher')) return;
+
+      debug('Received a message from the worker: %O', msg);
 
       switch (msg.type) {
         case 'watcher-change':
@@ -130,6 +133,7 @@ class FileAdapter extends BaseAdapter {
 
   download(res, id) {
     const entry = this.getEntry(id);
+    debug('Downloading entry: %O', entry);
     if (entry !== null) {
       res.download(entry.path);
     } else {
@@ -160,7 +164,7 @@ class FileAdapter extends BaseAdapter {
   }
 
   handleFileEvent(event, path, entryId) {
-    if (DEBUG) this.logger.debug(`watcher-${event}: ${path}`);
+    debug(`watcher-${event}: ${path}`);
 
     // find associated socket(s)
     for (let wsId in this.watchMap) {

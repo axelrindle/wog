@@ -1,8 +1,11 @@
 'use strict';
 
-// Register any modules/services
+// Require modules
 const path = require('path');
 const moduleAlias = require('module-alias');
+const debug = require('debug')('wog:main');
+
+// Register any modules/services
 const paths = require('../jsconfig.json').compilerOptions.paths;
 const aliases = {};
 Object.keys(paths).forEach(el => {
@@ -24,7 +27,7 @@ global.accounts = require('./init/accounts');
 global.mailer = require('./init/mailer');
 global.redis = require('./init/redis');
 
-if (DEBUG) logger.warn('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
+debug('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
 const isElevated = require('is-elevated');
 const chalk = require('chalk');

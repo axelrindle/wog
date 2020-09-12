@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob-all');
+const debug = require('debug')('wog:config');
 
 /**
  * Finds a valid .env file out of valid locations.
@@ -30,6 +31,7 @@ const config = {};
 files.forEach(el => {
   const namespace = path.basename(el, '.js');
   config[namespace] = require(el);
+  debug(`Loaded configuration values from "${el}"`);
 });
 
 // Export the configuration

@@ -1,6 +1,7 @@
 // Require modules
 const child_process = require('child_process');
 const nanoid = require('nanoid/generate');
+const debug = require('debug')('wog:WorkerManager');
 
 const { NANOID_ALPHABET } = require('../util');
 
@@ -15,11 +16,9 @@ module.exports = class WorkerManager {
   /**
    * Constructs a new WorkerManager instance.
    *
-   * @param {Object} logger
    * @param {string} workerPath
    */
-  constructor(logger, workerPath) {
-    this.logger = logger;
+  constructor(workerPath) {
     this.messageListeners = {};
     this.initWorkers(workerPath);
   }
@@ -39,12 +38,13 @@ module.exports = class WorkerManager {
       delete this.messageListeners[listenerId];
     });
     this.worker.on('exit', () => {
-      if (DEBUG && this.logger) this.logger.debug('A worker with PID ' + this.worker.pid + ' exited.');
+      debug('A worker with PID ' + this.worker.pid + ' exited.');
     });
-    if (DEBUG && this.logger) this.logger.debug('A worker with PID ' + this.worker.pid + ' was forked.');
+    debug('A worker with PID ' + this.worker.pid + ' was forked.');
   }
 
   dispose() {
+    debug('Killing the worker with PID ' + this.worker.pid);
     this.worker.kill(); // TODO: Use disconnect instead to shut down gracefully
   }
 
@@ -54,6 +54,7 @@ module.exports = class WorkerManager {
    * @param {any} msg The message to send.
    */
   send(msg) {
+    debug('A message is about to be sent:', msg);
     this.worker.send(msg);
   }
 
@@ -66,6 +67,7 @@ module.exports = class WorkerManager {
   listen(handler) {
     const listenerId = nanoid(NANOID_ALPHABET, 10);
     this.messageListeners[listenerId] = handler;
+    debug('Installed a new listener with ID ' + listenerId);
     return listenerId;
   }
 
