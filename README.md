@@ -3,12 +3,12 @@
 ----
 
 <p align="center">
-  <img alt="ci status" src="https://github.com/axelrindle/wog/workflows/CI/badge.svg">
+  <img alt="ci status" src="https://github.com/wog-js/wog/workflows/CI/badge.svg">
   <a href="https://app.codacy.com/app/axel.rindle/wog?utm_source=github.com&utm_medium=referral&utm_content=axelrindle/wog&utm_campaign=badger">
     <img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/43ca5dba403b4a75bdf6d285d6d8f994">
   </a>
-  <a href="https://github.com/axelrindle/wog/releases">
-    <img alt="latest release" src="https://img.shields.io/github/v/release/axelrindle/wog?include_prereleases">
+  <a href="https://github.com/wog-js/wog/releases">
+    <img alt="latest release" src="https://img.shields.io/github/v/release/wog-js/wog?include_prereleases">
   </a>
   <a href="https://hub.docker.com/repository/docker/axelrindle/wog">
     <img alt="Docker Image Version (latest by date)" src="https://img.shields.io/docker/v/axelrindle/wog?color=0db7ed&label=image&logo=docker&logoColor=0db7ed">
@@ -37,7 +37,7 @@ I was tired of always SSHing into my local server and looking through a log file
 
 ### Manual
 
-1. [Download and unpack the latest release](https://github.com/axelrindle/wog/releases)
+1. [Download and unpack the latest release](https://github.com/wog-js/wog/releases)
 
 ```bash
 $ mkdir wog
@@ -51,7 +51,7 @@ $ tar xzvf assets.tar.gz -C wog
 $ npm install --only=production
 ```
 
-3. [Configure your installation](https://github.com/axelrindle/wog/wiki/Configuration)
+3. [Configure your installation](https://github.com/wog-js/wog/wiki/Configuration)
 
 ```bash
 $ cp .env.example .env

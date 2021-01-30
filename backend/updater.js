@@ -6,7 +6,7 @@ const debug = require('debug')('wog:updater');
 
 const myLogger = logger.scope('updater');
 const updateOpts = {
-  owner: 'axelrindle',
+  owner: 'wog-js',
   repo: 'wog',
   currentVersion: pkg.version,
   latestOnly: true
