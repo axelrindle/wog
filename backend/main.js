@@ -20,6 +20,8 @@ debug('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
     // Create service container
     const container = await require('./container')();
+    debug('Container initialized.');
+
     const logger = container.resolve('logger');
 
     // Fail on uncaught exceptions or rejections
@@ -39,6 +41,7 @@ debug('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
 
     await checkForUpdates(container);
 
+    debug('Main init done. Starting server...');
     // require('./init/server')(container);
   } catch (error) {
     fail(error);
