@@ -2,9 +2,9 @@
 const { Database } = require('sqlite3').verbose();
 const debug = require('debug')('wog:database');
 
-class DatabaseManager {
+module.exports = class DatabaseManager {
 
-  constructor() {
+  constructor({ logger, storage }) {
     this.logger = logger.scope('database');
     this.dbFile = storage.getPath('database.sqlite');
   }
@@ -105,5 +105,3 @@ class DatabaseManager {
     });
   }
 }
-
-module.exports = new DatabaseManager();

@@ -15,7 +15,7 @@ const envPath = () => {
       return joined;
     }
   }
-}
+};
 
 // Load .env file
 require('dotenv').config({
@@ -23,16 +23,16 @@ require('dotenv').config({
   path: envPath()
 });
 
-// Find config files
-const files = glob.sync(path.join(ROOT_DIRECTORY, 'config/*.js'));
+module.exports = async (container) => {
+  const files = glob.sync(path.join(ROOT_DIRECTORY, 'config/*.js'));
 
-// Create config object
-const config = {};
-files.forEach(el => {
-  const namespace = path.basename(el, '.js');
-  config[namespace] = require(el);
-  debug(`Loaded configuration values from "${el}"`);
-});
+  // Create config object
+  const config = {};
+  for (const el of files) {
+    const namespace = path.basename(el, '.js');
+    config[namespace] = await require(el)(container);
+    debug(`Loaded values from "${el}"`);
+  }
 
-// Export the configuration
-module.exports = Object.freeze(config);
+  return Object.freeze(config);
+};

@@ -26,17 +26,19 @@ const queries = { // TODO: Move to .sql files
 /**
  * The Accounts class is responsible for managing user accounts.
  */
-class Accounts {
+module.exports = class Accounts {
 
-  constructor() {
+  constructor({ logger, database, storage }) {
     this.logger = logger.scope('accounts');
+    this.database = database;
+    this.storage = storage;
     this.needsSeed = true;
   }
 
   async _createTable() {
     let created = false;
     try {
-      await database.run(queries.createTable);
+      await this.database.run(queries.createTable);
       created = true;
     } catch (error) {
       if (error.message.endsWith('table accounts already exists')) {
@@ -55,12 +57,12 @@ class Accounts {
 
     const rawPassword = nanoid(NANOID_ALPHABET, 8);
     const file = 'initialPassword.txt';
-    await storage.writeFile(file, rawPassword)
+    await this.storage.writeFile(file, rawPassword)
     this.logger.info(`An initial user password has been written to storage/${file}.`);
 
     const hash = await this.hashPassword(rawPassword);
     const params = ['wog', 'wog@localhost', hash, 'admin'];
-    await database.run(queries.insert, params);
+    await this.database.run(queries.insert, params);
     this.logger.info('Initial user account created.');
   }
 
@@ -111,7 +113,7 @@ class Accounts {
    * @returns {Promise<Array>} A Promise that resolves with the result rows.
    */
   async all() {
-    return await database.all(queries.selectAll);
+    return await this.database.all(queries.selectAll);
   }
 
   /**
@@ -120,7 +122,7 @@ class Accounts {
    * @returns {Promise<Number>} A Promise that resolves with the amount of user accounts.
    */
   async count() {
-    const row = await database.get(queries.count);
+    const row = await this.database.get(queries.count);
     return row['COUNT(*)'];
   }
 
@@ -133,7 +135,7 @@ class Accounts {
   async create(user) {
     const hash = await this.hashPassword(user.password);
     const params = [user.username, user.email, hash, user.role];
-    await database.run(queries.insert, params);
+    await this.database.run(queries.insert, params);
     this.logger.info(`A new user ${user.username} has been created.`);
   }
 
@@ -163,7 +165,7 @@ class Accounts {
     const query = queries.update.replace('%%columns%%', records.join(', '));
     params.push(foundUser.id);
     const result = await Promise.resolve({ query, params });
-    await database.run(result.query, result.params);
+    await this.database.run(result.query, result.params);
   }
 
   /**
@@ -173,7 +175,7 @@ class Accounts {
    * @returns {Promise<Void>} A Promise that resolves when the user has been deleted.
    */
   async deleteUser(id) {
-    await database.run(queries.deleteUser, id);
+    await this.database.run(queries.deleteUser, id);
   }
 
   /**
@@ -183,7 +185,7 @@ class Accounts {
    * @returns {Promise} A Promise which resolves with the result row.
    */
   async findById(id) {
-    return await database.get(queries.selectFindById, id);
+    return await this.database.get(queries.selectFindById, id);
   }
 
   /**
@@ -193,7 +195,7 @@ class Accounts {
    * @returns {Promise} A Promise which resolves with the result row.
    */
   async findByUsername(username) {
-    return await database.get(queries.selectFindByUsername, username);
+    return await this.database.get(queries.selectFindByUsername, username);
   }
 
   /**
@@ -212,5 +214,3 @@ class Accounts {
     }
   }
 }
-
-module.exports = new Accounts();

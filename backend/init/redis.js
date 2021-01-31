@@ -1,11 +1,15 @@
 // Require modules
 const redis = require("redis");
 
-class RedisManager {
+module.exports = class RedisManager {
+
+  constructor({ config, logger }) {
+    this.logger = logger.scope('redis');
+    this.config = config.secure.redis;
+  }
 
   init() {
-    this.logger = logger.scope('redis');
-    this.client = redis.createClient(config.secure.redis);
+    this.client = redis.createClient(this.config);
 
     this.client.on('error', err => {
       this.logger.error(err);
@@ -57,5 +61,3 @@ class RedisManager {
   }
 
 }
-
-module.exports = new RedisManager();

@@ -11,17 +11,7 @@
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
         "DEBUG": "readonly",
-        "ROOT_DIRECTORY": "readonly",
-        "accounts": "readonly",
-        "config": "readonly",
-        "logger": "readonly",
-        "adapters": "readonly",
-        "storage": "readonly",
-        "Vue": "readonly",
-        "axios": "readonly",
-        "mailer": "readonly",
-        "redis": "readonly",
-        "database": "readonly"
+        "ROOT_DIRECTORY": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 2018

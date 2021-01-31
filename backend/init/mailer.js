@@ -3,13 +3,18 @@ const nodemailer = require('nodemailer');
 const stripHtml = require("string-strip-html");
 const debug = require('debug')('wog:mailer');
 
-class Mailer {
+module.exports = class Mailer {
+
+  constructor({ config, logger }) {
+    this.config = config.email;
+    this.logger = logger;
+  }
 
   async init() {
-    this.logger = logger.scope('mailer');
+    this.logger = this.logger.scope('mailer');
 
     // create smtp transport
-    const opts = config.email.transport;
+    const opts = this.config.transport;
     const merged = Object.assign(opts, {
       secure: opts.port === 465,
       debug: DEBUG
@@ -51,7 +56,7 @@ class Mailer {
     if (!this.isConnected) return Promise.reject("Not connected!");
 
     const text = stripHtml(htmlText);
-    const opts = config.email.message;
+    const opts = this.config.message;
     const merged = Object.assign(opts, {
       to, subject, text, htmlText
     });
@@ -65,5 +70,3 @@ class Mailer {
     return Promise.resolve();
   }
 }
-
-module.exports = new Mailer();

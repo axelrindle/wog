@@ -4,7 +4,6 @@ const versionCheck = require('github-version-checker');
 const pkg = require(path.join(ROOT_DIRECTORY, 'package.json'));
 const debug = require('debug')('wog:updater');
 
-const myLogger = logger.scope('updater');
 const updateOpts = {
   owner: 'wog-js',
   repo: 'wog',
@@ -12,12 +11,17 @@ const updateOpts = {
   latestOnly: true
 };
 
-module.exports = async () => {
+module.exports = async (container) => {
+  const myLogger = container.resolve('logger').scope('updater');
+  myLogger.info('Checking for updates...');
+
   const update = await versionCheck(updateOpts);
   if (update) {
     myLogger.info("An update is available! " + update.name);
     myLogger.info('More infos here: ' + update.url);
     myLogger.info("You are on version " + updateOpts.currentVersion + "!");
     debug(update);
+  } else {
+    myLogger.info('No updates found.');
   }
 };

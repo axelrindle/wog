@@ -7,35 +7,10 @@ const prettyBytes = require('pretty-bytes');
 /**
  * The Storage class is a small utility for working with files within the `storage/` directory.
  */
-class Storage {
+module.exports = class Storage {
 
   constructor() {
     this.root = path.join(ROOT_DIRECTORY, 'storage');
-    this.directoryRegistry = [];
-  }
-
-  /**
-   * Creates all registered directories if they don't exist.
-   *
-   * @returns {Promise} A Promise which resolves when all registered directories have been created.
-   */
-  init() {
-    return Promise.all([
-      this.createDirectory(),
-      ...this.directoryRegistry.map(el => this.createDirectory(el))
-    ]);
-  }
-
-  /**
-   * Register a new directory to be created in storage.
-   *
-   * @param {string} name The directory name.
-   * @returns {string} The absolute directory path.
-   */
-  register(name) {
-    this.directoryRegistry.push(name);
-    debug(`Registered storage directory "${name}" for automatic creation`)
-    return this.getPath(name);
   }
 
   /**
@@ -54,14 +29,13 @@ class Storage {
    * @param {string} name The directory name.
    * @returns {Promise} A promise.
    */
-  createDirectory(name) {
+  async createDirectory(name) {
     const path = this.getPath(name);
-    return fs.mkdir(path, {
+    await fs.mkdir(path, {
       recursive: true // like 'mkdir -p'
-    })
-      .then(() => {
-        debug('Init storage directory%s', name ? ` ${name}` : "")
-      });
+    });
+    debug('Init storage directory%s', name ? ` ${name}` : "");
+    return path;
   }
 
   /**
@@ -72,16 +46,11 @@ class Storage {
    * @param {string} content The content. Defaults to nothing.
    * @returns {Promise} A promise.
    */
-  writeFile(name, content = "") {
+  async writeFile(name, content = "") {
     const path = this.getPath(name);
-    return fs.writeFile(path, content)
-      .then(() => {
-        const bytes = Buffer.byteLength(content, 'utf8');
-        debug(`Written ${prettyBytes(bytes)} of data to storage file "${name}"`);
-      });
+    await fs.writeFile(path, content);
+    const bytes = Buffer.byteLength(content, 'utf8');
+    debug(`Written ${prettyBytes(bytes)} of data to storage file "${name}"`);
   }
 
 }
-
-// Export class instance
-module.exports = new Storage();

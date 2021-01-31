@@ -9,9 +9,11 @@ const debug = require('debug')('wog:adapters');
  * The AdapterManager holds all configured adapters and is used
  * to retrieve information from the active (selected) adapter.
  */
-class AdapterManager {
-  constructor() {
+module.exports = class AdapterManager {
+
+  constructor({ logger, config }) {
     this.logger = logger.scope('adapter-manager');
+    this.config = config.adapters;
     this.adapters = this.available();
     this.instances = {};
   }
@@ -47,8 +49,8 @@ class AdapterManager {
 
   async init() {
     // Load configured adapters
-    const options = config.adapters.options;
-    const enabled = config.adapters.enabled.split(',');
+    const options = this.config.options;
+    const enabled = this.config.enabled.split(',');
 
     // Create class instances for every enabled adapter
     await asyncForEach(enabled, async (el) => {
@@ -111,6 +113,3 @@ class AdapterManager {
     return this.instances[key];
   }
 }
-
-// Export class instance
-module.exports = new AdapterManager();
