@@ -2,17 +2,6 @@
 const awilix = require('awilix');
 const debug = require('debug')('wog:container');
 
-const services = [
-  'storage',
-  'config',
-  'logger',
-  'database',
-  'adapters',
-  'accounts',
-  'mailer',
-  'redis'
-];
-
 module.exports = async () => {
 
   // Create service container
