@@ -1,24 +1,25 @@
-// Require modules
-const { env } = require('../backend/util');
-
 /**
  * Application specific configuration (server settings, etc.)
  */
-module.exports = {
+module.exports = container => {
+  const { env } = container.resolve('util');
 
-  /** The port the server is listening on. */
-  port: env.int('APP_PORT', 8082),
+  return {
 
-  /** The port the websocket server is listening on. */
-  socketPort: env.int('APP_SOCKET_PORT', 8083),
+    /** The port the server is listening on. */
+    port: env.int('APP_PORT', 8082),
 
-  /** Whether the application is running behind a proxy. */
-  isProxy: env.bool('APP_IS_BEHIND_PROXY', false),
+    /** The port the websocket server is listening on. */
+    socketPort: env.int('APP_SOCKET_PORT', 8083),
 
-  /** The full root url for the application. */
-  url: env.text('APP_URL', 'http://localhost:8082/'),
+    /** Whether the application is running behind a proxy. */
+    isProxy: env.bool('APP_IS_BEHIND_PROXY', false),
 
-  /** Whether to allow users to download log files to their computer. */
-  enableFileDownloads: env.bool('ENABLE_FILE_DOWNLOADS', false)
+    /** The full root url for the application. */
+    url: env.text('APP_URL', 'http://localhost:8082/'),
 
+    /** Whether to allow users to download log files to their computer. */
+    enableFileDownloads: env.bool('ENABLE_FILE_DOWNLOADS', false)
+
+  };
 };

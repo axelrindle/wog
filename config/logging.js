@@ -1,12 +1,9 @@
 // Require modules
 const path = require('path');
-const { env } = require('../backend/util');
 const chalk = require('chalk');
 
 const { format, transports } = require('winston');
 const { combine, printf } = format;
-
-const logDirectory = storage.register('logs');
 
 /**
  * Extracts additional context to a separate object `info.additional`;
@@ -28,79 +25,92 @@ const extractAdditional = format(info => {
   return info;
 });
 
-/**
- * Just the raw logging format without coloring.
- *
- * Looks like this: `[timestamp] [label] level: message`
- */
-const baseFormat = (() => {
-  const myFormat = printf(info => {
-    const label = info.label ? info.label : 'main'; // default label is 'main'
-    const prefix = chalk.dim('[' + info.timestamp + '] [' + label + ']');
-    let base = `${prefix} ${info.level}: ${info.message}`;
-    if (info.stack) {
-      base += '\n' + info.stack;
-    }
-    if (info.additional) {
-      base += '\nAdditional context: ' + JSON.stringify(info.additional);
-    }
-    return base;
-  });
+module.exports = async (container) => {
+  const { env } = container.resolve('util');
+  const storage = container.resolve('storage');
 
-  return combine(
-    format.timestamp({
-      format: env.text('LOG_TIMESTAMP', 'DD.MM.YYYY HH:mm:ss.SSS')
-    }),
-    format.errors({ stack: true }),
-    format.splat(),
-    extractAdditional(),
-    myFormat
-  );
-})();
-
-/**
- * Logging is handled by winston.
- *
- * @see https://github.com/winstonjs/winston#readme for configuration options
- */
-module.exports = {
+  const logDirectory = await storage.createDirectory('logs');
 
   /**
-   * The logging level.
+   * Just the raw logging format without coloring.
    *
-   * @see https://github.com/winstonjs/winston#logging
+   * Looks like this: `[timestamp] [label] level: message`
    */
-  level: DEBUG ? 'debug' : env.text('LOG_LEVEL', 'info'),
+  const baseFormat = (() => {
+    const myFormat = printf(info => {
+      const label = info.label ? info.label : 'main'; // default label is 'main'
+      const prefix = chalk.dim('[' + info.timestamp + '] [' + label + ']');
+      let base = `${prefix} ${info.level}: ${info.message}`;
+      if (info.stack) {
+        base += '\n' + info.stack;
+      }
+      if (info.additional) {
+        base += '\nAdditional context: ' + JSON.stringify(info.additional);
+      }
+      return base;
+    });
+
+    return combine(
+      format.timestamp({
+        format: env.text('LOG_TIMESTAMP', 'DD.MM.YYYY HH:mm:ss.SSS')
+      }),
+      format.errors({ stack: true }),
+      format.splat(),
+      extractAdditional(),
+      myFormat
+    );
+  })();
 
   /**
-   * The output format.
+   * Logging is handled by winston.
    *
-   * @see https://github.com/winstonjs/winston#formats
+   * @see https://github.com/winstonjs/winston#readme for configuration options
    */
-  format: combine(
-    baseFormat,
-    format.colorize()
-  ),
+  return {
 
-  /**
-   * The different output transports to use. A console logger is added by default.
-   *
-   * @see https://github.com/winstonjs/winston#transports
-   */
-  transports: [ // TODO: make this customizable more easily (maybe through env variables?)
-    new transports.File({
-      filename: path.join(logDirectory, 'error.log'),
-      level: 'error',
-      format: combine(
-        baseFormat, format.uncolorize()
-      )
-    }),
-    new transports.File({
-      filename: path.join(logDirectory, 'combined.log'),
-      format: combine(
-        baseFormat, format.uncolorize()
-      )
-    })
-  ]
+    /**
+     * The logging level.
+     *
+     * @see https://github.com/winstonjs/winston#logging
+     */
+    level: env.text('LOG_LEVEL', 'info'),
 
+    /**
+     * The output format.
+     *
+     * @see https://github.com/winstonjs/winston#formats
+     */
+    format: combine(
+      baseFormat,
+      format.colorize()
+    ),
+
+    /**
+     * Whether to write default log output to the console.
+     * Ignored when debugging is enabled.
+     */
+    consoleOutput: env.bool('LOG_OUTPUT_CONSOLE', true),
+
+    /**
+     * The different output transports to use. A console logger is added by default.
+     *
+     * @see https://github.com/winstonjs/winston#transports
+     */
+    transports: [ // TODO: make this customizable more easily (maybe through env variables?)
+      new transports.File({
+        filename: path.join(logDirectory, `error.log`),
+        level: 'error',
+        format: combine(
+          baseFormat, format.uncolorize()
+        )
+      }),
+      new transports.File({
+        filename: path.join(logDirectory, `combined.log`),
+        format: combine(
+          baseFormat, format.uncolorize()
+        )
+      })
+    ]
+
+  };
 };
