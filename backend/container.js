@@ -1,17 +1,14 @@
 // Require modules
 const awilix = require('awilix');
 const debug = require('debug')('wog:container');
+const pkg = require('../package.json');
 
-module.exports = async () => {
-
-  // Create service container
-  const container = awilix.createContainer({
-    injectionMode: awilix.InjectionMode.PROXY
-  });
-
-  container.register('util', awilix.asValue( require('./util') ));
-  debug('Registered utilites.');
-
+/**
+ * Registers essential services to the container.
+ *
+ * @param {AwilixContainer} container
+ */
+const registerInitServices = async (container) => {
   container.register('storage', awilix.asClass( require('./init/storage') ));
   container.resolve('storage').createDirectory();
   debug('Registered storage service.');
@@ -41,6 +38,49 @@ module.exports = async () => {
   container.register('redis', awilix.asClass( require('./init/redis') ).singleton());
   await container.resolve('redis').init();
   debug('Registered redis service.');
+};
+
+/**
+ * Registers any loaded packages to the service container.
+ *
+ * @param {AwilixContainer} container
+ */
+const registerPackages = async (container) => {
+  const packages = container.resolve('packages');
+
+  const foundationPackages = packages.findByType('foundation');
+  for (const foundation of foundationPackages) {
+    const initializer = require(foundation.id);
+    initializer(awilix, container);
+  }
+
+  const adapters = packages.findByType('adapter');
+  for (const adapter of adapters) {
+    const initializer = require(adapter.id);
+    initializer(awilix, container);
+  }
+};
+
+module.exports = async () => {
+
+  // Create service container
+  const container = awilix.createContainer({
+    injectionMode: awilix.InjectionMode.PROXY
+  });
+
+  container.register('wogVersion', awilix.asValue(pkg.version));
+  container.register('nodeVersion', awilix.asValue(pkg.engines.node));
+  debug('Registered environment information.')
+
+  container.register('util', awilix.asValue( require('./util') ));
+  debug('Registered utilites.');
+
+  await registerInitServices(container);
+
+  container.register('packages', awilix.asClass( require('./init/packages') ).singleton());
+  container.resolve('packages').init();
+  await registerPackages(container);
+  debug('Registered packages.');
 
   return container;
 };

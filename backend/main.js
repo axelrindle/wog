@@ -1,5 +1,8 @@
 'use strict';
 
+// Register custom module paths
+require('module-alias/register');
+
 const path = require('path');
 
 // Define global variables
