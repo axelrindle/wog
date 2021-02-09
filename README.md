@@ -17,6 +17,20 @@
 
 ----
 
+<p align="center">
+  :warning: :warning: :warning:
+</p>
+
+<p align="center">
+  <i>This software is currently in development. I am working on this project in my free time, so don't expect regular updates.</i>
+</p>
+
+<p align="center">
+  :warning: :warning: :warning:
+</p>
+
+----
+
 # wog
 
 > :books: A web interface for viewing logs.
