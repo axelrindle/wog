@@ -88,9 +88,7 @@
     "utf-8-validate": "^5.0.1"
   },
   "_moduleAliases": {
-    "@root": "."
-  },
-  "_moduleDirectories": [
-    "packages"
-  ]
+    "@wog/root": ".",
+    "@wog/utils": "./backend/utils/"
+  }
 }

@@ -7,7 +7,7 @@ const Controller = require('./Controller');
 module.exports = class ListController extends Controller {
 
   init() {
-    this.logger = logger.scope('ListController');
+    this.packages = this.container.resolve('packages');
   }
 
   /**
@@ -16,8 +16,9 @@ module.exports = class ListController extends Controller {
    * @param {Express.Request} req
    * @param {Express.Response} res
    */
-  adapters(req, res) {
-    res.json(adapters.list());
+  packagelist(req, res) {
+    const type = req.body.type;
+    res.json(this.packages.findByType(type));
   }
 
   /**
@@ -34,7 +35,8 @@ module.exports = class ListController extends Controller {
       return;
     }
 
-    res.json(adapters.getAdapter(adapter).getGroups());
+    const groups = this.container.resolve(adapter).getGroups();
+    res.json(groups);
   }
 
   /**
@@ -56,7 +58,8 @@ module.exports = class ListController extends Controller {
       return;
     }
 
-    res.json(adapters.getAdapter(adapter).getEntries(group));
+    const entries = this.container.resolve(adapter).getEntries(group);
+    res.json(entries);
   }
 
 };

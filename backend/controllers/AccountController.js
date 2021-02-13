@@ -1,6 +1,6 @@
 // Require modules
 const Controller = require('./Controller');
-const { getPath } = require('../util');
+const getPath = require('../utils/paths');
 
 /**
  * The AccountController is responsible for everything account related.
@@ -8,7 +8,6 @@ const { getPath } = require('../util');
 module.exports = class AccountController extends Controller {
 
   init() {
-    this.logger = logger.scope('ProfileController');
     this.title = this.app.get('title') + ' | account';
   }
 
@@ -33,7 +32,7 @@ module.exports = class AccountController extends Controller {
    */
   async updateAccount(req, res) {
     try {
-      await accounts.update(req.body);
+      await this.container.resolve('accounts').update(req.body);
       req.flash('info', 'Account details updated.');
     } catch (error) {
       this.logger.error(error);

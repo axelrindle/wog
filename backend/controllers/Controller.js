@@ -10,7 +10,9 @@ module.exports = class Controller {
    */
   constructor(app) {
     this.app = app;
-    this.logger = logger.scope(this.constructor.name);
+    this.container = app.get('container');
+
+    this.logger = this.container.resolve('logger').scope(this.constructor.name);
     this.init();
   }
 

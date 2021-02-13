@@ -1,5 +1,6 @@
 // Require modules
 const Controller = require('./Controller');
+const debug = require('debug')('wog:FrontendController');
 
 /**
  * The FrontendController is responsible for rendering the HTML pages.
@@ -7,7 +8,10 @@ const Controller = require('./Controller');
 module.exports = class FrontendController extends Controller {
 
   init() {
-    const { name, description, version } = require('@root/package.json');
+    const { name, description, version } = require('@wog/root/package.json');
+
+    this.config = this.container.resolve('config');
+    this.redis = this.container.resolve('redis');
 
     this.title = this.app.get('title');
     this.pkg = { name, description, version };
@@ -19,9 +23,9 @@ module.exports = class FrontendController extends Controller {
    * @param {Express.Request} req
    */
   getWebsocketUrl(req) {
-    return config.app.isProxy ?
-      `${req.protocol.replace('http', 'ws')}://${req.hostname.split(':')[0]}:${config.app.socketPort}` :
-      `${config.app.url}${config.app.url.endsWith('/') ? '' : '/'}socket`;
+    return this.config.app.isProxy ?
+      `${req.protocol.replace('http', 'ws')}://${req.hostname.split(':')[0]}:${this.config.app.socketPort}` :
+      `${this.config.app.url}${this.config.app.url.endsWith('/') ? '' : '/'}socket`;
   }
 
   /**
@@ -61,7 +65,8 @@ module.exports = class FrontendController extends Controller {
     // handle cache deletion request
     if (DEBUG && req.query.fresh) {
       await new Promise((resolve, reject) => {
-        redis.client.del('dependencies', (err, _reply) => {
+        this.redis.client.del('dependencies', (err, reply) => {
+          debug('redis replied: ' + reply);
           if (err) reject(err);
           else resolve();
         })
@@ -70,7 +75,8 @@ module.exports = class FrontendController extends Controller {
 
     // load dependencies from cache
     let dependenciesCached = await new Promise((resolve, reject) => {
-      redis.client.get('dependencies', (err, reply) => {
+      this.redis.client.get('dependencies', (err, reply) => {
+        debug('redis replied: ' + reply);
         if (err) reject(err);
         else resolve(JSON.parse(reply));
       })
@@ -78,14 +84,17 @@ module.exports = class FrontendController extends Controller {
 
     // cache entry not found, resolve dependencies and write them to the cache
     if (!dependenciesCached) {
-      dependenciesCached = Object.keys(require('@root/package.json').dependencies);
+      dependenciesCached = Object.keys(require('@wog/root/package.json').dependencies);
       await new Promise((resolve, reject) => {
-        redis.client.set('dependencies', dependenciesCached, (err, _reply) => {
+        this.redis.client.set('dependencies', JSON.stringify(dependenciesCached), (err, reply) => {
+          debug('redis replied: ' + reply);
           if (err) reject(err);
           else resolve();
         })
       });
     }
+
+    debug(dependenciesCached);
 
     this.render(res, 'about.html', {
       user: req.user,

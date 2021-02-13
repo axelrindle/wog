@@ -50,7 +50,5 @@ class DeleteUserValidator extends Validator {
 
 // export an instance of each class
 module.exports = {
-  CreateUserValidator: new CreateUserValidator(),
-  UpdateUserValidator: new UpdateUserValidator(),
-  DeleteUserValidator: new DeleteUserValidator()
+  CreateUserValidator, UpdateUserValidator, DeleteUserValidator
 };

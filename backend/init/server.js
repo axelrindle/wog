@@ -7,7 +7,13 @@ const express = require('express');
 const helmet = require('helmet');
 const nunjucks = require('nunjucks');
 const { createTerminus } = require('@godaddy/terminus');
-const { fail } = require('../util');
+const fail = require('../utils/fail');
+
+module.exports = container => {
+
+// Resolve services
+const logger = container.resolve('logger');
+const config = container.resolve('config');
 
 const myLogger = logger.scope('server');
 const app = express();
@@ -22,6 +28,7 @@ nunjucks.configure('frontend/views', {
 });
 
 // Server setup
+app.set('container', container);
 app.set('view engine', 'nunjucks');
 app.set('views', 'frontend/views');
 if (!DEBUG) {

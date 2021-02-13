@@ -12,7 +12,7 @@ global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 const debug = require('debug')('wog:main');
 const isElevated = require('is-elevated');
 const chalk = require('chalk');
-const { fail } = require('./util');
+const fail = require('./utils/fail');
 const checkForUpdates = require('./updater');
 
 debug('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
@@ -45,7 +45,7 @@ debug('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');
     await checkForUpdates(container);
 
     debug('Main init done. Starting server...');
-    // require('./init/server')(container);
+    require('./init/server')(container);
   } catch (error) {
     fail(error);
   }

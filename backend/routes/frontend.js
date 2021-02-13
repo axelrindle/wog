@@ -1,5 +1,5 @@
 // Require modules
-const { bind } = require('../util');
+const bindFn = require('../utils/bind-fn');
 const FrontendController = require('../controllers/FrontendController');
 const AuthController = require('../controllers/AuthController');
 const ResetPasswordController = require('../controllers/ResetPasswordController');
@@ -11,16 +11,16 @@ module.exports = app => {
   const myAuthController = new AuthController(app);
   const myResetController = new ResetPasswordController(app);
 
-  app.get('/login', checkAuth.not, bind(myController, "login"));
+  app.get('/login', checkAuth.not, bindFn(myController, "login"));
   app.post('/login', checkAuth.not, myAuthController.login());
-  app.get('/logout', checkAuth.is, bind(myAuthController, "logout"));
+  app.get('/logout', checkAuth.is, bindFn(myAuthController, "logout"));
 
-  app.get('/', checkAuth.is, bind(myController, "index"));
-  app.get('/about', bind(myController, "about"));
+  app.get('/', checkAuth.is, bindFn(myController, "index"));
+  app.get('/about', bindFn(myController, "about"));
 
-  app.get('/reset/password', checkAuth.not, bind(myResetController, "showRequestForm"));
-  app.post('/reset/password', checkAuth.not, bind(myResetController, "handleRequest"));
-  app.get('/reset/password/:token', checkAuth.not, bind(myResetController, "showResetForm"));
-  app.post('/reset/password/:token', checkAuth.not, bind(myResetController, "handleReset"));
+  app.get('/reset/password', checkAuth.not, bindFn(myResetController, "showRequestForm"));
+  app.post('/reset/password', checkAuth.not, bindFn(myResetController, "handleRequest"));
+  app.get('/reset/password/:token', checkAuth.not, bindFn(myResetController, "showResetForm"));
+  app.post('/reset/password/:token', checkAuth.not, bindFn(myResetController, "handleReset"));
 
 };

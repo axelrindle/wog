@@ -1,10 +1,13 @@
 // Require modules
-const { getPath } = require('../util');
+const getPath = require('../utils/paths');
 
 /**
  * Returns a middleware function which attaches locals to every request.
  */
 module.exports = (req, res, next) => {
+  const container = req.app.get('container');
+  const config = container.resolve('config');
+
   res.locals = Object.assign({}, res.locals, {
     // properties
     url: config.app.url,

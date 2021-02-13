@@ -8,8 +8,8 @@ const debug = require('debug')('wog:Validator');
  */
 module.exports = class Validator {
 
-  constructor() {
-    this.myLogger = logger.scope('validation');
+  constructor(container) {
+    this.myLogger = container.resolve('logger').scope('validation');
   }
 
   /**

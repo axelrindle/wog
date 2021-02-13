@@ -6,6 +6,11 @@ const Controller = require('./Controller');
  */
 module.exports = class EntryController extends Controller {
 
+  init() {
+    this.config = this.container.resolve('config');
+    this.packages = this.container.resolve('packages');
+  }
+
   /**
    * Reads the contents of a given file.
    *
@@ -16,7 +21,7 @@ module.exports = class EntryController extends Controller {
     const adapter = req.body.adapter;
     const entryId = req.body.id;
     const page = req.body.page || 1;
-    const theAdapter = adapters.getAdapter(adapter);
+    const theAdapter = this.container.resolve(adapter);
     theAdapter.getContents(entryId, page)
       .then(contents => {
         res.json(contents);
@@ -36,12 +41,12 @@ module.exports = class EntryController extends Controller {
    */
   download(req, res) {
     // make sure downloading is enabled
-    if (!config.app.enableFileDownloads)
+    if (!this.config.app.enableFileDownloads)
       return res.status(403).send('Forbidden!');
 
     const adapter = req.params.adapter;
     const entryId = req.params.id;
-    adapters.getAdapter(adapter).download(res, entryId);
+    this.container.resolve(adapter).download(res, entryId);
   }
 
 };

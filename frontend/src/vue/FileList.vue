@@ -208,7 +208,7 @@ module.exports = {
 
   mounted() {
     // load adapters
-    this.load('adapters')
+    this.load('packages', { type: 'adapter' })
       .then(adapters => {
         this.adapters = adapters;
 

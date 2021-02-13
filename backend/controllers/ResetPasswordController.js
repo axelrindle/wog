@@ -1,8 +1,10 @@
 // Require modules
 const Controller = require('./Controller');
 const nanoid = require('nanoid/async/generate');
-const { getPath, NANOID_ALPHABET } = require('../util');
 const debug = require('debug')('wog:ResetPasswordController');
+
+const getPath = require('../utils/paths');
+const NANOID_ALPHABET = require('../utils/nanoid-alphabet');
 
 const TOKEN_PREFIX = 'password_reset:';
 const TOKEN_LENGTH = 32;
@@ -14,6 +16,11 @@ const TOKEN_LENGTH = 32;
 module.exports = class ResetPasswordController extends Controller {
 
   init() {
+    this.config = this.container.resolve('config');
+    this.redis = this.container.resolve('redis');
+    this.accounts = this.container.resolve('accounts');
+    this.mailer = this.container.resolve('mailer');
+
     this.title = this.app.get('title');
   }
 
@@ -23,9 +30,10 @@ module.exports = class ResetPasswordController extends Controller {
   }
 
   async _generateToken(userId) {
-    const token = await nanoid(NANOID_ALPHABET, TOKEN_LENGTH)
+    const token = await nanoid(NANOID_ALPHABET, TOKEN_LENGTH);
+    const lifetime = this.config.secure.resetTokenLifetime;
     return new Promise((resolve, reject) => {
-      redis.client.setex(TOKEN_PREFIX + token, config.secure.resetTokenLifetime, userId, (err, reply) => {
+      this.redis.client.setex(TOKEN_PREFIX + token, lifetime, userId, (err, reply) => {
         if (err) reject(err);
         else {
           debug(`Redis replied: ${reply}`);
@@ -37,7 +45,7 @@ module.exports = class ResetPasswordController extends Controller {
 
   _checkToken(token) {
     return new Promise((resolve, reject) => {
-      redis.client.get(TOKEN_PREFIX + token, (err, reply) => {
+      this.redis.client.get(TOKEN_PREFIX + token, (err, reply) => {
         if (err) reject(err);
         else if (reply === null) resolve();
         else {
@@ -50,7 +58,7 @@ module.exports = class ResetPasswordController extends Controller {
 
   async _deleteToken(token) {
     return new Promise((resolve, reject) => {
-      redis.client.del(token, (err, reply) => {
+      this.redis.client.del(token, (err, reply) => {
         if (err) reject(err);
         else {
           debug(`Redis replied: ${reply}`);
@@ -91,13 +99,13 @@ module.exports = class ResetPasswordController extends Controller {
     req.flash('username', req.body.username);
 
     // do nothing when not connected to SMTP server
-    if (!mailer.isConnected) {
+    if (!this.mailer.isConnected) {
       commonErrorHandler('Application is not configured to send mails! Please contact your administrator.');
       return;
     }
 
     try {
-      const user = await accounts.findByUsername(req.body.username);
+      const user = await this.accounts.findByUsername(req.body.username);
       if (!user) {
         commonErrorHandler('No matching user found!');
         return;
@@ -109,7 +117,7 @@ module.exports = class ResetPasswordController extends Controller {
 
       const token = await this._generateToken(user.id);
       const url = redirectPath + '/' + token;
-      const sentMailInfo = await mailer.sendMail(
+      const sentMailInfo = await this.mailer.sendMail(
         user.email, 'Password Reset Request',
         `
         <p>Password Reset Request</p>
@@ -180,7 +188,7 @@ module.exports = class ResetPasswordController extends Controller {
       }
 
       await this._deleteToken(tokenFromRequest);
-      await accounts.update({ id: userId, password });
+      await this.accounts.update({ id: userId, password });
 
       req.flash('status', 'The password has been changed.');
       res.redirect(getPath());

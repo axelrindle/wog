@@ -1,45 +1,52 @@
 // Require modules
-const { URL } = require('url');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
-// Configure strategy
-passport.use(new LocalStrategy(
-  {
-    passReqToCallback: true
-  },
-  (req, username, password, done) => {
-    accounts.checkAuth(username, password)
-      .then(success => {
-        if (!success) {
-          req.flash('username', username);
-          done(null, false);
-        }
-        else {
-          accounts.findByUsername(username).then(user => done(null, user))
-        }
+const configure = container => {
+  const accounts = container.resolve('accounts');
+
+  // Configure strategy
+  passport.use(new LocalStrategy(
+    {
+      passReqToCallback: true
+    },
+    (req, username, password, done) => {
+      accounts.checkAuth(username, password)
+        .then(success => {
+          if (!success) {
+            req.flash('username', username);
+            done(null, false);
+          }
+          else {
+            accounts.findByUsername(username).then(user => done(null, user))
+          }
+        })
+        .catch(err => done(err, null));
+    }
+  ));
+
+  // Serialization
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+  passport.deserializeUser((id, done) => {
+    accounts.findById(id)
+      .then(user => {
+        if (!user) done('Unknown user!', null);
+        else done(null, user);
       })
       .catch(err => done(err, null));
-  }
-));
-
-// Serialization
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-passport.deserializeUser((id, done) => {
-  accounts.findById(id)
-    .then(user => {
-      if (!user) done('Unknown user!', null);
-      else done(null, user);
-    })
-    .catch(err => done(err, null));
-});
+  });
+};
 
 // export init function
 module.exports = app => {
+
+  const container = app.get('container');
+  const config = container.resolve('config');
+  const redis = container.resolve('redis');
 
   const theUrl = new URL(config.app.url);
 
@@ -54,6 +61,8 @@ module.exports = app => {
       secure: theUrl.protocol === 'https'
     }, config.secure.cookie)
   }));
+
+  configure(container);
 
   // Init passport authentication
   app.use(passport.initialize());

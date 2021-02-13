@@ -1,7 +1,7 @@
 // Require modules
 const bcrypt = require('bcrypt');
 const nanoid = require('nanoid/generate');
-const { NANOID_ALPHABET } = require('../util');
+const NANOID_ALPHABET = require('../utils/nanoid-alphabet');
 
 const queries = { // TODO: Move to .sql files
   createTable: `

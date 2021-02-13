@@ -1,10 +1,14 @@
 // Require modules
 const Controller = require('./Controller');
-const { getPath } = require('../util');
+const getPath = require('../utils/paths');
 
 module.exports = class AdminController extends Controller {
 
   init() {
+    this.config = this.container.resolve('config');
+    this.accounts = this.container.resolve('accounts');
+    this.packages = this.container.resolve('packages');
+
     this.title = this.app.get('title');
   }
 
@@ -34,7 +38,7 @@ module.exports = class AdminController extends Controller {
    * @param {Express.Response} res
    */
   listUsers(req, res) {
-    accounts.all()
+    this.accounts.all()
       .then(result => res.json(result))
       .catch(err => {
         this.logger.error(err);
@@ -49,7 +53,7 @@ module.exports = class AdminController extends Controller {
    * @param {Express.Response} res
    */
   createUser(req, res) {
-    accounts.create(req.body)
+    this.accounts.create(req.body)
       .then(() => {
         res.sendStatus(200);
       })
@@ -65,7 +69,7 @@ module.exports = class AdminController extends Controller {
    * @param {Express.Response} res
    */
   editUser(req, res) {
-    accounts.update(req.body)
+    this.accounts.update(req.body)
       .then(() => {
         res.sendStatus(200);
       })
@@ -86,7 +90,7 @@ module.exports = class AdminController extends Controller {
       return res.status(403).send('You\'re not allowed to delete your own account!');
     }
 
-    accounts.deleteUser(req.body.id)
+    this.accounts.deleteUser(req.body.id)
       .then(() => {
         res.sendStatus(200);
       })
@@ -110,14 +114,14 @@ module.exports = class AdminController extends Controller {
   listConfig(req, res) { // TODO: Pretty empty now, but reserved for future use
     const allowedTypes = ['undefined', 'boolean', 'number', 'string'];
     const data = {};
-    for (const key in config) {
+    for (const key in this.config) {
       if (key === 'secure') continue;
       data[key] = {};
-      for (const entry in config[key]) {
-        if (allowedTypes.indexOf(typeof config[key][entry]) !== -1) {
+      for (const entry in this.config[key]) {
+        if (allowedTypes.indexOf(typeof this.config[key][entry]) !== -1) {
           data[key][entry] = {
             key: entry,
-            value: config[key][entry]
+            value: this.config[key][entry]
           };
         }
       }
@@ -132,13 +136,13 @@ module.exports = class AdminController extends Controller {
   listStatistics(req, res) {
     const data = {};
 
-    accounts.count()
+    this.accounts.count()
       .then(userAmount => {
         data.users = userAmount;
-        return Promise.resolve(adapters.count());
+        return Promise.resolve(this.packages.count());
       })
-      .then(adapterAmount => {
-        data.adapters = adapterAmount;
+      .then(packageAmount => {
+        data.packages = packageAmount;
         return Promise.resolve();
       })
       .catch(err => {

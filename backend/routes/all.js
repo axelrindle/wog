@@ -1,5 +1,5 @@
 // Require modules
-const { bind } = require('../util');
+const bindFn = require('../utils/bind-fn');
 const ListController = require('../controllers/ListController');
 
 module.exports = (app, myRouter) => {
@@ -9,9 +9,9 @@ module.exports = (app, myRouter) => {
 
   myRouter.use(checkAuth.is);
 
-  myRouter.post('/adapters', bind(myController, "adapters"));
-  myRouter.post('/groups', bind(myController, "groups"));
-  myRouter.post('/entries', bind(myController, "entries"));
+  myRouter.post('/packages', bindFn(myController, "packagelist"));
+  myRouter.post('/groups', bindFn(myController, "groups"));
+  myRouter.post('/entries', bindFn(myController, "entries"));
 
   app.use('/all', myRouter);
 

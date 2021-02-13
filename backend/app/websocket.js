@@ -1,11 +1,7 @@
 // Require modules
 const nanoid = require('nanoid/generate');
 const expressWs = require('express-ws');
-const WebSocket = require('ws');
-
-const { NANOID_ALPHABET } = require('../util');
-
-const myLogger = logger.scope('websocket');
+const NANOID_ALPHABET = require('../utils/nanoid-alphabet');
 const debug = require('debug')('wog:websocket');
 
 /**
@@ -17,6 +13,12 @@ const debug = require('debug')('wog:websocket');
 const sendError = (ws, e) => {
   ws.send({ type: 'error', msg: e });
 };
+
+module.exports = app => {
+
+const container = app.get('container');
+const logger = container.resolve('logger');
+const myLogger = logger.scope('websocket');
 
 /**
  * Handles a websocket route request.
@@ -40,7 +42,7 @@ const handler = ws => {
           if (currentAdapter) {
             currentAdapter.unregisterSocket(connectionId);
           }
-          currentAdapter = adapters.getAdapter(parsed.adapter);
+          currentAdapter = container.resolve(parsed.adapter);
           if (currentAdapter.supportsEvents()) {
             currentAdapter.registerSocket(connectionId, ws);
           }

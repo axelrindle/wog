@@ -1,6 +1,6 @@
 // Require modules
 const Controller = require('./Controller');
-const { getPath } = require('../util');
+const getPath = require('../utils/paths');
 
 /**
  * The AuthController is responsible for authenticating users.

@@ -22,5 +22,5 @@ class UpdateUserValidator extends Validator {
 }
 
 module.exports = {
-  UpdateUserValidator: new UpdateUserValidator()
+  UpdateUserValidator
 };

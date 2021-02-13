@@ -5,7 +5,7 @@ const glob = require('glob');
 const semverSatisfies = require('semver/functions/satisfies')
 const debug = require('debug')('wog:packages');
 
-const VALID_TYPES = ['foundation', 'adapter'];
+const VALID_TYPES = ['adapter'];
 
 module.exports = class PackageRegistry {
 
@@ -15,12 +15,8 @@ module.exports = class PackageRegistry {
     this.wogVersion = wogVersion;
     this.logger = logger.scope('packages');
 
-    this._registry = {};
+    this._registry = [];
     this._loadedPackages = 0;
-
-    VALID_TYPES.forEach(el => {
-      this._registry[el] = [];
-    });
   }
 
   _scan() {
@@ -56,9 +52,15 @@ module.exports = class PackageRegistry {
         }
         debug('wog.package.json is valid in ' + pkg);
 
+        // enforce unique ids
+        if (this.findById(pkg) !== null) {
+          throw new Error('A package with the ID "' + pkg + '" has already been registered!');
+        }
+
         // pkg seems valid, register it
-        this._registry[pkgWog.type].push({
+        this._registry.push({
           id: pkg,
+          type: pkgWog.type,
           version: pkgNode.version,
           description: pkgNode.description || "No description provided.",
           displayName: pkgWog.displayName
@@ -86,7 +88,20 @@ module.exports = class PackageRegistry {
   }
 
   findByType(type) {
-    return this._registry[type];
+    if (!VALID_TYPES.includes(type)) {
+      throw new Error('Illegal type "' + type + '"!');
+    }
+    return this._registry.filter(el => el.type === type);
+  }
+
+  findById(id) {
+    for (const pkg of this._registry) {
+      if (pkg.id === id) {
+        return pkg;
+      }
+    }
+
+    return null;
   }
 
 };

@@ -2,7 +2,7 @@
 const path = require('path');
 const glob = require('glob');
 const { Router } = require('express');
-const pkg = require('@root/package.json');
+const pkg = require('@wog/root/package.json');
 
 const middleware = require('./middleware');
 const debug = require('debug')('wog:router');

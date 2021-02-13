@@ -41,20 +41,20 @@ const registerInitServices = async (container) => {
  * Registers any loaded packages to the service container.
  *
  * @param {AwilixContainer} container
+ * @param {import('node_modules/winston/index').Logger} logger
  */
-const registerPackages = async (container) => {
+const registerPackages = async (container, logger) => {
   const packages = container.resolve('packages');
 
-  const foundationPackages = packages.findByType('foundation');
-  for (const foundation of foundationPackages) {
-    const initializer = require(foundation.id);
-    initializer(awilix, container);
-  }
-
   const adapters = packages.findByType('adapter');
-  for (const adapter of adapters) {
-    const initializer = require(adapter.id);
-    initializer(awilix, container);
+  try {
+    for (const adapter of adapters) {
+      const initializer = require(adapter.id);
+      initializer(awilix, container);
+    }
+  } catch (error) {
+    logger.error('An error occured while initializing a package!');
+    logger.error(error);
   }
 };
 
@@ -69,14 +69,16 @@ module.exports = async () => {
   container.register('nodeVersion', awilix.asValue(pkg.engines.node));
   debug('Registered environment information.')
 
-  container.register('util', awilix.asValue( require('./util') ));
+  container.register('util', awilix.asValue( require('./utils') ));
   debug('Registered utilites.');
 
   await registerInitServices(container);
 
+  const logger = container.resolve('logger').scope('container');
+
   container.register('packages', awilix.asClass( require('./init/packages') ).singleton());
   container.resolve('packages').init();
-  await registerPackages(container);
+  await registerPackages(container, logger);
   debug('Registered packages.');
 
   return container;

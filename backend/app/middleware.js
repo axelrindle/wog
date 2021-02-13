@@ -1,5 +1,5 @@
 // Require modules
-const { getPath } = require('../util');
+const getPath = require('../utils/paths');
 
 const checkAuth = module.exports.checkAuth = {
 
