@@ -24,9 +24,6 @@ const registerInitServices = async (container) => {
   await container.resolve('database').init();
   debug('Registered database service.');
 
-  // container.register('adapters', awilix.asClass( require('./init/adapter-manager') ).singleton());
-  // await container.resolve('adapters').init();
-
   container.register('accounts', awilix.asClass( require('./init/accounts') ).singleton());
   await container.resolve('accounts').init();
   debug('Registered account service.');
