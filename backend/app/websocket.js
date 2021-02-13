@@ -71,11 +71,7 @@ const handler = ws => {
   });
 };
 
-/**
- * Initialize a WebSocket server.
- */
-module.exports = app => {
-  let server;
+  // let server;
   let isOpen;
 
   // based on whether we are running behind a proxy, deploy the /socket route
