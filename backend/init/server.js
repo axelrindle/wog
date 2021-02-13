@@ -65,31 +65,22 @@ require('../app/router')(app);
 const port = config.app.port;
 const server = app.listen(port, () => myLogger.info(`Listening on port ${port}.`));
 
-// Install terminus
-const onSignal = () => {
-  myLogger.info('Shutting down...');
-
-  return Promise.all([
-    websocket.dispose(),
-    adapters.dispose(),
-    mailer.dispose(),
-    accounts.dispose(),
-    database.dispose()
-  ]);
-};
-
-const onHealthCheck = () => {
-  // TODO: Implement service health checks
-};
-
+// Install terminus graceful shutdown
 createTerminus(server, {
   signals: ['SIGINT', 'SIGTERM'],
-  healthChecks: {
-    '/health': onHealthCheck
-  },
   logger: (msg, err) => {
     myLogger.error(msg);
     console.error(err);
   },
-  onSignal
+  onSignal: () => {
+    myLogger.info('Shutting down...');
+    return Promise.all([
+      websocket.dispose(),
+      container.resolve('database').dispose(),
+      container.resolve('mailer').dispose(),
+      container.resolve('redis').dispose()
+    ]);
+  }
 });
+
+};
