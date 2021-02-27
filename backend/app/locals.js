@@ -1,5 +1,5 @@
 // Require modules
-const getPath = require('../utils/paths');
+const { isDebug, paths } = require('../utils');
 
 /**
  * Returns a middleware function which attaches locals to every request.
@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
   res.locals = Object.assign({}, res.locals, {
     // properties
     url: config.app.url,
-    _debug: DEBUG,
+    isDebug,
 
     // helpers
     path: getPath,

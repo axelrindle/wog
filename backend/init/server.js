@@ -7,7 +7,7 @@ const express = require('express');
 const helmet = require('helmet');
 const nunjucks = require('nunjucks');
 const { createTerminus } = require('@godaddy/terminus');
-const fail = require('../utils/fail');
+const { isDebug, fail } = require('../utils');
 
 module.exports = container => {
 
@@ -22,16 +22,16 @@ const app = express();
 if (!config.app.url) fail('No url specified!');
 
 // Configure template engine
-nunjucks.configure('frontend/views', {
-  noCache: DEBUG,
-  express: app,
+const nunjucksEnvironment = nunjucks.configure('frontend/views', {
+  noCache: isDebug,
+  express: app
 });
 
 // Server setup
 app.set('container', container);
 app.set('view engine', 'nunjucks');
 app.set('views', 'frontend/views');
-if (!DEBUG) {
+if (! isDebug) {
   app.enable('view cache');
   if (config.app.isProxy) app.enable('trust proxy');
 }

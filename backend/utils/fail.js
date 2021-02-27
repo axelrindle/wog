@@ -8,6 +8,6 @@ const isDebug = require('./is-debug');
  * @param {number} code The exit code. 
  */
 module.exports = (err, code = -1) => {
-    console.error(isDebug() ? err : err.message || err);
+    console.error(isDebug ? err : err.message || err);
     process.exit(code);
 };

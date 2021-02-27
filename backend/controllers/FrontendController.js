@@ -1,6 +1,7 @@
 // Require modules
 const Controller = require('./Controller');
 const debug = require('debug')('wog:FrontendController');
+const isDebug = require('../utils/is-debug');
 
 /**
  * The FrontendController is responsible for rendering the HTML pages.
@@ -66,7 +67,7 @@ module.exports = class FrontendController extends Controller {
    */
   async about(req, res) {
     // handle cache deletion request
-    if (DEBUG && req.query.fresh) {
+    if (isDebug && req.query.fresh) {
       await new Promise((resolve, reject) => {
         this.redis.client.del('dependencies', (err, reply) => {
           debug('redis replied: ' + reply);

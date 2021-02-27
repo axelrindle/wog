@@ -6,7 +6,6 @@ require('module-alias/register');
 const path = require('path');
 
 // Define global variables
-global.DEBUG = process.env.DEBUG || false;
 global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 
 const debug = require('debug')('wog:main');
