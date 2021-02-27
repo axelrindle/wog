@@ -31,7 +31,7 @@ module.exports = app => {
 
     // function wants app and a new router
     if (routeInit.length === 2) {
-      const myRouter = new Router({
+      const myRouter = Router({
         mergeParams: true
       });
       routeInit(app, myRouter);
