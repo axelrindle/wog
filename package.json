@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/axelrindle/wog.git"
+    "url": "git+https://github.com/wog-js/wog.git"
   },
   "keywords": [
     "web",
@@ -24,9 +24,9 @@
   "author": "Axel Rindle <mail@axelrindle.de>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/axelrindle/wog/issues"
+    "url": "https://github.com/wog-js/wog/issues"
   },
-  "homepage": "https://github.com/axelrindle/wog#readme",
+  "homepage": "https://github.com/wog-js/wog#readme",
   "engines": {
     "node": ">=10.15.3"
   },

@@ -22,8 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- [EACCES error in FileAdapter stops loading · Issue #45](https://github.com/axelrindle/wog/issues/45)
-- [Crash on file deletion · Issue #47](https://github.com/axelrindle/wog/issues/47)
+- [EACCES error in FileAdapter stops loading · Issue #45](https://github.com/wog-js/wog/issues/45)
+- [Crash on file deletion · Issue #47](https://github.com/wog-js/wog/issues/47)
 
 ### Security
 
@@ -47,8 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- [#40](https://github.com/axelrindle/wog/issues/40)
-- [#41](https://github.com/axelrindle/wog/issues/41)
+- [#40](https://github.com/wog-js/wog/issues/40)
+- [#41](https://github.com/wog-js/wog/issues/41)
 
 ## 0.2.0 `(15.08.2018)`
 
