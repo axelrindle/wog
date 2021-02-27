@@ -6,4 +6,4 @@ const env = require('./env');
  *
  * @param {string} path
  */
-module.exports = path => new URL(path || "", env.text('APP_URL')).toString();
+module.exports = (path = '') => new URL(path || '', env.text('APP_URL')).toString();
