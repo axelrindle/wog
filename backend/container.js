@@ -6,7 +6,7 @@ const pkg = require('../package.json');
 /**
  * Registers essential services to the container.
  *
- * @param {AwilixContainer} container
+ * @param {import('awilix').AwilixContainer} container
  */
 const registerInitServices = async (container) => {
   container.register('storage', awilix.asClass( require('./init/storage') ));
@@ -40,8 +40,8 @@ const registerInitServices = async (container) => {
 /**
  * Registers any loaded packages to the service container.
  *
- * @param {AwilixContainer} container
- * @param {import('node_modules/winston/index').Logger} logger
+ * @param {import('awilix').AwilixContainer} container
+ * @param {import('@wogjs/types').Logger} logger
  */
 const registerPackages = async (container, logger) => {
   const packages = container.resolve('packages');

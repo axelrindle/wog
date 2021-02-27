@@ -6,13 +6,17 @@ module.exports = class Controller {
   /**
    * Construct a new Controller instance.
    *
-   * @param {Express.Application} app
+   * @param {import('express').Application} app
    */
   constructor(app) {
     this.app = app;
+
+    /** @type {import('awilix').AwilixContainer} */
     this.container = app.get('container');
 
+    /** @type {import('@wogjs/types').Logger} */
     this.logger = this.container.resolve('logger').scope(this.constructor.name);
+
     this.init();
   }
 
@@ -23,7 +27,7 @@ module.exports = class Controller {
   /**
    * Render a template.
    *
-   * @param {Express.Response} res
+   * @param {import('express').Response} res
    * @param {string} layout
    * @param {object} params
    */

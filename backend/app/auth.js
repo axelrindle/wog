@@ -4,6 +4,9 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
+/**
+ * @param {import('awilix').AwilixContainer} container
+ */
 const configure = container => {
   const accounts = container.resolve('accounts');
 
@@ -44,10 +47,13 @@ const configure = container => {
 // export init function
 module.exports = app => {
 
+  /** @type {import('awilix').AwilixContainer} */
   const container = app.get('container');
-  const config = container.resolve('config');
+
+  /** @type {import('@wogjs/types').RedisManager} */
   const redis = container.resolve('redis');
 
+  const config = container.resolve('config');
   const theUrl = new URL(config.app.url);
 
   // setup session store

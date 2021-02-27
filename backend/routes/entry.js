@@ -2,6 +2,10 @@
 const bindFn = require('../utils/bind-fn');
 const EntryController = require('../controllers/EntryController');
 
+/**
+ * @param {import('express').Application} app
+ * @param {import('express-ws').Router} myRouter
+ */
 module.exports = (app, myRouter) => {
 
   const { checkAuth, requireParameters } = app.get('middleware');

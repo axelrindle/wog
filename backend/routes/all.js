@@ -2,6 +2,10 @@
 const bindFn = require('../utils/bind-fn');
 const ListController = require('../controllers/ListController');
 
+/**
+ * @param {import('express').Application} app
+ * @param {import('express-ws').Router} myRouter
+ */
 module.exports = (app, myRouter) => {
 
   const { checkAuth } = app.get('middleware');

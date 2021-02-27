@@ -4,6 +4,9 @@ const FrontendController = require('../controllers/FrontendController');
 const AuthController = require('../controllers/AuthController');
 const ResetPasswordController = require('../controllers/ResetPasswordController');
 
+/**
+ * @param {import('express').Application} app
+ */
 module.exports = app => {
 
   const { checkAuth } = app.get('middleware');

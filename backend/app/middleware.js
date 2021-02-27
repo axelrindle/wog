@@ -6,8 +6,8 @@ const checkAuth = module.exports.checkAuth = {
   /**
    * Middleware for checking whether the user is authenticated.
    *
-   * @param {Express.Request} req The request.
-   * @param {Express.Response} res The response.
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    * @param {Function} next The next middleware handler.
    */
   is(req, res, next) {
@@ -20,8 +20,8 @@ const checkAuth = module.exports.checkAuth = {
   /**
    * Middleware for checking whether the user is not authenticated.
    *
-   * @param {Express.Request} req The request.
-   * @param {Express.Response} res The response.
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    * @param {Function} next The next middleware handler.
    */
   not(req, res, next) {
@@ -35,8 +35,8 @@ const checkAuth = module.exports.checkAuth = {
 /**
  * Middleware for checking whether the user is an administrator.
  *
- * @param {Express.Request} req The request.
- * @param {Express.Response} res The response.
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  * @param {Function} next The next middleware handler.
  */
 module.exports.isAdmin = (req, res, next) => {
@@ -48,13 +48,14 @@ module.exports.isAdmin = (req, res, next) => {
 
 /**
  * Middleware for checking for the existence of request parameters.
- *
- * @param {Express.Request} req The request.
- * @param {Express.Response} res The response.
- * @param {Function} next The next middleware handler.
  */
 module.exports.requireParameters = list => {
-  return (req, res, next) => {
+  /**
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  const fun = (req, res, next) => {
     const missing = [];
 
     // find missing params
@@ -68,4 +69,5 @@ module.exports.requireParameters = list => {
       next();
     }
   };
+  return fun;
 };

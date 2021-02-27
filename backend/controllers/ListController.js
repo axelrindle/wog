@@ -7,14 +7,15 @@ const Controller = require('./Controller');
 module.exports = class ListController extends Controller {
 
   init() {
+    /** @type {import('@wogjs/types').PackageRegistry} */
     this.packages = this.container.resolve('packages');
   }
 
   /**
    * Sends a list of adapters.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   packagelist(req, res) {
     const type = req.body.type;
@@ -24,8 +25,8 @@ module.exports = class ListController extends Controller {
   /**
    * Sends a list of groups for an adapter.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   groups(req, res) {
     const adapter = req.body.adapter;
@@ -42,8 +43,8 @@ module.exports = class ListController extends Controller {
   /**
    * Sends a list of entries in a group of an adapter.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   entries(req, res) {
     const adapter = req.body.adapter;

@@ -10,17 +10,20 @@ module.exports = class FrontendController extends Controller {
   init() {
     const { name, description, version } = require('@wog/root/package.json');
 
+    this.pkg = { name, description, version };
     this.config = this.container.resolve('config');
+
+    /** @type {import('@wogjs/types').RedisManager} */
     this.redis = this.container.resolve('redis');
 
+    /** @type {string} */
     this.title = this.app.get('title');
-    this.pkg = { name, description, version };
   }
 
   /**
    * Builds the URL for the Websocket connection.
    *
-   * @param {Express.Request} req
+   * @param {import('express').Request} req
    */
   getWebsocketUrl(req) {
     return this.config.app.isProxy ?
@@ -31,8 +34,8 @@ module.exports = class FrontendController extends Controller {
   /**
    * Shows the log interface.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   index(req, res) {
     this.render(res, 'overview.html', {
@@ -45,8 +48,8 @@ module.exports = class FrontendController extends Controller {
   /**
    * Show the login form.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   login(req, res) {
     this.render(res, 'login.html', {
@@ -58,8 +61,8 @@ module.exports = class FrontendController extends Controller {
   /**
    * Shows the about page.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   async about(req, res) {
     // handle cache deletion request

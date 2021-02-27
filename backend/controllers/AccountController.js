@@ -8,14 +8,15 @@ const getPath = require('../utils/paths');
 module.exports = class AccountController extends Controller {
 
   init() {
+    /** @type {string} */
     this.title = this.app.get('title') + ' | account';
   }
 
   /**
    * Shows a details page.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   showAccount(req, res) {
     this.render(res, 'account/show.html', {
@@ -27,8 +28,8 @@ module.exports = class AccountController extends Controller {
   /**
    * Update a user record.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   async updateAccount(req, res) {
     try {

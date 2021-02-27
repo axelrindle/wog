@@ -8,14 +8,16 @@ module.exports = class EntryController extends Controller {
 
   init() {
     this.config = this.container.resolve('config');
+
+    /** @type {import('@wogjs/types').PackageRegistry} */
     this.packages = this.container.resolve('packages');
   }
 
   /**
    * Reads the contents of a given file.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   contents(req, res) {
     const adapter = req.body.adapter;
@@ -36,8 +38,8 @@ module.exports = class EntryController extends Controller {
   /**
    * Downloads the given file.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   download(req, res) {
     // make sure downloading is enabled

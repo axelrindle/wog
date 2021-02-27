@@ -6,17 +6,22 @@ module.exports = class AdminController extends Controller {
 
   init() {
     this.config = this.container.resolve('config');
+
+    /** @type {import('@wogjs/types').Accounts} */
     this.accounts = this.container.resolve('accounts');
+
+    /** @type {import('@wogjs/types').PackageRegistry} */
     this.packages = this.container.resolve('packages');
 
+    /** @type {string} */
     this.title = this.app.get('title');
   }
 
   /**
    * Shows the administration page for admin users.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   index(req, res) {
     if (req.user.role === 'admin') {
@@ -34,8 +39,8 @@ module.exports = class AdminController extends Controller {
   /**
    * Sends a list of all users.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   listUsers(req, res) {
     this.accounts.all()
@@ -49,8 +54,8 @@ module.exports = class AdminController extends Controller {
   /**
    * Creates a new user.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   createUser(req, res) {
     this.accounts.create(req.body)
@@ -65,8 +70,8 @@ module.exports = class AdminController extends Controller {
   /**
    * Updates an existing user.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   editUser(req, res) {
     this.accounts.update(req.body)
@@ -82,8 +87,8 @@ module.exports = class AdminController extends Controller {
   /**
    * Delete a user. Fails if the user to be deleted is the logged in user.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   deleteUser(req, res) {
     if (req.user.id === req.body.id) {
@@ -108,8 +113,8 @@ module.exports = class AdminController extends Controller {
   /**
    * Sends a list of non-critical config entries.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   listConfig(req, res) { // TODO: Pretty empty now, but reserved for future use
     const allowedTypes = ['undefined', 'boolean', 'number', 'string'];
@@ -133,7 +138,11 @@ module.exports = class AdminController extends Controller {
 
   //#region Statistics
 
-  listStatistics(req, res) {
+  /**
+   * @param {import('express').Request} _req
+   * @param {import('express').Response} res
+   */
+  listStatistics(_req, res) {
     const data = {};
 
     this.accounts.count()

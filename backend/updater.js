@@ -11,10 +11,14 @@ const updateOpts = {
   latestOnly: true
 };
 
+/**
+ * @param {import('awilix').AwilixContainer} container
+ */
 module.exports = async (container) => {
   const myLogger = container.resolve('logger').scope('updater');
   myLogger.info('Checking for updates...');
 
+  // @ts-ignore
   const update = await versionCheck(updateOpts);
   if (update) {
     myLogger.info("An update is available! " + update.name);

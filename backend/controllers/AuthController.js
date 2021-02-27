@@ -8,6 +8,7 @@ const getPath = require('../utils/paths');
 module.exports = class AuthController extends Controller {
 
   init() {
+    /** @type {import('passport').PassportStatic} */
     this.passport = this.app.get('passport');
   }
 
@@ -19,6 +20,10 @@ module.exports = class AuthController extends Controller {
     });
   }
 
+  /**
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   */
   logout(req, res) {
     req.logout();
     res.redirect(getPath());

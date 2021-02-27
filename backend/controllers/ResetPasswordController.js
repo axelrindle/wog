@@ -17,10 +17,17 @@ module.exports = class ResetPasswordController extends Controller {
 
   init() {
     this.config = this.container.resolve('config');
+
+    /** @type {import('@wogjs/types').RedisManager} */
     this.redis = this.container.resolve('redis');
+
+    /** @type {import('@wogjs/types').Accounts} */
     this.accounts = this.container.resolve('accounts');
+
+    /** @type {import('@wogjs/types').Mailer} */
     this.mailer = this.container.resolve('mailer');
 
+    /** @type {string} */
     this.title = this.app.get('title');
   }
 
@@ -71,8 +78,8 @@ module.exports = class ResetPasswordController extends Controller {
   /**
    * Show the form for requesting a password reset.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   showRequestForm(req, res) {
     this.render(res, 'password-reset/request-form.html', {
@@ -85,8 +92,8 @@ module.exports = class ResetPasswordController extends Controller {
    * The only required POST parameter is the user's email or username.
    * If a matching entry is found in the database, an email is sent to the found user.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   async handleRequest(req, res) {
     const redirectPath = getPath('reset/password');
@@ -137,8 +144,8 @@ module.exports = class ResetPasswordController extends Controller {
   /**
    * Show the form for actually resetting the password.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   async showResetForm(req, res) {
     const token = req.params.token;
@@ -158,8 +165,8 @@ module.exports = class ResetPasswordController extends Controller {
   /**
    * Handles a password reset.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
   async handleReset(req, res) {
     const tokenFromRequest = req.params.token;

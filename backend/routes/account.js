@@ -4,6 +4,10 @@ const AccountController = require('../controllers/AccountController');
 
 const { UpdateUserValidator } = require('../validation/AccountValidators');
 
+/**
+ * @param {import('express').Application} app
+ * @param {import('express-ws').Router} myRouter
+ */
 module.exports = (app, myRouter) => {
 
   const container = app.get('container');

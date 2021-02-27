@@ -3,6 +3,10 @@ const bindFn  = require('../utils/bind-fn');
 const AdminController = require('../controllers/AdminController');
 const { CreateUserValidator, UpdateUserValidator, DeleteUserValidator } = require('../validation/AdminValidators');
 
+/**
+ * @param {import('express').Application} app
+ * @param {import('express-ws').Router} myRouter
+ */
 module.exports = (app, myRouter) => {
 
   const container = app.get('container');
