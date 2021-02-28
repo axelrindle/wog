@@ -8,14 +8,18 @@ const debug = require('debug')('wog:Validator');
  */
 module.exports = class Validator {
 
+  /**
+   * @param {import('awilix').AwilixContainer} container
+   */
   constructor(container) {
+    /** @type {import('@wogjs/types').Logger} */
     this.myLogger = container.resolve('logger').scope('validation');
   }
 
   /**
    * Define the rules for this validator.
    *
-   * @returns {Array} An array of validator functions.
+   * @returns {object} An object of validator functions.
    */
   rules() {
     throw new Error('rules() must be implemented by child classes!');
@@ -33,8 +37,8 @@ module.exports = class Validator {
   /**
    * Validate a request based on the given rules.
    *
-   * @param {Express.Request} req
-   * @param {Express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    * @param {Function} next
    */
   async validate(req, res, next) {

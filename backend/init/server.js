@@ -12,9 +12,11 @@ const { isDebug, fail } = require('@wogjs/utils');
 module.exports = container => {
 
 // Resolve services
+/** @type {import('@wogjs/types').Logger} */
 const logger = container.resolve('logger');
 const config = container.resolve('config');
 
+/** @type {import('@wogjs/types').Logger} */
 const myLogger = logger.scope('server');
 const app = express();
 
