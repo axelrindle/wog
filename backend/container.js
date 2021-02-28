@@ -49,7 +49,7 @@ const registerPackages = async (container, logger) => {
   const adapters = packages.findByType('adapter');
   try {
     for (const adapter of adapters) {
-      const initializer = require(adapter.id);
+      const initializer = require(adapter.main);
       initializer(awilix, container);
     }
   } catch (error) {

@@ -65,7 +65,8 @@ module.exports = class PackageRegistry {
           type: pkgWog.type,
           version: pkgNode.version,
           description: pkgNode.description || "No description provided.",
-          displayName: pkgWog.displayName
+          displayName: pkgWog.displayName,
+          main: path.resolve(pkgDir, pkgNode.main)
         });
         this._loadedPackages++;
         debug('Package "' + pkg + '" has been registered.');
