@@ -11,7 +11,7 @@ global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
 const debug = require('debug')('wog:main');
 const isElevated = require('is-elevated');
 const chalk = require('chalk');
-const fail = require('./utils/fail');
+const { fail } = require('@wogjs/utils');
 const checkForUpdates = require('./updater');
 
 debug('DEBUG MODE ENABLED! REMEMBER TO TURN OFF!');

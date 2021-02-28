@@ -1,5 +1,5 @@
 // Require modules
-const getPath = require('../utils/paths');
+const { url } = require('@wogjs/utils');
 
 const checkAuth = module.exports.checkAuth = {
 
@@ -13,7 +13,7 @@ const checkAuth = module.exports.checkAuth = {
   is(req, res, next) {
     if(req.isAuthenticated()) next();
     else {
-      res.redirect(getPath('login'));
+      res.redirect( url('login') );
     }
   },
 
@@ -27,7 +27,7 @@ const checkAuth = module.exports.checkAuth = {
   not(req, res, next) {
     if(!req.isAuthenticated()) next();
     else {
-      res.redirect(getPath());
+      res.redirect( url() );
     }
   }
 };

@@ -1,9 +1,9 @@
 // Require modules
 const fs = require('fs');
 const path = require('path');
+const { env } = require('@wogjs/utils');
 
 module.exports = async (container) => {
-  const { env } = container.resolve('util');
   const storage = container.resolve('storage');
 
   const ENTRIES_DIRECTORY = 'entry-definitions';

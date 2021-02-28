@@ -1,6 +1,6 @@
 // Require modules
 const Controller = require('./Controller');
-const getPath = require('../utils/paths');
+const { url } = require('@wogjs/utils');
 
 module.exports = class AdminController extends Controller {
 
@@ -30,7 +30,7 @@ module.exports = class AdminController extends Controller {
         user: req.user
       });
     } else {
-      res.redirect(getPath());
+      res.redirect( url() );
     }
   }
 

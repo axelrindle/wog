@@ -1,5 +1,5 @@
 // Require modules
-const bindFn = require('../utils/bind-fn');
+const { bindFn } = require('@wogjs/utils');
 const EntryController = require('../controllers/EntryController');
 
 /**

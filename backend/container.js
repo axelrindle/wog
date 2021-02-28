@@ -67,10 +67,7 @@ module.exports = async () => {
 
   container.register('wogVersion', awilix.asValue(pkg.version));
   container.register('nodeVersion', awilix.asValue(pkg.engines.node));
-  debug('Registered environment information.')
-
-  container.register('util', awilix.asValue( require('./utils') ));
-  debug('Registered utilites.');
+  debug('Registered environment information.');
 
   await registerInitServices(container);
 

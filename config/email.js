@@ -1,10 +1,11 @@
+// Require modules
+const { env } = require('@wogjs/utils');
+
 /**
  * Define email settings.
  * @type {Object}
  */
 module.exports = container => {
-  const { env } = container.resolve('util');
-
   return {
 
     /**

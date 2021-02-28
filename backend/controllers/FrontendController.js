@@ -1,7 +1,7 @@
 // Require modules
 const Controller = require('./Controller');
 const debug = require('debug')('wog:FrontendController');
-const isDebug = require('../utils/is-debug');
+const { isDebug } = require('@wogjs/utils');
 
 /**
  * The FrontendController is responsible for rendering the HTML pages.

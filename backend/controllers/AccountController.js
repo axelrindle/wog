@@ -1,6 +1,6 @@
 // Require modules
 const Controller = require('./Controller');
-const getPath = require('../utils/paths');
+const { url } = require('@wogjs/utils');
 
 /**
  * The AccountController is responsible for everything account related.
@@ -39,7 +39,7 @@ module.exports = class AccountController extends Controller {
       this.logger.error(error);
       req.flash('error', error.message);
     }
-    res.redirect(getPath('/account/overview'));
+    res.redirect( url('account/overview') );
   }
 
 };

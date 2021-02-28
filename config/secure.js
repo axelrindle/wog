@@ -1,9 +1,10 @@
+// Require modules
+const { env } = require('@wogjs/utils');
+
 /**
  * Secure settings (passwords, connection details, etc.)
  */
 module.exports = container => {
-  const { env } = container.resolve('util');
-
   return {
 
     /**

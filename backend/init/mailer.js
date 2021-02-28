@@ -2,6 +2,7 @@
 const nodemailer = require('nodemailer');
 const stripHtml = require("string-strip-html");
 const debug = require('debug')('wog:mailer');
+const { isDebug } = require('@wogjs/utils');
 
 module.exports = class Mailer {
 
@@ -17,7 +18,7 @@ module.exports = class Mailer {
     const opts = this.config.transport;
     const merged = Object.assign(opts, {
       secure: opts.port === 465,
-      debug: DEBUG
+      debug: isDebug
     });
     this.transport = nodemailer.createTransport(merged);
 

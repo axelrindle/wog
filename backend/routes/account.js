@@ -1,5 +1,5 @@
 // Require modules
-const { bindFn, paths } = require('../utils');
+const { bindFn, url } = require('@wogjs/utils');
 const AccountController = require('../controllers/AccountController');
 
 const { UpdateUserValidator } = require('../validation/AccountValidators');
@@ -16,7 +16,7 @@ module.exports = (app, myRouter) => {
 
   myRouter.use(checkAuth.is);
 
-  myRouter.get('/', (req, res) => res.redirect(paths('/account/overview')));
+  myRouter.get('/', (req, res) => res.redirect( url('account/overview') ));
   myRouter.get('/overview', bindFn(myController, "showAccount"));
   myRouter.post('/update', bindFn(new UpdateUserValidator(container), "validate"), bindFn(myController, "updateAccount"));
 

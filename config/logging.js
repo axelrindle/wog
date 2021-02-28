@@ -1,6 +1,7 @@
 // Require modules
 const path = require('path');
 const chalk = require('chalk');
+const { env } = require('@wogjs/utils');
 
 const { format, transports } = require('winston');
 const { combine, printf } = format;
@@ -26,7 +27,6 @@ const extractAdditional = format(info => {
 });
 
 module.exports = async (container) => {
-  const { env } = container.resolve('util');
   const storage = container.resolve('storage');
 
   const logDirectory = await storage.createDirectory('logs');

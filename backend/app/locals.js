@@ -1,5 +1,5 @@
 // Require modules
-const { isDebug, paths } = require('../utils');
+const { isDebug, url } = require('@wogjs/utils');
 
 /**
  * Returns a middleware function which attaches locals to every request.

@@ -33,6 +33,7 @@
   "dependencies": {
     "@axelrindle/async-for-each": "^1.0.0",
     "@godaddy/terminus": "^4.4.1",
+    "@wogjs/utils": "github:wog-js/utils",
     "awilix": "^4.3.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",

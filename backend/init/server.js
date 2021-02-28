@@ -7,7 +7,7 @@ const express = require('express');
 const helmet = require('helmet');
 const nunjucks = require('nunjucks');
 const { createTerminus } = require('@godaddy/terminus');
-const { isDebug, fail } = require('../utils');
+const { isDebug, fail } = require('@wogjs/utils');
 
 module.exports = container => {
 

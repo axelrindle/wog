@@ -1,7 +1,6 @@
 // Require modules
 const bcrypt = require('bcrypt');
-const nanoid = require('nanoid/generate');
-const NANOID_ALPHABET = require('../utils/nanoid-alphabet');
+const { idGen } = require('@wogjs/utils');
 
 const queries = { // TODO: Move to .sql files
   createTable: `
@@ -55,7 +54,7 @@ module.exports = class Accounts {
   async _seedDatabase() {
     if (!this.needsSeed) return;
 
-    const rawPassword = nanoid(NANOID_ALPHABET, 8);
+    const rawPassword = idGen.sync(8);
     const file = 'initialPassword.txt';
     await this.storage.writeFile(file, rawPassword)
     this.logger.info(`An initial user password has been written to storage/${file}.`);

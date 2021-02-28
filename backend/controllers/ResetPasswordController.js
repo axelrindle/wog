@@ -1,10 +1,8 @@
 // Require modules
 const Controller = require('./Controller');
-const nanoid = require('nanoid/async/generate');
 const debug = require('debug')('wog:ResetPasswordController');
 
-const getPath = require('../utils/paths');
-const NANOID_ALPHABET = require('../utils/nanoid-alphabet');
+const { idGen, url } = require('@wogjs/utils');
 
 const TOKEN_PREFIX = 'password_reset:';
 const TOKEN_LENGTH = 32;
@@ -37,7 +35,7 @@ module.exports = class ResetPasswordController extends Controller {
   }
 
   async _generateToken(userId) {
-    const token = await nanoid(NANOID_ALPHABET, TOKEN_LENGTH);
+    const token = await idGen(TOKEN_LENGTH);
     const lifetime = this.config.secure.resetTokenLifetime;
     return new Promise((resolve, reject) => {
       this.redis.client.setex(TOKEN_PREFIX + token, lifetime, userId, (err, reply) => {
@@ -96,7 +94,7 @@ module.exports = class ResetPasswordController extends Controller {
    * @param {import('express').Response} res
    */
   async handleRequest(req, res) {
-    const redirectPath = getPath('reset/password');
+    const redirectPath = url('reset/password');
     const commonErrorHandler = err => {
       if (typeof err === 'object') this.logger.error(err); // only log thrown errors
       this._flashError(req, err.message || err);
@@ -152,7 +150,7 @@ module.exports = class ResetPasswordController extends Controller {
 
     if (!token || !await this._checkToken(token)) {
       this._flashError(req, 'Invalid token!');
-      res.redirect(getPath('reset/password'));
+      res.redirect( url('reset/password') );
       return;
     }
 
@@ -170,7 +168,7 @@ module.exports = class ResetPasswordController extends Controller {
    */
   async handleReset(req, res) {
     const tokenFromRequest = req.params.token;
-    const redirectPath = getPath('reset/password/' + tokenFromRequest);
+    const redirectPath = url('reset/password/' + tokenFromRequest);
 
     try {
       const userId = await this._checkToken(tokenFromRequest);
@@ -198,7 +196,7 @@ module.exports = class ResetPasswordController extends Controller {
       await this.accounts.update({ id: userId, password });
 
       req.flash('status', 'The password has been changed.');
-      res.redirect(getPath());
+      res.redirect( url() );
     } catch (err) {
       this.logger.error('Failed to reset a password! ' + err.message);
       debug(err);

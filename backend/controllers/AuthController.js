@@ -1,6 +1,6 @@
 // Require modules
 const Controller = require('./Controller');
-const getPath = require('../utils/paths');
+const { url } = require('@wogjs/utils');
 
 /**
  * The AuthController is responsible for authenticating users.
@@ -14,8 +14,8 @@ module.exports = class AuthController extends Controller {
 
   login() {
     return this.passport.authenticate('local', {
-      successRedirect: getPath(),
-      failureRedirect: getPath(),
+      successRedirect: url(),
+      failureRedirect: url(),
       failureFlash: 'Invalid username or password!'
     });
   }
@@ -26,7 +26,7 @@ module.exports = class AuthController extends Controller {
    */
   logout(req, res) {
     req.logout();
-    res.redirect(getPath());
+    res.redirect( url() );
   }
 
 };

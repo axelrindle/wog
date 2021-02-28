@@ -1,5 +1,5 @@
 // Require modules
-const bindFn = require('../utils/bind-fn');
+const { bindFn } = require('@wogjs/utils');
 const FrontendController = require('../controllers/FrontendController');
 const AuthController = require('../controllers/AuthController');
 const ResetPasswordController = require('../controllers/ResetPasswordController');
