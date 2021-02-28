@@ -1,20 +1,14 @@
 // Require modules
 const { isDebug, url } = require('@wogjs/utils');
 
-/**
- * Returns a middleware function which attaches locals to every request.
- */
-module.exports = (req, res, next) => {
+const middleware = (req, res, next) => {
   const container = req.app.get('container');
   const config = container.resolve('config');
 
   res.locals = Object.assign({}, res.locals, {
     // properties
-    url: config.app.url,
+    baseUrl: config.app.url,
     isDebug,
-
-    // helpers
-    path: getPath,
 
     /**
      * Checks whether the current request path matches the given.
@@ -40,4 +34,14 @@ module.exports = (req, res, next) => {
     }
   });
   next();
+};
+
+/**
+ * @param {import('express').Application} app
+ * @param {import('nunjucks').Environment} nunjucksEnvironment
+ */
+module.exports = (app, nunjucksEnvironment) => {
+  app.use(middleware);
+
+  nunjucksEnvironment.addGlobal('url', url);
 };

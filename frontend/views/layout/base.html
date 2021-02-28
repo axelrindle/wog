@@ -10,15 +10,15 @@
       <meta name="socket" value="{{ wsUrl }}">
     {% endif %}
 
-    <base href="{{ url }}">
-    <link rel="icon" href="{{ path('img/favicon.png') }}">
+    <base href="{{ baseUrl }}">
+    <link rel="icon" href="{{ url('img/favicon.png') }}">
     <title>{{ title }}</title>
 
     <!-- CSS files -->
-    <link rel="stylesheet" href="{{ path('css/style.min.css') }}">
-    <link rel="stylesheet" href="{{ path('vendor/fontawesome-free-5.11.2-web/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url('css/style.min.css') }}">
+    <link rel="stylesheet" href="{{ url('vendor/fontawesome-free-5.11.2-web/css/all.min.css') }}">
   </head>
-  <body style="background-image: url('{{ path('img/login_pattern.png') }}')">
+  <body style="background-image: url('{{ url('img/login_pattern.png') }}')">
     {% block content %}
       <p>Hello World</p>
     {% endblock %}

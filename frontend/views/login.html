@@ -17,7 +17,7 @@
         <p class="card-header-title">Login</p>
       </header>
 
-      <form action="{{ path('login') }}" method="POST">
+      <form action="{{ url('login') }}" method="POST">
 
         <!-- Input items -->
         <div class="card-content">
@@ -54,7 +54,7 @@
 
         <footer class="card-footer">
           <button class="card-footer-item" type="submit">Login</button>
-          <a href="{{ path('reset/password') }}" class="card-footer-item has-text-centered">
+          <a href="{{ url('reset/password') }}" class="card-footer-item has-text-centered">
             <span>Forgot password?</span>
           </a>
         </footer>

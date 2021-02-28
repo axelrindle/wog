@@ -59,6 +59,7 @@ const websocket = require('../app/websocket')(app);
 
 // Setup routes
 require('../app/auth')(app);
+require('../app/locals')(app, nunjucksEnvironment);
 require('../app/router')(app);
 
 // Start server

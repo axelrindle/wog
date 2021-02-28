@@ -1,7 +1,7 @@
 {% if not isDebug %}
-  <script src="{{ path('vendor/vue.min.prod.js') }}"></script>
+  <script src="{{ url('vendor/vue.min.prod.js') }}"></script>
 {% else %}
-  <script src="{{ path('vendor/vue.min.dev.js') }}"></script>
+  <script src="{{ url('vendor/vue.min.dev.js') }}"></script>
 {% endif %}
-<script src="{{ path('vendor/jquery.min.js') }}"></script>
-<script src="{{ path('vendor/axios.min.js') }}"></script>
+<script src="{{ url('vendor/jquery.min.js') }}"></script>
+<script src="{{ url('vendor/axios.min.js') }}"></script>

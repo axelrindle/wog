@@ -43,7 +43,7 @@
       {% endif %}
 
       <div class="card">
-        <form action="{{ path('/account/update') }}" method="post">
+        <form action="{{ url('account/update') }}" method="post">
           <div class="card-content">
 
             <input type="hidden" name="id" value="{{ user.id }}">

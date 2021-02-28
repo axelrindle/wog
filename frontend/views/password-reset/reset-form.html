@@ -19,7 +19,7 @@
         </p>
       </header>
 
-      <form action="{{ path('reset/password/' + token) }}" method="POST">
+      <form action="{{ url('reset/password/' + token) }}" method="POST">
 
         <!-- Input items -->
         <div class="card-content">
@@ -55,7 +55,7 @@
         </div> <!-- end .card-content -->
 
         <footer class="card-footer">
-          <a href="{{ path('/') }}" class="card-footer-item">
+          <a href="{{ url('/') }}" class="card-footer-item">
             <span>Cancel</span>
           </a>
           <button class="card-footer-item" type="submit">
