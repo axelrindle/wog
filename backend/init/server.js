@@ -37,14 +37,14 @@ if (! isDebug) {
   app.enable('view cache');
   if (config.app.isProxy) app.enable('trust proxy');
 }
-app.use(express.static('frontend/static'));
+
+app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.secure.secret));
 app.use(flash());
-app.use(helmet());
-app.use(require('../app/locals'));
+app.use(express.static('frontend/static'));
 
 // Install central error handler
 // eslint-disable-next-line no-unused-vars
