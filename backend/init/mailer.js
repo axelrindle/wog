@@ -4,18 +4,17 @@ const stripHtml = require("string-strip-html");
 const debug = require('debug')('wog:mailer');
 const { isDebug } = require('@wogjs/utils');
 
+/** @type {import('@wogjs/types').Mailer} */
 module.exports = class Mailer {
 
   constructor({ config, logger }) {
-    this.config = config.email;
-    this.logger = logger;
+    this._config = config.email;
+    this._logger = logger.scope('mailer');
   }
 
   async init() {
-    this.logger = this.logger.scope('mailer');
-
     // create smtp transport
-    const opts = this.config.transport;
+    const opts = this._config.transport;
     const merged = Object.assign(opts, {
       secure: opts.port === 465,
       debug: isDebug
@@ -25,9 +24,9 @@ module.exports = class Mailer {
     // verify connection
     try {
       await this._verifyConnection();
-      this.logger.info('Successfully connected to SMTP server.');
+      this._logger.info('Successfully connected to SMTP server.');
     } catch (error) {
-      this.logger.error('Failed to create SMTP connection! ' + error.message);
+      this._logger.error('Failed to create SMTP connection! ' + error.message);
       this.transport = null;
     }
   }
@@ -45,19 +44,11 @@ module.exports = class Mailer {
     return this.transport !== null;
   }
 
-  /**
-   * Attempts to send an email using the given options and the configuration.
-   *
-   * @param {string} to The receiver.
-   * @param {string} subject The email subject.
-   * @param {string} htmlText The formatted HTML text to send.
-   * @returns {Promise}
-   */
   async sendMail(to, subject, htmlText) {
     if (!this.isConnected) return Promise.reject("Not connected!");
 
     const text = stripHtml(htmlText);
-    const opts = this.config.message;
+    const opts = this._config.message;
     const merged = Object.assign(opts, {
       to, subject, text, htmlText
     });
@@ -67,7 +58,7 @@ module.exports = class Mailer {
 
   dispose() {
     this.transport.close();
-    this.logger.info('Disposed.');
+    this._logger.info('Disposed.');
     return Promise.resolve();
   }
 }

@@ -7,13 +7,15 @@ const debug = require('debug')('wog:packages');
 
 const VALID_TYPES = ['adapter'];
 
+/** @type {import('@wogjs/types').PackageRegistry} */
 module.exports = class PackageRegistry {
 
   constructor({ wogVersion, logger }) {
+    /** @type {string} */
+    this._wogVersion = wogVersion;
     this._rootDirectory = path.join(ROOT_DIRECTORY, 'packages');
 
-    this.wogVersion = wogVersion;
-    this.logger = logger.scope('packages');
+    this._logger = logger.scope('packages');
 
     this._registry = [];
     this._loadedPackages = 0;
@@ -47,8 +49,8 @@ module.exports = class PackageRegistry {
         if (!VALID_TYPES.includes(pkgWog.type)) {
           throw new Error('Can\'t load package because of it\'s invalid type: "' + pkgWog.type + '"!');
         }
-        if(!semverSatisfies(this.wogVersion, pkgWog.wog)) {
-          throw new Error('Package requirement "' + pkgWog.wog + '" does not satisfy wog version "' + this.wogVersion + '"!');
+        if(!semverSatisfies(this._wogVersion, pkgWog.wog)) {
+          throw new Error('Package requirement "' + pkgWog.wog + '" does not satisfy wog version "' + this._wogVersion + '"!');
         }
         debug('wog.package.json is valid in ' + pkg);
 
@@ -69,18 +71,18 @@ module.exports = class PackageRegistry {
         debug('Package "' + pkg + '" has been registered.');
 
       } catch (error) {
-        this.logger.error('An error occured while loading package "' + pkg + '":');
-        this.logger.error(error);
+        this._logger.error('An error occured while loading package "' + pkg + '":');
+        this._logger.error(error);
         continue;
       }
     }
   }
 
   init() {
-    this.logger.info('Loading packages...');
+    this._logger.info('Loading packages...');
     this._scan();
     this._load();
-    this.logger.info('Loaded ' + this._loadedPackages + ' package(s).');
+    this._logger.info('Loaded ' + this._loadedPackages + ' package(s).');
   }
 
   count() {
@@ -105,3 +107,5 @@ module.exports = class PackageRegistry {
   }
 
 };
+
+module.exports.VALID_TYPES = VALID_TYPES;

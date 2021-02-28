@@ -1,56 +1,55 @@
 // Require modules
-const fs = require('fs').promises;
+const fs = require('fs');
+const fsPromises = fs.promises;
 const path = require('path');
-const debug = require('debug')('wog:storage');
 const prettyBytes = require('pretty-bytes');
+const rimraf = require('rimraf');
+const debug = require('debug')('wog:storage');
 
-/**
- * The Storage class is a small utility for working with files within the `storage/` directory.
- */
+/** @type {import('@wogjs/types').Storage} */
 module.exports = class Storage {
 
   constructor() {
-    this.root = path.join(ROOT_DIRECTORY, 'storage');
+    this._root = path.join(ROOT_DIRECTORY, 'storage');
   }
 
-  /**
-   * Build the absolute path to a directory or file in the storage.
-   *
-   * @param {string} name The relative path.
-   * @returns {string} The absolute path.
-   */
   getPath(name = "") {
-    return path.join(this.root, name);
+    return path.join(this._root, name);
   }
 
-  /**
-   * Create a new storage directory.
-   *
-   * @param {string} name The directory name.
-   * @returns {Promise} A promise.
-   */
   async createDirectory(name) {
     const path = this.getPath(name);
-    await fs.mkdir(path, {
+    await fsPromises.mkdir(path, {
       recursive: true // like 'mkdir -p'
     });
     debug('Init storage directory%s', name ? ` ${name}` : "");
     return path;
   }
 
-  /**
-   * Writes content to a file. The file is created if it does not exist.
-   * Note that existing files are overwritten.
-   *
-   * @param {string} name The file name.
-   * @param {string} content The content. Defaults to nothing.
-   * @returns {Promise} A promise.
-   */
   async writeFile(name, content = "") {
     const path = this.getPath(name);
-    await fs.writeFile(path, content);
+    await fsPromises.writeFile(path, content);
     const bytes = Buffer.byteLength(content, 'utf8');
     debug(`Written ${prettyBytes(bytes)} of data to storage file "${name}"`);
+  }
+
+  async readFile(name, stream = false) {
+    const path = this.getPath(name);
+    if (stream) {
+      return fs.createReadStream(path);
+    }
+    else {
+      return fsPromises.readFile(path)
+    }
+  }
+
+  delete(path) {
+    return new Promise((resolve, reject) => {
+      rimraf(path, err => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
   }
 
 }

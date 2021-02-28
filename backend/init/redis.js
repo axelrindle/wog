@@ -1,24 +1,25 @@
 // Require modules
 const redis = require("redis");
 
+/** @type {import('@wogjs/types').RedisManager} */
 module.exports = class RedisManager {
 
   constructor({ config, logger }) {
-    this.logger = logger.scope('redis');
-    this.config = config.secure.redis;
+    this._logger = logger.scope('redis');
+    this._config = config.secure.redis;
   }
 
   init() {
-    this.client = redis.createClient(this.config);
+    this.client = redis.createClient(this._config);
 
     this.client.on('error', err => {
-      this.logger.error(err);
+      this._logger.error(err);
     });
     this.client.on('reconnecting', (delay, attempt) => {
-      this.logger.info(`Connection lost. Trying to reconnect after ${delay}ms... (Attempt ${attempt})`);
+      this._logger.info(`Connection lost. Trying to reconnect after ${delay}ms... (Attempt ${attempt})`);
     });
     this.client.on('ready', () => {
-      this.logger.info('Connected to redis server.');
+      this._logger.info('Connected to redis server.');
     });
 
     return new Promise((resolve, reject) => {
@@ -31,19 +32,10 @@ module.exports = class RedisManager {
     });
   }
 
-  /**
-   * Indicates whether a connection is currently established.
-   */
   get isConnected() {
     return this.client.connected;
   }
 
-  /**
-   * Executes the given redis command on the current connection.
-   *
-   * @param {string} cmd The command to execute.
-   * @param  {...any} args An arguments to pass to the command. The last argument must be the callback.
-   */
   run(cmd, ...args) {
     this.client[cmd](...args);
   }
@@ -53,7 +45,7 @@ module.exports = class RedisManager {
       this.client.quit(err => {
         if (err) reject(err);
         else {
-          this.logger.info('Disposed.');
+          this._logger.info('Disposed.');
           resolve();
         }
       })
