@@ -70,12 +70,8 @@ module.exports = app => {
 
   configure(container);
 
-  // Init passport authentication
   app.use(passport.initialize());
-
-  // persistent login sessions
   app.use(passport.session());
 
-  // persist passport instance
   app.set('passport', passport);
 };
