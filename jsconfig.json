@@ -1,13 +1,18 @@
 {
   "compilerOptions": {
+    "module": "commonJS",
     "target": "es6",
-    "baseUrl": "."
+    "baseUrl": "./backend/",
+    "typeRoots": [
+      "./node_modules/@wogjs/types/"
+    ],
+    "checkJs": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
   },
   "include": [
-    "backend/**/*",
-    "config/*",
-    "packages/**/*",
-    "typings/**/*"
+    "backend/**/*.js",
+    "config/*.js"
   ],
   "typeAcquisition": {
     "enable": true,
