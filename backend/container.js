@@ -1,4 +1,5 @@
 // Require modules
+const EventEmitter = require('events');
 const awilix = require('awilix');
 const debug = require('debug')('wog:container');
 const pkg = require('../package.json');
@@ -9,6 +10,8 @@ const pkg = require('../package.json');
  * @param {import('awilix').AwilixContainer} container
  */
 const registerInitServices = async (container) => {
+  container.register('events', awilix.asValue( new EventEmitter() ));
+
   container.register('storage', awilix.asClass( require('./init/storage') ));
   container.resolve('storage').createDirectory();
   debug('Registered storage service.');
