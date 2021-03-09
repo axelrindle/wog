@@ -3,7 +3,12 @@
 // Register custom module paths
 require('module-alias/register');
 
+const fs = require('fs');
 const path = require('path');
+
+// Show a nice log header
+const header = fs.readFileSync(path.resolve(__dirname, 'resources/header.txt')).toString();
+console.log(header);
 
 // Define global variables
 global.ROOT_DIRECTORY = path.resolve(__dirname, '..');
