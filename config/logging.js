@@ -106,7 +106,15 @@ module.exports = async () => {
           baseFormat, format.uncolorize()
         )
       })
-    ]
+    ],
+
+    /**
+     * Options for HTTP request logging
+     */
+    http: {
+      enabled: env.bool('HTTP_REQUEST_LOG_ENABLED', true),
+      format: env.text('HTTP_REQUEST_LOG_FORMAT', 'short')
+    }
 
   };
 };

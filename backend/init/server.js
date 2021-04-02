@@ -44,6 +44,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.secure.secret));
 app.use(flash());
+if (config.logging.http.enabled) {
+  app.use( require('../app/middleware/morgan')(config, myLogger) );
+}
 app.use(express.static('frontend/static'));
 
 // Install central error handler

@@ -15,12 +15,6 @@ module.exports = app => {
   app.set('version', pkg.version);
   app.set('middleware', middleware);
 
-  // debug access logger
-  app.use((req, _res, next) => {
-    debug('%s %s from %s', req.method, req.url, req.ip);
-    next();
-  });
-
   // load route definitions
   const dir = path.join(__dirname, '../routes/*.js');
   const files = glob.sync(dir);
