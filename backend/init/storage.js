@@ -26,6 +26,25 @@ module.exports = class Storage {
     return path;
   }
 
+  async exists(name) {
+    const absolute = this.getPath(name);
+    await fsPromises.access(absolute, fs.constants.F_OK);
+    return Promise.resolve(true);
+  }
+
+  async isOfType(name, type) {
+    const absolute = this.getPath(name);
+    const stat = await fsPromises.stat(absolute);
+    switch (type) {
+      case 'file':
+        return stat.isFile();
+      case 'directory':
+        return stat.isDirectory();
+      default:
+        return false;
+    }
+  }
+
   async writeFile(name, content = "") {
     const path = this.getPath(name);
     await fsPromises.writeFile(path, content);
