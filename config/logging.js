@@ -94,14 +94,14 @@ module.exports = async () => {
      */
     transports: [ // TODO: make this customizable more easily (maybe through env variables?)
       new transports.File({
-        filename: `storage/logs/error${suffix}.log`,
+        filename: `storage/logs/error.log`,
         level: 'error',
         format: combine(
           baseFormat, format.uncolorize()
         )
       }),
       new transports.File({
-        filename: `storage/logs/combined${suffix}.log`,
+        filename: `storage/logs/combined.log`,
         format: combine(
           baseFormat, format.uncolorize()
         )

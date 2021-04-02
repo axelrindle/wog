@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Heavy operations (file reading, account management, etc.) have been outsourced to worker threads, so the main server process is relieved
 - The sidebar can be collapsed and expanded
 - The UI layout has been updated to be more intuitive and use the full screen size
 
