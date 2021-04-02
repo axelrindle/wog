@@ -3,9 +3,8 @@ const { env } = require('@wogjs/utils');
 
 /**
  * Define email settings.
- * @type {Object}
  */
-module.exports = container => {
+module.exports = () => {
   return {
 
     /**

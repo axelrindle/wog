@@ -23,14 +23,14 @@ require('dotenv').config({
   path: envPath()
 });
 
-module.exports = async (container) => {
+module.exports = async () => {
   const files = glob.sync(path.join(ROOT_DIRECTORY, 'config/*.js'));
 
   // Create config object
   const config = {};
   for (const el of files) {
     const namespace = path.basename(el, '.js');
-    config[namespace] = await require(el)(container);
+    config[namespace] = await require(el)();
     debug(`Loaded values from "${el}"`);
   }
 

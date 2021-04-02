@@ -1,5 +1,4 @@
 // Require modules
-const path = require('path');
 const chalk = require('chalk');
 const { env } = require('@wogjs/utils');
 
@@ -26,10 +25,7 @@ const extractAdditional = format(info => {
   return info;
 });
 
-module.exports = async (container) => {
-  const storage = container.resolve('storage');
-
-  const logDirectory = await storage.createDirectory('logs');
+module.exports = async () => {
 
   /**
    * Just the raw logging format without coloring.
@@ -98,14 +94,14 @@ module.exports = async (container) => {
      */
     transports: [ // TODO: make this customizable more easily (maybe through env variables?)
       new transports.File({
-        filename: path.join(logDirectory, `error.log`),
+        filename: `storage/logs/error${suffix}.log`,
         level: 'error',
         format: combine(
           baseFormat, format.uncolorize()
         )
       }),
       new transports.File({
-        filename: path.join(logDirectory, `combined.log`),
+        filename: `storage/logs/combined${suffix}.log`,
         format: combine(
           baseFormat, format.uncolorize()
         )

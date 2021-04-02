@@ -4,7 +4,7 @@ const { env } = require('@wogjs/utils');
 /**
  * Application specific configuration (server settings, etc.)
  */
-module.exports = container => {
+module.exports = () => {
   return {
 
     /** The port the server is listening on. */

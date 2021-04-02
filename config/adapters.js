@@ -1,22 +1,7 @@
 // Require modules
-const fs = require('fs');
-const path = require('path');
 const { env } = require('@wogjs/utils');
 
-module.exports = async (container) => {
-  const storage = container.resolve('storage');
-
-  const ENTRIES_DIRECTORY = 'entry-definitions';
-  const readEntries = (adapter, def = {}) => {
-    const file = storage.getPath(path.join(ENTRIES_DIRECTORY, `${adapter}.json`));
-    if (fs.existsSync(file)) {
-      return JSON.parse(fs.readFileSync(file).toString());
-    } else {
-      return def;
-    }
-  };
-
-  await storage.createDirectory(ENTRIES_DIRECTORY);
+module.exports = async () => {
 
   return {
 
@@ -29,27 +14,7 @@ module.exports = async (container) => {
     options: {
 
       file: {
-        /**
-         * An array of globs for selecting log files to view in the interface.
-         *
-         * Note that the more files you include in your glob,
-         * the longer it will take to load them.
-         *
-         * Read more here: https://www.npmjs.com/package/glob
-         */
-        groups: (() => {
-          const def = {
-            'Syslogs': [
-              '/var/log/*.log',
-              '/var/log/*log',
-              '!/var/log/*gz'
-            ],
-            'wog': [
-              './storage/logs/*.log'
-            ]
-          };
-          return readEntries('file', def);
-        })(),
+
       },
 
       redis: {

@@ -4,7 +4,7 @@ const { env } = require('@wogjs/utils');
 /**
  * Secure settings (passwords, connection details, etc.)
  */
-module.exports = container => {
+module.exports = () => {
   return {
 
     /**
